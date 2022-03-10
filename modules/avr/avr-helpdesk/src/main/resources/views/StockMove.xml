@@ -12,6 +12,8 @@
     <action-record name="action-record-avr-helpdesk-set-stock-move" model="com.axelor.apps.stock.db.StockMove">
         <field name="partner" expr="eval:__parent__.customer" if="__parent__ != null &amp;&amp; __parent__.get('_model') == 'com.axelor.apps.helpdesk.db.Ticket'"/>
         <field name="typeSelect" expr="eval:2" if="__parent__ != null &amp;&amp; __parent__.get('_model') == 'com.axelor.apps.helpdesk.db.Ticket'"/>
+        <field name="fromStockLocation" expr="eval:company?.getStockConfig()?.getReceiptDefaultStockLocation()" if="__parent__ != null &amp;&amp; __parent__.get('_model') == 'com.axelor.apps.helpdesk.db.Ticket'"/>
+        <field name="toStockLocation" expr="eval:company?.getStockConfig()?.getCustomerVirtualStockLocation()" if="__parent__ != null &amp;&amp; __parent__.get('_model') == 'com.axelor.apps.helpdesk.db.Ticket'"/>
     </action-record>
 
 </object-views>
