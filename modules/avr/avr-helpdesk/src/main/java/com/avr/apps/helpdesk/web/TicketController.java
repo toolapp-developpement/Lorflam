@@ -1,11 +1,15 @@
 package com.avr.apps.helpdesk.web;
 
 import com.avr.apps.helpdesk.service.TicketService;
+import com.axelor.apps.base.db.AppStock;
+import com.axelor.apps.base.service.app.AppService;
 import com.axelor.apps.helpdesk.db.Ticket;
 import com.axelor.apps.purchase.db.PurchaseOrder;
 import com.axelor.apps.sale.db.SaleOrder;
+import com.axelor.apps.sale.service.configurator.ConfiguratorService;
 import com.axelor.apps.stock.db.StockMove;
 import com.axelor.exception.AxelorException;
+import com.axelor.inject.Beans;
 import com.axelor.rpc.ActionRequest;
 import com.axelor.rpc.ActionResponse;
 import com.google.inject.Inject;
