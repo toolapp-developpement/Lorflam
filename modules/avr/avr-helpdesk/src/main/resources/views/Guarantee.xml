@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
+
+    <grid name="guarantee-grid" title="Garantie" model="com.avr.apps.helpdesk.db.Guarantee">
+        <field name="name"/>
+    </grid>
+    
+    <form name="guarantee-form" title="Garantie" model="com.avr.apps.helpdesk.db.Guarantee">
+        <panel>
+            <field name="name"/>
+            <panel-related field="ticketList" name="ticketListPanel" canNew="false" canEdit="false" canRemove="true" title="Liste des tickets" form-view="ticket-form" grid-view="ticket-grid" colSpan="12"/>
+        </panel>
+    </form>
+
+</object-views>

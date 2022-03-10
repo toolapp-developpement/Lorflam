@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.4.xsd">
+
+    <module name="partner" package="com.axelor.apps.base.db"/>
+
+    <entity name="Partner" lang="java">
+        <one-to-many name="yard" ref="com.avr.apps.helpdesk.db.Yard" title="Chantier" mappedBy="partner"/>
+    </entity>
+</domain-models>

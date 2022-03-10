@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.0.xsd">
+    <module name="helpdesk" package="com.axelor.apps.helpdesk.db"/>
+    <entity name="Ticket" lang="java">
+        <date name="invoiceDate" title="Date facturation"/>
+        <string name="commentText" title="Commentaire" multiline="true" large="true"/>
+        <string name="reference" title="Alerte qualité"/>
+
+        <many-to-one name="yard" ref="com.avr.apps.helpdesk.db.Yard" title="Référence chantier" required="true"/>
+        <many-to-one name="guarantee" ref="com.avr.apps.helpdesk.db.Guarantee" title="Garantie" />
+        <many-to-one name="technicalVisit" ref="com.avr.apps.helpdesk.db.TechnicalVisit" title="Visite technique" />
+        <many-to-one name="rateToApply" ref="com.avr.apps.helpdesk.db.RateToApply" title="Tarif à appliquer" />
+        <many-to-one name="email" ref="com.axelor.apps.message.db.EmailAddress" title="Email" />
+        <many-to-one name="trackingNumber" ref="com.axelor.apps.stock.db.TrackingNumber" title="Numéro de suivi" />
+        <many-to-one name="product" ref="com.axelor.apps.base.db.Product" title="Produit" />
+        <many-to-one name="ticketProblemSource" ref="com.avr.apps.helpdesk.db.TicketProblemSource" title="Origine du problème" />
+
+        <string name="saleOrderSeq"/>
+        <string name="stockMoveSeq"/>
+
+        <one-to-many name="stockMoveList" ref="com.axelor.apps.stock.db.StockMove" title="Bon de retour / Bon de livraison" mappedBy="ticket" />
+        <one-to-many name="saleOrderList" ref="com.axelor.apps.sale.db.SaleOrder" title="Commande client" mappedBy="ticket" />
+        <one-to-many name="purchaseOrderList" ref="com.axelor.apps.purchase.db.PurchaseOrder" title="Commande fournisseur" mappedBy="ticket" />
+
+        <many-to-one name="metafile" ref="com.axelor.meta.db.MetaFile" title="Facture PDF" required="true"/>
+    </entity>
+</domain-models>
