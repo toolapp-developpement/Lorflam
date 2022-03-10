@@ -59,5 +59,4 @@ public class TicketServiceImpl implements TicketService {
         return modelList;
     }
 
-
 }

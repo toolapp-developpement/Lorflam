@@ -16,8 +16,8 @@
         <many-to-one name="product" ref="com.axelor.apps.base.db.Product" title="Produit" />
         <many-to-one name="ticketProblemSource" ref="com.avr.apps.helpdesk.db.TicketProblemSource" title="Origine du problème" />
 
-        <string name="saleOrderSeq"/>
-        <string name="stockMoveSeq"/>
+        <string name="saleOrderSeq" title="Séquence Devis/Cde."/>
+        <string name="stockMoveSeq" title="Séquence BL/BR"/>
 
         <one-to-many name="stockMoveList" ref="com.axelor.apps.stock.db.StockMove" title="Bon de retour / Bon de livraison" mappedBy="ticket" />
         <one-to-many name="saleOrderList" ref="com.axelor.apps.sale.db.SaleOrder" title="Commande client" mappedBy="ticket" />
