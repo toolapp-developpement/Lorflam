@@ -5,11 +5,11 @@ import com.axelor.apps.stock.db.StockMoveLine;
 import com.axelor.apps.supplychain.db.repo.StockMoveLineSupplychainRepository;
 import java.util.Map;
 
-public class StockMoveLineAvrHelpdeskRepository extends StockMoveLineSupplychainRepository {
+public class StockMoveLineAvrHelpdeskRepository extends StockMoveLineProductionRepository {
 
   @Override
   public Map<String, Object> populate(Map<String, Object> json, Map<String, Object> context) {
-    // Recuperation du champ de l ecran
+    // Recuperation du champ de lecran
     Long id = (Long) json.get("id");
     String saleOrderSeq = new String();
     StockMoveLine sml = null;
@@ -30,7 +30,7 @@ public class StockMoveLineAvrHelpdeskRepository extends StockMoveLineSupplychain
           saleOrderSeq = so.getSaleOrderSeq();
         }
       }
-      json.put("custSaleOrderSeq", saleOrderSeq);
+      json.put("$custSaleOrderSeq", saleOrderSeq);
     }
 
     return super.populate(json, context);
