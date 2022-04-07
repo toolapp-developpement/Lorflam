@@ -1,8 +1,8 @@
 package com.avr.apps.helpdesk.repository;
 
+import com.axelor.apps.production.db.repo.StockMoveLineProductionRepository;
 import com.axelor.apps.sale.db.SaleOrder;
 import com.axelor.apps.stock.db.StockMoveLine;
-import com.axelor.apps.supplychain.db.repo.StockMoveLineSupplychainRepository;
 import java.util.Map;
 
 public class StockMoveLineAvrHelpdeskRepository extends StockMoveLineProductionRepository {
