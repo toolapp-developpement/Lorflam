@@ -7,7 +7,7 @@
 
   <entity name="Product" lang="java">
   
-  <one-to-many name="abcAnalysisClass" ref="com.axelor.apps.base.db.ABCAnalysisClass" title="Class" mappedBy="Product"/>
+  <many-to-one  name="abcAnalysisClass" ref="com.axelor.apps.base.db.ABCAnalysisClass" title="Class" />
       
   </entity>
 </domain-models>
