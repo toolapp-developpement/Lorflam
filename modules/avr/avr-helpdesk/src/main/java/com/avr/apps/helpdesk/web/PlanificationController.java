@@ -1,4 +1,4 @@
-package com.avr.apps.helpdesk.web
+package com.avr.apps.helpdesk.web;
 
 import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.camunda.bpm.model.dmn.instance.Context;
@@ -10,9 +10,9 @@ import com.axelor.inject.Beans;
 import com.axelor.rpc.ActionRequest;
 import com.axelor.rpc.ActionResponse;
 
-public class PlanificationController throws AxelorException {
+public class PlanificationController {
 
-	public void prepared(ActionRequest request, ActionResponse response) {
+	public void prepared(ActionRequest request, ActionResponse response) throws AxelorException {
 		Context context = request.getContext();
 		StockMove sm = null;
 		
