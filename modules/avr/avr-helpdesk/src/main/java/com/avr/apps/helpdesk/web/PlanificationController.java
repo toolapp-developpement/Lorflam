@@ -1,5 +1,7 @@
 package com.avr.apps.helpdesk.web;
 
+import java.lang.invoke.MethodHandles;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.axelor.apps.stock.db.StockMove;
@@ -10,24 +12,21 @@ import com.axelor.rpc.ActionRequest;
 import com.axelor.rpc.ActionResponse;
 import com.axelor.rpc.Context;
 import com.axelor.exception.AxelorException;
-import com.axelor.apps.account.service.invoice.generator.InvoiceGenerator;
 
 public class PlanificationController {
 
-	private final Logger logger = LoggerFactory.getLogger(InvoiceGenerator.class);
+	private final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	public void prepared(ActionRequest request, ActionResponse response) throws AxelorException {
 	
-		Context context = request.getContext();
-		StockMove sm = null;
+		StockMove sm = request.getContext().asType(StockMove.class);
 		
 		this.logger.debug("Num StockMove est {}", context.get("id"));
 		
 		if(context.get("id") != null) {
-			Long stockMoveId = (Long) request.getContext().get("id");
-			sm = Beans.get(StockMoveRepository.class).find(stockMoveId);
+			sm = Beans.get(StockMoveRepository.class).find(sm.getId());
 			sm.setStatusSelect(5);
 		}
-		
+		response.setValues(sm);
 	}
 }
