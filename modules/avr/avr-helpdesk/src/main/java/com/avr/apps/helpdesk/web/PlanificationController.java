@@ -10,13 +10,14 @@ import com.axelor.rpc.ActionRequest;
 import com.axelor.rpc.ActionResponse;
 import com.axelor.rpc.Context;
 import com.axelor.exception.AxelorException;
+import com.axelor.apps.account.db.Invoice;
 
 public class PlanificationController {
 
+	private final Logger logger = LoggerFactory.getLogger(InvoiceService.class);
+
 	public void prepared(ActionRequest request, ActionResponse response) throws AxelorException {
-		
-		private final Logger logger = LoggerFactory.getLogger(InvoiceService.class);
-		
+	
 		Context context = request.getContext();
 		StockMove sm = null;
 		
