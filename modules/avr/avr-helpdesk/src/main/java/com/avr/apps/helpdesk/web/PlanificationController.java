@@ -21,9 +21,9 @@ public class PlanificationController {
 	
 		StockMove sm = request.getContext().asType(StockMove.class);
 		
-		this.logger.debug("Num StockMove est {}", context.get("id"));
+		this.logger.debug("Num StockMove est {}", sm.getId());
 		
-		if(context.get("id") != null) {
+		if(sm.getId() != null) {
 			sm = Beans.get(StockMoveRepository.class).find(sm.getId());
 			sm.setStatusSelect(5);
 		}
