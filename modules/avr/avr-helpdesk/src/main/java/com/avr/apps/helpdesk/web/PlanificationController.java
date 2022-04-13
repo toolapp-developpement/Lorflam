@@ -27,6 +27,6 @@ public class PlanificationController {
 			sm = Beans.get(StockMoveRepository.class).find(sm.getId());
 			sm.setStatusSelect(5);
 		}
-		response.setValues(sm);
+		response.setValues("stockMove", sm);
 	}
 }
