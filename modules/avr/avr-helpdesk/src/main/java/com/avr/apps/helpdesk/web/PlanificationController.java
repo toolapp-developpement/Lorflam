@@ -12,8 +12,13 @@ import com.axelor.exception.AxelorException;
 public class PlanificationController {
 
 	public void prepared(ActionRequest request, ActionResponse response) throws AxelorException {
+		
+		private final Logger logger = LoggerFactory.getLogger(InvoiceService.class);
+		
 		Context context = request.getContext();
 		StockMove sm = null;
+		
+		this.logger.debug("Num StockMove est {}", context.get("id"));
 		
 		if(context.get("id") != null) {
 			Long stockMoveId = (Long) request.getContext().get("id");
