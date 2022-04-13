@@ -10,11 +10,11 @@ import com.axelor.rpc.ActionRequest;
 import com.axelor.rpc.ActionResponse;
 import com.axelor.rpc.Context;
 import com.axelor.exception.AxelorException;
-import com.axelor.apps.account.db.Invoice;
+import com.axelor.apps.account.service.invoice.generator.InvoiceGenerator;
 
 public class PlanificationController {
 
-	private final Logger logger = LoggerFactory.getLogger(InvoiceService.class);
+	private final Logger logger = LoggerFactory.getLogger(InvoiceGenerator.class);
 
 	public void prepared(ActionRequest request, ActionResponse response) throws AxelorException {
 	
