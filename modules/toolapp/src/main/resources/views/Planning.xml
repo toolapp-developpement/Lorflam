@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object-views
+     xmlns="http://axelor.com/xml/ns/object-views"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
+
+     <dashboard
+          title="Planning"
+          name="tdb.planning.dashboard">
+          <dashlet
+               action="dashlet.planning.orderLines"
+               height="400"
+               colSpan="12"
+               canSearch="true" />
+          <dashlet
+               action="dashlet.planning.stockMoveLines"
+               height="400"
+               colSpan="12"
+               canSearch="true" />
+          <dashlet
+               action="dashlet.planning.productionOrders"
+               height="400"
+               colSpan="12"
+               canSearch="true" />
+          <dashlet
+               action="dashlet.planning.custMoveLines"
+               height="400"
+               colSpan="12"
+               canSearch="true" />
+     </dashboard>
+
+     <action-view
+          name="dashlet.planning.orderLines"
+          model="com.axelor.apps.sale.db.SaleOrderLine"
+          title="ETAPE 1 SUR 4 : Disponibilité des lignes de commandes">
+          <view
+               name="planningOrderLines.grid"
+               type="grid" />
+          <view
+               name="sale-order-line-form"
+               type="form" />
+          <view-param
+               name="limit"
+               value="1000" />
+          <domain>self.estimatedDelivDate IS NOT NULL and self.saleOrder.statusSelect=3</domain>
+     </action-view>
+
+     <action-view
+          name="dashlet.planning.stockMoveLines"
+          model="com.axelor.apps.stock.db.StockMoveLine"
+          title="ETAPE 2 SUR 4 : Disponibilité des lignes de commandes et OF à préparer">
+          <view
+               name="planningStockMoveLines.grid"
+               type="grid" />
+          <view
+               name="stock-move-line-all-form"
+               type="form" />
+          <view-param
+               name="limit"
+               value="1000" />
+          <domain>self.stockMove.statusSelect=2 AND self.stockMove.origin>='B'</domain>
+     </action-view>
+
+     <action-view
+          name="dashlet.planning.productionOrders"
+          model="com.axelor.apps.production.db.ManufOrder"
+          title="ETAPE 3 SUR 4 : Liste des ordres de fabrication (en cours)">
+          <view
+               name="planningManufOrder.grid"
+               type="grid" />
+          <view
+               name="manuf-order-form"
+               type="form" />
+          <view-param
+               name="limit"
+               value="1000" />
+          <domain>self.statusSelect=3 OR self.statusSelect=4</domain>
+     </action-view>
+
+     <action-view
+          name="dashlet.planning.custMoveLines"
+          model="com.axelor.apps.stock.db.StockMove"
+          title="ETAPE 4 SUR 4 : BL préparés et à préparer">
+          <view
+               name="planningCustMoveLines"
+               type="grid" />
+          <view
+               name="stock-move-calendar"
+               type="calendar" />
+          <view
+               name="stock-move-form"
+               type="form" />
+          <view-param
+               name="limit"
+               value="3000" />
+          <view-param
+               name="forceTitle"
+               value="true" />
+          <view-param
+               name="search-filters"
+               value="customer-deliveries-filters" />
+          <domain> self.origin>='B' AND self.statusSelect=2 OR self.statusSelect=5 AND self.typeSelect = :_typeSelect AND self.isReversion = FALSE </domain>
+          <context
+               name="_typeSelect"
+               expr="eval: __repo__(StockMove).TYPE_OUTGOING" />
+          <context
+               name="_isReversion"
+               expr="eval: false" />
+     </action-view>
+
+
+</object-views>

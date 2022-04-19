@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object-views
+     xmlns="http://axelor.com/xml/ns/object-views"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
+
+     <form
+          name="stock-move-form"
+          title="Stock move"
+          id="custom-stock-move-form"
+          model="com.axelor.apps.stock.db.StockMove"
+          extension="true">
+          <extend target="//button[@name='realizeBtn']">
+               <replace>
+                    <button
+                         name="realizeBtn"
+                         title="Realize"
+                         showIf="statusSelect == 5"
+                         icon="fa-check"
+                         prompt="Are you sure you want to realize this stock move?"
+                         onClick="action-group-stock-stockmove-realize-click" />
+               </replace>
+          </extend>
+          <extend target="//button[@name='cancelBtn']">
+               <replace>
+                    <button
+                         name="cancelBtn"
+                         title="Cancel"
+                         showIf="id != null &amp;&amp; statusSelect > 1"
+                         css="btn-danger"
+                         icon="fa-times-circle"
+                         onClick="action-group-stock-stockmove-cancel-click" />
+               </replace>
+          </extend>
+     </form>
+
+</object-views>

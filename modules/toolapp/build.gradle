@@ -1,0 +1,14 @@
+apply plugin: "com.axelor.app-module"
+
+apply {
+	version = "1.0"
+}
+
+axelor {
+	title "Personalisation Lorflam"
+	description "Champs spécifique"
+}
+
+dependencies {
+	api project(":modules:axelor-production")
+}

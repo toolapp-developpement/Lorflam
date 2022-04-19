@@ -1,33 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <object-views xmlns="http://axelor.com/xml/ns/object-views"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views
   http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
 
-    <menuitem name="menu-avr-helpdesk-config-guarantee"             parent="helpdesk-config" title="Garanties" action="guarantee.open"/>
-    <menuitem name="menu-avr-helpdesk-config-rate-to-apply"         parent="helpdesk-config" title="Tarifs" action="rate-to-apply.open"/>
-    <menuitem name="menu-avr-helpdesk-config-technical-visit"       parent="helpdesk-config" title="Visites techniques" action="technical-visit.open"/>
-    <menuitem name="menu-avr-helpdesk-config-yard"                  parent="helpdesk-config" title="Chantiers" action="yard.open"/>
-    <menuitem name="menu-avr-helpdesk-config-ticket-problem-source" parent="helpdesk-config" title="Origines des problèmes" action="ticket-problem-source.open"/>
+  <menuitem name="menu-avr-helpdesk-config-guarantee" parent="helpdesk-config"
+    title="Garanties" action="guarantee.open"/>
+  <menuitem name="menu-avr-helpdesk-config-rate-to-apply" parent="helpdesk-config"
+    title="Tarifs" action="rate-to-apply.open"/>
+  <menuitem name="menu-avr-helpdesk-config-technical-visit" parent="helpdesk-config"
+    title="Visites techniques" action="technical-visit.open"/>
+  <menuitem name="menu-avr-helpdesk-config-yard" parent="helpdesk-config" title="Chantiers"
+    action="yard.open"/>
+  <menuitem name="menu-avr-helpdesk-config-ticket-problem-source" parent="helpdesk-config"
+    title="Origines des problèmes" action="ticket-problem-source.open"/>
 
-    <action-view name="guarantee.open" title="Garanties" model="com.avr.apps.helpdesk.db.Guarantee">
-        <view type="grid" name="guarantee-grid"/>
-        <view type="form" name="guarantee-form"/>
-    </action-view>
-    <action-view name="rate-to-apply.open" title="Tarifs" model="com.avr.apps.helpdesk.db.RateToApply">
-        <view type="grid" name="rate-to-apply-grid"/>
-        <view type="form" name="rate-to-apply-form"/>
-    </action-view>
-    <action-view name="technical-visit.open" title="Visites techniques" model="com.avr.apps.helpdesk.db.TechnicalVisit">
-        <view type="grid" name="technical-visit-grid"/>
-        <view type="form" name="technical-visit-form"/>
-    </action-view>
-    <action-view name="yard.open" title="Chantiers" model="com.avr.apps.helpdesk.db.Yard">
-        <view type="grid" name="yard-grid"/>
-        <view type="form" name="yard-form"/>
-    </action-view>
-    <action-view name="ticket-problem-source.open" title="Origines des problèmes" model="com.avr.apps.helpdesk.db.TicketProblemSource">
-        <view type="grid" name="ticket-problem-source-grid"/>
-        <view type="form" name="ticket-problem-source-form"/>
-    </action-view>
+  <action-view name="guarantee.open" title="Garanties"
+    model="com.avr.apps.helpdesk.db.Guarantee">
+    <view type="grid" name="guarantee-grid"/>
+    <view type="form" name="guarantee-form"/>
+  </action-view>
+  <action-view name="rate-to-apply.open" title="Tarifs"
+    model="com.avr.apps.helpdesk.db.RateToApply">
+    <view type="grid" name="rate-to-apply-grid"/>
+    <view type="form" name="rate-to-apply-form"/>
+  </action-view>
+  <action-view name="technical-visit.open" title="Visites techniques"
+    model="com.avr.apps.helpdesk.db.TechnicalVisit">
+    <view type="grid" name="technical-visit-grid"/>
+    <view type="form" name="technical-visit-form"/>
+  </action-view>
+  <action-view name="yard.open" title="Chantiers" model="com.avr.apps.helpdesk.db.Yard">
+    <view type="grid" name="yard-grid"/>
+    <view type="form" name="yard-form"/>
+  </action-view>
+  <action-view name="ticket-problem-source.open" title="Origines des problèmes"
+    model="com.avr.apps.helpdesk.db.TicketProblemSource">
+    <view type="grid" name="ticket-problem-source-grid"/>
+    <view type="form" name="ticket-problem-source-form"/>
+  </action-view>
 </object-views>
