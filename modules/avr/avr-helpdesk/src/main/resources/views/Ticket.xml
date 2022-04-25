@@ -99,7 +99,7 @@
                 <panel name="linkPanel" title="Liens" colSpan="12">
                     <panel-related field="stockMoveList" name="stockMoveListPanel" canView="true" canNew="true" canEdit="true" canRemove="true" canSelect="true" title="Bon de retour / Bon de livraison" form-view="stock-move-form" grid-view="stock-move-grid" colSpan="12"/>
                     <panel-related field="saleOrderList" name="saleOrderListPanel" onNew="save" canView="true" canNew="true" canEdit="true" canSelect="true" canRemove="true" title="Commande client" form-view="sale-order-form" grid-view="sale-order-grid" colSpan="12"/>
-                    <panel-related field="purchaseOrderList" name="purchaseOrderListPanel" canView="true" canNew="true" canEdit="true" canSelect="true" canRemove="true" title="Commande fournisseur" form-view="purchase-order-form" grid-view="purchase-order-grid" colSpan="12"/>
+                    <panel-related field="purchaseRequestList" name="purchaseRequestListPanel" canView="true" canNew="true" canEdit="true" canSelect="true" canRemove="true" title="Demande d'achat" form-view="purchase-request-form" grid-view="purchase-request-custom-grid" colSpan="12"/>
                 </panel>
             </insert>
         </extend>

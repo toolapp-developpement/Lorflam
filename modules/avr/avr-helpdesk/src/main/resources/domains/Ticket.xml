@@ -21,7 +21,7 @@
 
         <one-to-many name="stockMoveList" ref="com.axelor.apps.stock.db.StockMove" title="Bon de retour / Bon de livraison" mappedBy="ticket" />
         <one-to-many name="saleOrderList" ref="com.axelor.apps.sale.db.SaleOrder" title="Commande client" mappedBy="ticket" />
-        <one-to-many name="purchaseOrderList" ref="com.axelor.apps.purchase.db.PurchaseOrder" title="Commande fournisseur" mappedBy="ticket" />
+        <one-to-many name="purchaseRequestList" ref="com.axelor.apps.purchase.db.PurchaseRequest" title="Demande d'achat" mappedBy="ticket" />
 
         <many-to-one name="metafile" ref="com.axelor.meta.db.MetaFile" title="Facture PDF" required="true"/>
     </entity>

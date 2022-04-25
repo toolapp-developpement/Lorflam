@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
+
+    <grid name="purchase-request-custom-grid" title="Purchase request"
+          model="com.axelor.apps.purchase.db.PurchaseRequest">
+        <toolbar>
+            <button name="generatePoBtn" title="Generate PO"
+                    onClick="action-purchase-request-open-generate-po-wizard"/>
+        </toolbar>
+        <hilite if="statusSelect == 2" color="info"/>
+        <hilite if="statusSelect == 3" color="primary"/>
+        <hilite if="statusSelect == 4" color="success"/>
+        <hilite if="statusSelect == 5" color="warning"/>
+        <hilite if="statusSelect == 6" color="danger"/>
+        <field name="company"/>
+        <field name="purchaseRequestSeq"/>
+        <field name="supplierUser"/>
+        <field name="stockLocation"/>
+        <field name="createdOn"/>
+        <field name="purchaseOrder.purchaseOrderSeq" title="Séquence de la commande fournisseur" />
+        <field name="purchaseOrder.statusSelect" title="Statut de la commande fournisseur" />
+        <field name="createdBy"/>
+        <field name="statusSelect"/>
+    </grid>
+
+
+</object-views>
