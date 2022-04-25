@@ -1,6 +1,6 @@
 package com.avr.apps.helpdesk.service.impl;
 
-import com.avr.apps.helpdesk.service.PurchaseOrderCreationWithYardService;
+import com.avr.apps.helpdesk.service.PurchaseOrderCreationService;
 import com.axelor.apps.account.db.repo.AccountConfigRepository;
 import com.axelor.apps.base.db.Partner;
 import com.axelor.apps.base.db.repo.PriceListRepository;
@@ -37,14 +37,14 @@ public class SaleOrderCreatePurchaseServiceImpl extends SaleOrderPurchaseService
 
     private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    protected final PurchaseOrderCreationWithYardService purchaseOrderCreationWithYardService;
+    protected final PurchaseOrderCreationService purchaseOrderCreationWithYardService;
 
     @Inject
     public SaleOrderCreatePurchaseServiceImpl(
         PurchaseOrderSupplychainService purchaseOrderSupplychainService,
         PurchaseOrderLineServiceSupplyChain purchaseOrderLineServiceSupplychain,
         PurchaseOrderService purchaseOrderService,
-        PurchaseOrderCreationWithYardService purchaseOrderCreationWithYardService
+        PurchaseOrderCreationService purchaseOrderCreationWithYardService
     ) {
         super(purchaseOrderSupplychainService, purchaseOrderLineServiceSupplychain, purchaseOrderService);
         this.purchaseOrderCreationWithYardService = purchaseOrderCreationWithYardService;
