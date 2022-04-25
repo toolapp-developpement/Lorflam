@@ -93,6 +93,8 @@ public class StockMoveCreateServiceImpl extends StockMoveServiceImpl implements 
         stockMove.setNote(note);
         stockMove.setIsIspmRequired(stockMoveToolService.getDefaultISPM(clientPartner, toAddress));
 
+        stockMove.setYard(yard);
+
         return stockMove;
     }
 

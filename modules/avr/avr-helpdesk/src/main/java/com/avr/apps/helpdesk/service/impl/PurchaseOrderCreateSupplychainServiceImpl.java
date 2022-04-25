@@ -20,12 +20,11 @@ import com.axelor.auth.db.User;
 import com.axelor.exception.AxelorException;
 import com.axelor.inject.Beans;
 import com.google.inject.Inject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.lang.invoke.MethodHandles;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author David
@@ -65,40 +64,41 @@ public class PurchaseOrderCreateSupplychainServiceImpl
 
     @Override
     public PurchaseOrder createPurchaseOrder(
-            User buyerUser,
-            Company company,
-            Partner contactPartner,
-            Currency currency,
-            LocalDate deliveryDate,
-            String internalReference,
-            String externalReference,
-            StockLocation stockLocation,
-            LocalDate orderDate,
-            PriceList priceList,
-            Partner supplierPartner,
-            TradingName tradingName,
-            Yard yard)
-            throws AxelorException {
-
+        User buyerUser,
+        Company company,
+        Partner contactPartner,
+        Currency currency,
+        LocalDate deliveryDate,
+        String internalReference,
+        String externalReference,
+        StockLocation stockLocation,
+        LocalDate orderDate,
+        PriceList priceList,
+        Partner supplierPartner,
+        TradingName tradingName,
+        Yard yard
+    ) throws AxelorException {
         logger.debug(
-                "Création d'une commande fournisseur : Société = {},  Reference externe = {}, Fournisseur = {}",
-                company.getName(),
-                externalReference,
-                supplierPartner.getFullName());
+            "Création d'une commande fournisseur : Société = {},  Reference externe = {}, Fournisseur = {}",
+            company.getName(),
+            externalReference,
+            supplierPartner.getFullName()
+        );
 
-        PurchaseOrder purchaseOrder =
-                createPurchaseOrder(
-                        buyerUser,
-                        company,
-                        contactPartner,
-                        currency,
-                        deliveryDate,
-                        internalReference,
-                        externalReference,
-                        orderDate,
-                        priceList,
-                        supplierPartner,
-                        tradingName);
+        PurchaseOrder purchaseOrder = createPurchaseOrder(
+            buyerUser,
+            company,
+            contactPartner,
+            currency,
+            deliveryDate,
+            internalReference,
+            externalReference,
+            orderDate,
+            priceList,
+            supplierPartner,
+            tradingName,
+            yard
+        );
 
         purchaseOrder.setStockLocation(stockLocation);
 
@@ -106,13 +106,11 @@ public class PurchaseOrderCreateSupplychainServiceImpl
         purchaseOrder.setPaymentCondition(supplierPartner.getPaymentCondition());
 
         if (purchaseOrder.getPaymentMode() == null) {
-            purchaseOrder.setPaymentMode(
-                    this.accountConfigService.getAccountConfig(company).getOutPaymentMode());
+            purchaseOrder.setPaymentMode(this.accountConfigService.getAccountConfig(company).getOutPaymentMode());
         }
 
         if (purchaseOrder.getPaymentCondition() == null) {
-            purchaseOrder.setPaymentCondition(
-                    this.accountConfigService.getAccountConfig(company).getDefPaymentCondition());
+            purchaseOrder.setPaymentCondition(this.accountConfigService.getAccountConfig(company).getDefPaymentCondition());
         }
 
         purchaseOrder.setTradingName(tradingName);
@@ -135,7 +133,6 @@ public class PurchaseOrderCreateSupplychainServiceImpl
         TradingName tradingName,
         Yard yard
     ) throws AxelorException {
-
         logger.debug(
             "Création d'une commande fournisseur : Société = {},  Reference externe = {}, Fournisseur = {}",
             new Object[] { company.getName(), externalReference, supplierPartner.getFullName() }
@@ -159,6 +156,8 @@ public class PurchaseOrderCreateSupplychainServiceImpl
         purchaseOrder.setPurchaseOrderSeq(this.getSequence(company));
         purchaseOrder.setStatusSelect(PurchaseOrderRepository.STATUS_DRAFT);
         purchaseOrder.setSupplierPartner(supplierPartner);
+
+        purchaseOrder.setYard(yard);
 
         return purchaseOrder;
     }
