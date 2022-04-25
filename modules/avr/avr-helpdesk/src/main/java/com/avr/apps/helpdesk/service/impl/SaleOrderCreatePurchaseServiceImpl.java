@@ -6,6 +6,7 @@ import com.axelor.apps.base.db.Partner;
 import com.axelor.apps.base.db.repo.PriceListRepository;
 import com.axelor.apps.base.service.PartnerPriceListService;
 import com.axelor.apps.base.service.app.AppBaseService;
+import com.axelor.apps.businessproject.service.ProjectPurchaseServiceImpl;
 import com.axelor.apps.purchase.db.PurchaseOrder;
 import com.axelor.apps.purchase.db.repo.PurchaseOrderRepository;
 import com.axelor.apps.purchase.service.PurchaseOrderService;
@@ -33,7 +34,7 @@ import org.slf4j.LoggerFactory;
  * @time 11:32
  * @Update 25/04/2022
  */
-public class SaleOrderCreatePurchaseServiceImpl extends SaleOrderPurchaseServiceImpl {
+public class SaleOrderCreatePurchaseServiceImpl extends ProjectPurchaseServiceImpl {
 
     private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
