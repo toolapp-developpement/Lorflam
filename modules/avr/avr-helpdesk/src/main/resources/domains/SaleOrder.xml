@@ -7,5 +7,6 @@
 
     <entity name="SaleOrder" lang="java">
         <many-to-one name="ticket" ref="com.axelor.apps.helpdesk.db.Ticket" title="Ticket"/>
+        <many-to-one name="yard" ref="com.avr.apps.helpdesk.db.Yard" title="Chantier" />
     </entity>
 </domain-models>
