@@ -28,18 +28,18 @@ import java.time.LocalDate;
  */
 public class StockMoveCreateServiceImpl extends StockMoveServiceImpl implements StockMoveCreateService {
 
-    protected StockMoveToolService stockMoveToolService;
+    protected final StockMoveToolService stockMoveToolService;
 
     @Inject
     public StockMoveCreateServiceImpl(
-        StockMoveLineService stockMoveLineService,
-        StockMoveToolService stockMoveToolService,
-        StockMoveLineRepository stockMoveLineRepository,
-        AppBaseService appBaseService,
-        StockMoveRepository stockMoveRepository,
-        PartnerProductQualityRatingService partnerProductQualityRatingService,
-        ProductRepository productRepository
-    ) {
+            StockMoveLineService stockMoveLineService,
+            StockMoveToolService stockMoveToolService,
+            StockMoveLineRepository stockMoveLineRepository,
+            AppBaseService appBaseService,
+            StockMoveRepository stockMoveRepository,
+            PartnerProductQualityRatingService partnerProductQualityRatingService,
+            ProductRepository productRepository,
+            StockMoveToolService stockMoveToolService1) {
         super(
             stockMoveLineService,
             stockMoveToolService,
@@ -49,6 +49,7 @@ public class StockMoveCreateServiceImpl extends StockMoveServiceImpl implements 
             partnerProductQualityRatingService,
             productRepository
         );
+        this.stockMoveToolService = stockMoveToolService1;
     }
 
     @Override
