@@ -20,6 +20,20 @@
     <form id="avr-helpdesk-ticket-form" model="com.axelor.apps.helpdesk.db.Ticket" title="Ticket" name="ticket-form" extension="true">
         <extend target="/">
             <attribute name="onSave" value="save,action-method-avr-helpdesk-save-seq"/>
+            <attribute name="onLoad" value="action-ticket-group-timer-process,action-stock-location-line-record-total-quantities"/>
+            <insert position="inside">
+                <menubar>
+                    <menu name="ticketToolsMenu" title="Tools" showTitle="true" icon="fa-wrench">
+                        <item name="sendEmailItem" title="Send email" hideIf="customer == null" action="save,action-send-by-email-with-template"/>
+                    </menu>
+                </menubar>
+            </insert>
+        </extend>
+
+        <extend target="//field[@name='statusSelect']">
+            <insert position="after">
+                <button name="$realQtyBtn" title="Real qty" colSpan="3" icon="fa-building-o" onClick="action-stock-move-line-product-default-realized-ticket" widget="info-button" showIf="product"/>
+            </insert>
         </extend>
 
         <extend target="//field[@name='mailSubject']">
@@ -49,7 +63,7 @@
         <extend target="//field[@name='customer']">
             <insert position="after">
                 <field name="metafile" colSpan="6" widget="binary-link"/>
-                <field name="product" colSpan="6" form-view="product-form" grid-view="product-grid"/>
+                <field name="product" colSpan="6" form-view="product-form" grid-view="product-grid" onChange="action-stock-location-line-record-total-quantities"/>
                 <field name="ticketProblemSource" colSpan="6" form-view="ticket-problem-source-form" grid-view="ticket-problem-source-grid"/>
                 <field name="yard" colSpan="6" form-view="yard-form" grid-view="yard-grid"/>
                 <field name="trackingNumber" colSpan="6" form-view="tracking-number-form" grid-view="tracking-number-grid"/>
@@ -94,5 +108,14 @@
     <action-method name="action-method-avr-helpdesk-save-seq">
         <call class="com.avr.apps.helpdesk.web.TicketController" method="joinSaleOrderAndStockMoveBy"/>
     </action-method>
+
+    <action-view name="action-stock-move-line-product-default-realized-ticket"
+                 title="${product.fullName} real st. move" model="com.axelor.apps.stock.db.StockMoveLine">
+        <view type="grid" name="stock-move-line-all-grid"/>
+        <view type="form" name="stock-move-line-all-form"/>
+        <domain>self.stockMove.statusSelect = 3 and (self.stockMove.fromStockLocation.typeSelect = 1 or
+            self.stockMove.toStockLocation.typeSelect = 1) and self.product.id = :_id</domain>
+        <context name="_id" expr="eval: product.id" />
+    </action-view>
 
 </object-views>
