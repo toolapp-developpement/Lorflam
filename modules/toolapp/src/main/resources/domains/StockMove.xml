@@ -14,7 +14,4 @@
           <string name="custSaleOrderSeq" title="Commande client"/>
      </entity>
 
-
-
-
 </domain-models>

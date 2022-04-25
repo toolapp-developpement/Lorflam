@@ -118,4 +118,13 @@
                icon="fa-check"
                onClick="action-stock-move-group-prepare" />
      </grid>
+     
+     <action-group name="action-stock-move-group-prepare">
+          <action name="action-stock-move-method-prepare"/>
+     </action-group>
+  
+     <action-method name="action-stock-move-method-prepare" >
+          <call method="prepared" class="bzh.toolapp.apps.specifique.web.PlanificationController" />
+     </action-method>
+     
 </object-views>

@@ -6,7 +6,7 @@ import com.axelor.exception.AxelorException;
 
 public interface SpecifiqueService {
 
-	public void prepared(StockMove stockMove) throws AxelorException;
+	public Boolean prepared(StockMove stockMove) throws AxelorException;
 
 	public void getCommandeClient(StockMove sm, StockMoveLine sml) throws AxelorException;
 

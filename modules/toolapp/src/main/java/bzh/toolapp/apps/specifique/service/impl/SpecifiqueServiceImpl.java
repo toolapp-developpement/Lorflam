@@ -11,16 +11,20 @@ import bzh.toolapp.apps.specifique.service.SpecifiqueService;
 
 public class SpecifiqueServiceImpl implements SpecifiqueService {
 	protected StockMoveRepository stockMoveRepository;
+	protected final SpecifiqueService specifiqueService;
 
 	@Inject
-	public SpecifiqueServiceImpl(StockMoveRepository smr) {
+	public SpecifiqueServiceImpl(StockMoveRepository smr, SpecifiqueService sp) {
 		this.stockMoveRepository = smr;
+		this.specifiqueService = sp;
 	}
 
 	@Override
-	public void prepared(StockMove stockMove) throws AxelorException {
+	public Boolean prepared(StockMove stockMove) throws AxelorException {
 		stockMove.setStatusSelect(5);
 		stockMoveRepository.save(stockMove);
+		Boolean retour = true;
+		return retour;
 	}
 
 	@Override
