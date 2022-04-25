@@ -3,6 +3,7 @@ package com.avr.apps.helpdesk.service.impl;
 import com.avr.apps.helpdesk.service.TicketService;
 import com.axelor.apps.base.service.administration.SequenceService;
 import com.axelor.apps.purchase.db.PurchaseOrder;
+import com.axelor.apps.purchase.db.PurchaseRequest;
 import com.axelor.apps.sale.db.SaleOrder;
 import com.axelor.apps.stock.db.StockMove;
 import com.axelor.db.Model;
@@ -42,21 +43,19 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public List<PurchaseOrder> computedSequencePurchaseOrderIfNotExist(List<PurchaseOrder> purchaseOrderList) throws AxelorException {
-        computedSequenceIfNotExist(purchaseOrderList, it -> it.getPurchaseOrderSeq() == null, it -> it.setPurchaseOrderSeq(sequenceService.getDraftSequenceNumber(it)));
-        return purchaseOrderList;
+    public List<PurchaseRequest> computedSequencePurchaseRequestIfNotExist(List<PurchaseRequest> purchaseRequestList) throws AxelorException {
+        computedSequenceIfNotExist(purchaseRequestList, it -> it.getPurchaseRequestSeq() == null, it -> it.setPurchaseRequestSeq(sequenceService.getDraftSequenceNumber(it)));
+        return purchaseRequestList;
     }
 
     @Override
-    public <T extends Model> List<T> computedSequenceIfNotExist(List<T> modelList, Function<T, Boolean> condition, ConsumerThrowable<T> sequenceMethod) throws AxelorException {
-        if (modelList == null) return null;
-
+    public <T extends Model> void computedSequenceIfNotExist(List<T> modelList, Function<T, Boolean> condition, ConsumerThrowable<T> sequenceMethod) throws AxelorException {
+        if (modelList == null) return;
         for (T bean : modelList) {
             if(condition.apply(bean)) {
                 sequenceMethod.accept(bean);
             }
         }
-        return modelList;
     }
 
 }

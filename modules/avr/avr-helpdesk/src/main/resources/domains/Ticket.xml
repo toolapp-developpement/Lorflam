@@ -5,7 +5,6 @@
     <entity name="Ticket" lang="java">
         <date name="invoiceDate" title="Date facturation"/>
         <string name="commentText" title="Commentaire" multiline="true" large="true"/>
-        <string name="reference" title="Alerte qualité"/>
 
         <many-to-one name="yard" ref="com.avr.apps.helpdesk.db.Yard" title="Référence chantier" required="true"/>
         <many-to-one name="guarantee" ref="com.avr.apps.helpdesk.db.Guarantee" title="Garantie" />

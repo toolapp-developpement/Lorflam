@@ -16,7 +16,6 @@ import com.axelor.apps.sale.db.SaleOrderLine;
 import com.axelor.apps.stock.service.StockLocationService;
 import com.axelor.apps.supplychain.service.PurchaseOrderLineServiceSupplyChain;
 import com.axelor.apps.supplychain.service.PurchaseOrderSupplychainService;
-import com.axelor.apps.supplychain.service.SaleOrderPurchaseServiceImpl;
 import com.axelor.auth.AuthUtils;
 import com.axelor.exception.AxelorException;
 import com.axelor.inject.Beans;
