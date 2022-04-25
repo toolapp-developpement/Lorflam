@@ -1,7 +1,7 @@
 package com.avr.apps.helpdesk.service.impl;
 
 import com.avr.apps.helpdesk.db.Yard;
-import com.avr.apps.helpdesk.service.PurchaseOrderCreationWithYardService;
+import com.avr.apps.helpdesk.service.PurchaseOrderCreationService;
 import com.axelor.apps.account.service.app.AppAccountService;
 import com.axelor.apps.account.service.config.AccountConfigService;
 import com.axelor.apps.base.db.*;
@@ -36,7 +36,7 @@ import java.util.ArrayList;
  */
 public class PurchaseOrderCreateSupplychainServiceImpl
     extends PurchaseOrderServiceSupplychainImpl
-    implements PurchaseOrderCreationWithYardService {
+    implements PurchaseOrderCreationService {
 
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 

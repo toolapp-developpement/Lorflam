@@ -16,7 +16,7 @@ import java.time.LocalDate;
  * @time 11:29
  * @Update 25/04/2022
  */
-public interface PurchaseOrderCreationWithYardService {
+public interface PurchaseOrderCreationService {
     PurchaseOrder createPurchaseOrder(
             User buyerUser,
             Company company,
