@@ -20,6 +20,20 @@
     <form id="avr-helpdesk-ticket-form" model="com.axelor.apps.helpdesk.db.Ticket" title="Ticket" name="ticket-form" extension="true">
         <extend target="/">
             <attribute name="onSave" value="save,action-method-avr-helpdesk-save-seq"/>
+            <attribute name="onLoad" value="action-ticket-group-timer-process,action-stock-location-line-record-total-quantities"/>
+            <insert position="inside">
+                <menubar>
+                    <menu name="ticketToolsMenu" title="Tools" showTitle="true" icon="fa-wrench">
+                        <item name="sendEmailItem" title="Send email" hideIf="customer == null" action="save,action-send-by-email-with-template"/>
+                    </menu>
+                </menubar>
+            </insert>
+        </extend>
+
+        <extend target="//field[@name='statusSelect']">
+            <insert position="after">
+                <button name="$realQtyBtn" title="Real qty" colSpan="3" icon="fa-building-o" onClick="action-stock-move-line-product-default-realized-ticket" widget="info-button" showIf="product"/>
+            </insert>
         </extend>
 
         <extend target="//field[@name='mailSubject']">
@@ -49,12 +63,11 @@
         <extend target="//field[@name='customer']">
             <insert position="after">
                 <field name="metafile" colSpan="6" widget="binary-link"/>
-                <field name="product" colSpan="6" form-view="product-form" grid-view="product-grid"/>
+                <field name="product" colSpan="6" form-view="product-form" grid-view="product-grid" onChange="action-stock-location-line-record-total-quantities, action-empty-all-link-related-to-product-in-ticket"/>
                 <field name="ticketProblemSource" colSpan="6" form-view="ticket-problem-source-form" grid-view="ticket-problem-source-grid"/>
                 <field name="yard" colSpan="6" form-view="yard-form" grid-view="yard-grid"/>
                 <field name="trackingNumber" colSpan="6" form-view="tracking-number-form" grid-view="tracking-number-grid"/>
                 <field name="email" colSpan="6" form-view="email-address-form" grid-view="email-address-grid"/>
-                <field name="reference" colSpan="6" />
             </insert>
         </extend>
 
@@ -85,7 +98,8 @@
                 <panel name="linkPanel" title="Liens" colSpan="12">
                     <panel-related field="stockMoveList" name="stockMoveListPanel" canView="true" canNew="true" canEdit="true" canRemove="true" canSelect="true" title="Bon de retour / Bon de livraison" form-view="stock-move-form" grid-view="stock-move-grid" colSpan="12"/>
                     <panel-related field="saleOrderList" name="saleOrderListPanel" onNew="save" canView="true" canNew="true" canEdit="true" canSelect="true" canRemove="true" title="Commande client" form-view="sale-order-form" grid-view="sale-order-grid" colSpan="12"/>
-                    <panel-related field="purchaseOrderList" name="purchaseOrderListPanel" canView="true" canNew="true" canEdit="true" canSelect="true" canRemove="true" title="Commande fournisseur" form-view="purchase-order-form" grid-view="purchase-order-grid" colSpan="12"/>
+                    <panel-related field="purchaseRequestList" name="purchaseRequestListPanel" canView="true" canNew="true" canEdit="true" canSelect="true" canRemove="true" title="Demande d'achat" form-view="purchase-request-form" grid-view="purchase-request-custom-grid" colSpan="12"/>
+                    <panel-dashlet action="action-avr-ticket-view-get-alert-quality-by-product" colSpan="12" />
                 </panel>
             </insert>
         </extend>
@@ -94,5 +108,27 @@
     <action-method name="action-method-avr-helpdesk-save-seq">
         <call class="com.avr.apps.helpdesk.web.TicketController" method="joinSaleOrderAndStockMoveBy"/>
     </action-method>
+
+    <action-record name="action-empty-all-link-related-to-product-in-ticket" model="com.axelor.apps.helpdesk.db.Ticket">
+        <field name="stockMoveList" expr="eval: []"/>
+        <field name="saleOrderList" expr="eval: []"/>
+        <field name="purchaseRequestList" expr="eval: []"/>
+    </action-record>
+
+    <action-view name="action-avr-ticket-view-get-alert-quality-by-product" title="Quality alert" model="com.axelor.apps.quality.db.QualityAlert">
+        <view type="grid" name="quality-alert-grid"/>
+        <view type="form" name="quality-alert-form"/>
+        <domain>self.product.id = :_productId</domain>
+        <context name="_productId" expr="eval: product.id" />
+    </action-view>
+
+    <action-view name="action-stock-move-line-product-default-realized-ticket"
+                 title="${product.fullName} real st. move" model="com.axelor.apps.stock.db.StockMoveLine">
+        <view type="grid" name="stock-move-line-all-grid"/>
+        <view type="form" name="stock-move-line-all-form"/>
+        <domain>self.stockMove.statusSelect = 3 and (self.stockMove.fromStockLocation.typeSelect = 1 or
+            self.stockMove.toStockLocation.typeSelect = 1) and self.product.id = :_id</domain>
+        <context name="_id" expr="eval: product?.id" />
+    </action-view>
 
 </object-views>
