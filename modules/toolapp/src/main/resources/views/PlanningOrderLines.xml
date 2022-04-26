@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
+  
+	<grid name="planningOrderLines.grid" title="planningOrderLines.grid" model="com.axelor.apps.sale.db.SaleOrderLine" 
+	      canNew="false" canEdit="false" canDelete="false" edit-icon="false"
+	      groupBy="estimatedDelivDate"
+	      orderBy="estimatedDelivDate,-saleOrder">
+		<field name="saleOrder.saleOrderSeq" width="100" title="Commande"/>
+		<field name="saleOrder.clientPartner" title="Client" width="280"/>
+		<field name="saleOrder.company" hidden="1"/>
+		<field name="attrs" width="80"/>
+		<field name="estimatedDelivDate" title="Date de livraison"/>
+		<field name="saleOrder.confirmationDateTime" hidden="1"/>
+		<field name="saleOrder.stockLocation" title="De" width="200"/>
+		<field name="saleOrder.toStockLocation" title="Vers" hidden="1"/>
+		<field name="product.code" width="120"/>
+		<field name="productName" title="Libellé produit" width="200"/> 
+		 
+		<field name="saleOrder.stockMoveList.createdOn" hidden="1"/> 
+		<field name="saleOrder.stockMoveList.inManufOrder" hidden="1"/> 
+		<field name="saleOrder.stockMoveList.inManufOrder.manufOrderSeq" title="OF" width="30"/> 
+		  
+		<field name="qty" aggregate="sum" x-scale="2" width="80"/>
+		<field name="deliveredQty" hidden="1" aggregate="sum" x-scale="2"/>
+		<field if="__config__.app.getApp('supplychain')?.manageStockReservation" name="reservedQty" aggregate="sum" x-scale="2" hidden="1"/>
+		<field name="unit" form-view="unit-form" grid-view="unit-grid" width="100"/>
+		<field name="priceDiscounted" title="Unit price W.T." x-scale="2" hidden="1"/>
+		<field name="saleOrder.carrierPartner" title="Transporteur" width="120">
+		</field>
+		<field if="__config__.app.isApp('supplychain')" if-module="axelor-supplychain" name="stockMoveLine.product" title="Stock Moves" readonlyIf="$isReadOnly !== false" colSpan="12" action="action-sale-order-line-view-stock-move-line" hidden="1"/>  
+		<field name="availableStatusSelect">
+			<hilite background="success" strong="true" if="availableStatusSelect == 1"/>
+			<hilite background="info" strong="true" if="availableStatusSelect == 3"/>
+			<hilite background="danger" strong="true" if="availableStatusSelect == 2"/>
+			<hilite background="warning" strong="true" if="availableStatusSelect == 4"/>
+		</field>
+	</grid>
+</object-views>
