@@ -12,7 +12,7 @@
       if="$get('stockMove.fromStockLocation.name') == 'PRODUCTION'"/>
 
     <field name="stockMove.estimatedDate" title="Date besoin" width="120" hidden="0"/>
-    <field name="stockMove.custSaleOrderSeq" title="Commande client" width="80" hidden="0"/>
+    <field name="stockMoveLine.custSaleOrderSeq" title="Commande client" width="80" hidden="0"/>
     <field name="stockMove.origin" width="80"/>
 
     <field name="saleOrderLine.saleOrder.saleOrderSeq" title="Ligne BL" width="100" hidden="0"/>
