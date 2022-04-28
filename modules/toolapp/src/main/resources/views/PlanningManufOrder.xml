@@ -1,126 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<object-views
-     xmlns="http://axelor.com/xml/ns/object-views"
-     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views
   http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
 
-     <grid
-          name="planningManufOrder.grid"
-          title="Manufacturing orders"
-          model="com.axelor.apps.production.db.ManufOrder"
-          orderBy="-manufOrderSeq"
-          edit-icon="true">
-          <toolbar>
-               <button
-                    name="printBtn"
-                    title="Print"
-                    icon="fa-print"
-                    onClick="action-manuf-order-method-print" />
-               <button
-                    name="mergeBtn"
-                    title="Merge"
-                    icon="fa-object-ungroup"
-                    onClick="action-manuf-order-group-merge" />
-          </toolbar>
-          <hilite
-               color="danger"
-               if="prioritySelect == 4" />
-          <hilite
-               color="warning"
-               if="prioritySelect == 3" />
-          <hilite
-               color="primary"
-               if="prioritySelect == 2" />
-          <hilite
-               color="info"
-               if="prioritySelect == 1" />
-          <field
-               name="prioritySelect"
-               hidden="true" />
-          <field
-               name="saleOrderSet.saleOrderSeq"
-               width="100" />
-          <field
-               name="manufOrderSeq"
-               width="100" />
-          <field
-               if="__config__.app.getApp('base').getEnableMultiCompany()"
-               name="company"
-               form-view="company-form"
-               grid-view="company-grid" />
-          <field
-               if="__config__.app.getApp('production').getManageWorkshop()"
-               name="workshopStockLocation" />
-          <field
-               name="product"
-               form-view="product-form"
-               grid-view="product-grid"
-               width="500" />
-          <field
-               name="qty"
-               x-scale="2"
-               width="100" />
-          <field
-               name="unit"
-               width="100" />
-          <field
-               name="billOfMaterial"
-               form-view="bill-of-material-form"
-               grid-view="bill-of-material-grid"
-               hidden="true" />
-          <field
-               name="prodProcess"
-               form-view="prod-process-form"
-               grid-view="prod-process-grid"
-               hidden="true" />
-          <field
-               name="outsourcing"
-               hidden="true" />
-          <field
-               name="plannedStartDateT"
-               hidden="true" />
-          <field
-               name="plannedEndDateT"
-               hidden="true" />
-          <field
-               name="realStartDateT"
-               hidden="true" />
-          <field
-               name="realEndDateT"
-               hidden="true" />
-          <field
-               name="statusSelect"
-               width="100" />
-          <button
-               name="planBtn"
-               readonlyIf="statusSelect >= 3"
-               icon="fa-calendar"
-               onClick="action-manuf-order-method-plan" />
-          <button
-               name="startBtn"
-               readonlyIf="statusSelect != 3 &amp;&amp; statusSelect != 5"
-               icon="fa-play"
-               onClick="action-manuf-order-method-start-or-resume" />
-          <button
-               name="pauseBtn"
-               readonlyIf="statusSelect != 4"
-               icon="fa-pause"
-               onClick="action-manuf-order-method-pause" />
-          <button
-               name="finishBtn"
-               readonlyIf="statusSelect != 4"
-               icon="fa-power-off"
-               onClick="action-manuf-order-group-finish" />
-          <button
-               name="cancelBtn"
-               readonlyIf="statusSelect == 2"
-               icon="fa-times-circle"
-               onClick="action-manuf-order-view-cancel" />
-          <button
-               name="printBtn"
-               title="Print"
-               icon="fa-print"
-               onClick="action-manuf-order-method-print" />
-     </grid>
+  <grid name="planningManufOrder.grid" title="Manufacturing orders"
+    model="com.axelor.apps.production.db.ManufOrder" orderBy="-manufOrderSeq" edit-icon="true">
+    <toolbar>
+      <button name="printBtn" title="Print" icon="fa-print"
+        onClick="action-manuf-order-method-print"/>
+      <button name="mergeBtn" title="Merge" icon="fa-object-ungroup"
+        onClick="action-manuf-order-group-merge"/>
+    </toolbar>
+    <hilite color="danger" if="prioritySelect == 4"/>
+    <hilite color="warning" if="prioritySelect == 3"/>
+    <hilite color="primary" if="prioritySelect == 2"/>
+    <hilite color="info" if="prioritySelect == 1"/>
+    <field name="prioritySelect" hidden="true"/>
+    <field name="saleOrderSet.saleOrderSeq" width="100"/>
+    <field name="manufOrderSeq" width="100"/>
+    <field if="__config__.app.getApp('base').getEnableMultiCompany()" name="company"
+      form-view="company-form" grid-view="company-grid"/>
+    <field if="__config__.app.getApp('production').getManageWorkshop()"
+      name="workshopStockLocation"/>
+    <field name="product" form-view="product-form" grid-view="product-grid" width="500"/>
+    <field name="qty" x-scale="2" width="100"/>
+    <field name="unit" width="100"/>
+    <field name="billOfMaterial" form-view="bill-of-material-form"
+      grid-view="bill-of-material-grid" hidden="true"/>
+    <field name="prodProcess" form-view="prod-process-form" grid-view="prod-process-grid"
+      hidden="true"/>
+    <field name="outsourcing" hidden="true"/>
+    <field name="plannedStartDateT" hidden="true"/>
+    <field name="plannedEndDateT" hidden="true"/>
+    <field name="realStartDateT" hidden="true"/>
+    <field name="realEndDateT" hidden="true"/>
+    <field name="statusSelect" width="100"/>
+    <button name="planBtn" readonlyIf="statusSelect >= 3" icon="fa-calendar"
+      onClick="action-manuf-order-method-plan"/>
+    <button name="startBtn" readonlyIf="statusSelect != 3 &amp;&amp; statusSelect != 5"
+      icon="fa-play" onClick="action-manuf-order-method-start-or-resume"/>
+    <button name="pauseBtn" readonlyIf="statusSelect != 4" icon="fa-pause"
+      onClick="action-manuf-order-method-pause"/>
+    <button name="finishBtn" readonlyIf="statusSelect != 4" icon="fa-power-off"
+      onClick="action-manuf-order-group-finish"/>
+    <button name="cancelBtn" readonlyIf="statusSelect == 2" icon="fa-times-circle"
+      onClick="action-manuf-order-view-cancel"/>
+    <button name="printBtn" title="Print" icon="fa-print"
+      onClick="action-manuf-order-method-print"/>
+  </grid>
 </object-views>

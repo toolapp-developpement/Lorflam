@@ -5,17 +5,15 @@
    xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.4.xsd">
 
    <module
-      name="base"
-      package="com.axelor.apps.base.db" />
+      name="sale"
+      package="com.axelor.apps.sale.db" />
 
    <entity
-      name="Product"
+      name="SaleOrderLine"
       lang="java">
-
-      <many-to-one
-         name="abcAnalysisClass"
-         ref="com.axelor.apps.base.db.ABCAnalysisClass"
-         title="Class" />
-
+      <string
+         name="yard2"
+         title="Référence chantier" />
    </entity>
+
 </domain-models>

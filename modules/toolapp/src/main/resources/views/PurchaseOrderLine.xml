@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object-views
+   xmlns="http://axelor.com/xml/ns/object-views"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
+
+   <form
+      name="purchase-order-line-form"
+      title="PO line"
+      model="com.axelor.apps.purchase.db.PurchaseOrderLine"
+      id="custom-purchase-order-line-form"
+      extension="true">
+      <extend target="//field[@name='enableFreezeFields']">
+         <replace>
+            <field
+               name="yard"
+               onChange="action.specifique.method.select.or.create.yard" 
+               colSpan="2"/>
+         </replace>
+      </extend>
+   </form>
+
+   <action-method name="action.specifique.method.select.or.create.yard">
+      <call
+         method="selectOrCreateYard(yard)"
+         class="bzh.toolapp.apps.specifique.web.PlanificationController" />
+   </action-method>
+</object-views>

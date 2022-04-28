@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object-views
+   xmlns="http://axelor.com/xml/ns/object-views"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
+
+   <form
+      name="sale-order-line-form"
+      title="SO line"
+      id="custom-sale-order-line-form"
+      model="com.axelor.apps.sale.db.SaleOrderLine"
+      extension="true">
+      <extend target="//field[@name='saleOrder']">
+         <insert position="after">
+            <field
+               name="yard2"
+               title="Référence Chantier"
+               onChange="action.specifique.method.select.or.create.yard"
+               colSpan="2" />
+         </insert>
+      </extend>
+   </form>
+
+   <action-method name="action.specifique.method.select.or.create.yard">
+      <call
+         method="selectOrCreateYard(yard2)"
+         class="bzh.toolapp.apps.specifique.web.PlanificationController" />
+   </action-method>
+</object-views>

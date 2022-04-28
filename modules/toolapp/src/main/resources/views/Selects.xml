@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<object-views
-   xmlns="http://axelor.com/xml/ns/object-views"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
-   
-   <!-- Nomenclature : * name : "interfaceName" + "fieldName" + ".select" -->
-   
-   <selection name="specifique.stock.move.status.select">
-      <option value="1">Draft</option>
-      <option value="2">Planned</option>
-      <option value="5">Prepare</option>
-      <option value="3">Realized</option>
-      <option value="4">Canceled</option>
-   </selection>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
+
+  <!-- Nomenclature : * name : "interfaceName" + "fieldName" + ".select" -->
+
+  <selection name="specifique.stock.move.status.select">
+    <option value="1">Draft</option>
+    <option value="2">Planned</option>
+    <option value="5">Prepare</option>
+    <option value="3">Realized</option>
+    <option value="4">Canceled</option>
+  </selection>
 
 </object-views>
