@@ -11,9 +11,14 @@
    <entity
       name="StockMoveLine"
       lang="java">
+      
       <string
          name="yard"
          title="Référence chantier" />
+
+      <string
+         name="custSaleOrderSeq"
+         title="Commande client" />
    </entity>
 
 </domain-models>
