@@ -15,6 +15,7 @@ import com.axelor.exception.db.repo.TraceBackRepository;
 import com.axelor.exception.service.TraceBackService;
 import com.axelor.i18n.I18n;
 import com.axelor.inject.Beans;
+import com.axelor.meta.CallMethod;
 import com.axelor.rpc.ActionRequest;
 import com.axelor.rpc.ActionResponse;
 
@@ -92,4 +93,13 @@ public class PlanificationController {
 			TraceBackService.trace(response, e);
 		}
 	}
+
+	@CallMethod
+	public void selectOrCreateYard(String yardName) throws AxelorException {
+
+		if (yardName != "") {
+			Beans.get(SpecifiqueService.class).selectOrCreateYard(yardName);
+		}
+	}
+
 }

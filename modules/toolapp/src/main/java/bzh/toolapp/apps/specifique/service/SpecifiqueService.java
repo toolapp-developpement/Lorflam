@@ -10,4 +10,5 @@ public interface SpecifiqueService {
 
 	public void getCommandeClient(StockMove sm, StockMoveLine sml) throws AxelorException;
 
+	public void selectOrCreateYard(String yardName) throws AxelorException;
 }
