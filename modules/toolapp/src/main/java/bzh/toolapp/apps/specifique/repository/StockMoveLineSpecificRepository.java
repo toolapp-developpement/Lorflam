@@ -50,7 +50,7 @@ public class StockMoveLineSpecificRepository extends StockMoveLineProductionRepo
 
 				this.logger.debug("L'origine est {}", saleOrderSeq);
 
-				json.put("stockMoveLine.custSaleOrderSeq", saleOrderSeq);
+				json.put("custSaleOrderSeq", saleOrderSeq);
 			}
 		}
 
