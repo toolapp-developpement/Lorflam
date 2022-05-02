@@ -12,7 +12,7 @@
       if="$get('stockMove.fromStockLocation.name') == 'PRODUCTION'"/>
 
     <field name="stockMove.estimatedDate" title="Date besoin" width="120" hidden="0"/>
-    <field name="stockMoveLine.custSaleOrderSeq" title="Commande client" width="80" hidden="0"/>
+    <field name="custSaleOrderSeq" title="Commande client" width="80" hidden="0"/>
     <field name="stockMove.origin" width="80"/>
 
     <field name="saleOrderLine.saleOrder.saleOrderSeq" title="Ligne BL" width="100" hidden="0"/>
@@ -24,7 +24,7 @@
       hidden="1"/>
     <field name="stockMove.partner" width="200" title="Client"/>
 
-    <field name="stockMoveLine.yard" width="200" title="Référence Chantier"/>
+    <field name="yard" width="200" title="Référence Chantier"/>
     <field
       name="saleOrderLine.product.defaultSupplierPartner.supplierCatalogList.productSupplierCode"
       width="100" title="Ref fournisseur" hidden="0"/>
