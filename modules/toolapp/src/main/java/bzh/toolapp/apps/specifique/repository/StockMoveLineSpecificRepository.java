@@ -17,9 +17,12 @@ public class StockMoveLineSpecificRepository extends StockMoveLineProductionRepo
 	@Transactional
 	@Override
 	public Map<String, Object> populate(Map<String, Object> json, Map<String, Object> context) {
+
+		logger.debug("<<<<<<< timmmyyyy >>>>>>>");
+
 		// Recuperation du champ de lecran
 		Long id = (Long) json.get("id");
-		this.logger.debug(
+		logger.debug(
 				"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Num StockMove est {} >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",
 				id);
 
@@ -27,7 +30,7 @@ public class StockMoveLineSpecificRepository extends StockMoveLineProductionRepo
 		StockMoveLine sml = null;
 		if (id != null) {
 			sml = find(id);
-			if (sml.getCustSaleOrderSeq() != null) {
+			if (sml.getCustSaleOrderSeq() == null) {
 
 				if (sml.getSaleOrderLine() != null && sml.getSaleOrderLine().getSaleOrder() != null) {
 					saleOrderSeq = sml.getSaleOrderLine().getSaleOrder().getSaleOrderSeq();
@@ -48,7 +51,7 @@ public class StockMoveLineSpecificRepository extends StockMoveLineProductionRepo
 				sml.setCustSaleOrderSeq(saleOrderSeq);
 				this.save(sml);
 
-				this.logger.debug("L'origine est {}", saleOrderSeq);
+				logger.debug("L'origine est {}", saleOrderSeq);
 
 				json.put("custSaleOrderSeq", saleOrderSeq);
 			}
