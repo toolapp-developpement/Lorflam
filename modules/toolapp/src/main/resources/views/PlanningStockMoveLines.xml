@@ -24,7 +24,7 @@
       hidden="1"/>
     <field name="stockMove.partner" width="200" title="Client"/>
 
-    <field name="saleOrderLineList.saleOrderLine.attrs" width="120" title="Ref chantier"/>
+    <field name="stockMoveLine.yard" width="200" title="Référence Chantier"/>
     <field
       name="saleOrderLine.product.defaultSupplierPartner.supplierCatalogList.productSupplierCode"
       width="100" title="Ref fournisseur" hidden="0"/>
