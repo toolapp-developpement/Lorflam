@@ -8,11 +8,11 @@
             <attribute name="onNew" value="action-group-stock-stockmove-onnew,action-record-avr-helpdesk-set-stock-move"/>
         </extend>
 
-        <extend target="//panel[@name='configPanel']/field[@name='toStockLocation']">
-            <insert position="after">
-                <field name="yard" />
-            </insert>
-        </extend>
+<!--         <extend target="//panel[@name='configPanel']/field[@name='toStockLocation']"> -->
+<!--             <insert position="after"> -->
+<!--                 <field name="yard" /> -->
+<!--             </insert> -->
+<!--         </extend> -->
 
     </form>
 

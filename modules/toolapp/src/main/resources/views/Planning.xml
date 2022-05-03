@@ -49,7 +49,7 @@
     <view-param name="limit" value="3000"/>
     <view-param name="forceTitle" value="true"/>
     <view-param name="search-filters" value="customer-deliveries-filters"/>
-    <domain> self.origin>='B' AND self.statusSelect=2 OR self.statusSelect=5 AND self.typeSelect =
+    <domain> self.typeSelect=2 AND self.statusSelect=2 OR self.statusSelect=5 AND self.typeSelect =
       :_typeSelect AND self.isReversion = FALSE
     </domain>
     <context name="_typeSelect" expr="eval: __repo__(StockMove).TYPE_OUTGOING"/>

@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.axelor.apps.stock.db.StockMove;
-import com.axelor.apps.stock.db.StockMoveLine;
 import com.axelor.apps.stock.db.repo.StockMoveRepository;
 import com.axelor.apps.stock.exception.IExceptionMessage;
 import com.axelor.apps.stock.service.StockMoveService;
@@ -41,17 +40,6 @@ public class PlanificationController {
 		if (statusUpdated) {
 			response.setReload(true);
 		}
-	}
-
-	public void getCustCommandeClient(ActionRequest request, ActionResponse response) throws AxelorException {
-		StockMove sm = request.getContext().asType(StockMove.class);
-		StockMoveLine sml = request.getContext().asType(StockMoveLine.class);
-
-		if (sm.getId() != null) {
-			Beans.get(SpecifiqueService.class).getCommandeClient(sm, sml);
-		}
-
-		response.setReload(true);
 	}
 
 	public void realize(ActionRequest request, ActionResponse response) {
