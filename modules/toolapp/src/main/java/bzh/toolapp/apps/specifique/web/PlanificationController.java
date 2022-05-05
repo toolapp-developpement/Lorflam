@@ -51,7 +51,7 @@ public class PlanificationController {
 			// we have to inject TraceBackService to use non static methods
 			TraceBackService traceBackService = Beans.get(TraceBackService.class);
 			long tracebackCount = traceBackService.countMessageTraceBack(stockMove);
-			if (stockMove.getStatusSelect() == null
+			if (stockMove.getStatusSelect() == null || stockMove.getStatusSelect() != StockMoveRepository.STATUS_PLANNED
 					|| stockMove.getStatusSelect() != StockMoveLineSpecificRepository.STATUS_PREPARED) {
 				throw new AxelorException(TraceBackRepository.CATEGORY_INCONSISTENCY,
 						I18n.get(IExceptionMessage.STOCK_MOVE_REALIZATION_WRONG_STATUS));

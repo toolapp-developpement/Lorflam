@@ -16,7 +16,7 @@
                showTitle="false"
                colSpan="5"
                selection="specifique.stock.move.status.select"
-               widget="NavSelect"/>
+               widget="NavSelect" />
          </replace>
       </extend>
       <extend target="//button[@name='planBtn']">
@@ -35,10 +35,10 @@
             <button
                name="realizeBtn"
                title="Realize"
-               showIf="statusSelect == 5 "
+               showIf="(typeSelect!=3 &amp;&amp; statusSelect == 5) || (typeSelect==3 &amp;&amp; statusSelect==2)"
                icon="fa-check"
                prompt="Are you sure you want to realize this stock move?"
-               onClick="action-group-stock-stockmove-realize-click-custom" />
+               onClick="action-group-stock-stockmove-realize-click" />
          </replace>
       </extend>
       <extend target="//button[@name='cancelBtn']">
@@ -52,6 +52,7 @@
                onClick="action-group-stock-stockmove-cancel-click" />
          </replace>
       </extend>
+
    </form>
 
    <action-group name="action-group-stock-stockmove-prepare-click">
@@ -80,15 +81,17 @@
          name="action-stock-move-method-realize-custome" />
       <action name="save" />
    </action-group>
-   
-   
+
+
    <action-method name="action-stock-move-method-realize-custome">
       <call
          method="realize"
          class="bzh.toolapp.apps.specifique.web.PlanificationController" />
    </action-method>
 
-   <action-group name="action-group-stock-stockmove-onload" id="action-group-stock-stockmove-onload-custome">
+   <action-group
+      name="action-group-stock-stockmove-onload"
+      id="action-group-stock-stockmove-onload-custome">
       <action name="action-stock-move-attrs-typeselect-change" />
       <action name="action-stock-move-generate-invoice-button" />
       <action name="action-stock-move-hide-reserved-qty" />
