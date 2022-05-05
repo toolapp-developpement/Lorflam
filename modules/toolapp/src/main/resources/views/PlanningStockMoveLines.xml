@@ -54,7 +54,7 @@
 
     <field name="stockMove.fromStockLocation" title="De" width="100" hidden="1"/>
     <field name="stockMove.toStockLocation" title="Vers" width="100" hidden="1"/>
-    <field name="description" width="200" title="Infos BP"/>
+    <field name="saleOrderLine.pickingOrderInfo" width="200" title="Infos BP"/>
     <field name="saleOrderLine.saleOrder.carrierPartner" width="120" title="Transporteur"/>
     <field if="__config__.app.getApp('supplychain')?.getManageStockReservation()"
       if-module="axelor-supplychain" name="reservedQty" aggregate="sum" x-scale="2" hidden="1"/>
