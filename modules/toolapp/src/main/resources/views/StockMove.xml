@@ -38,7 +38,7 @@
                showIf="(typeSelect!=3 &amp;&amp; statusSelect == 5) || (typeSelect==3 &amp;&amp; statusSelect==2)"
                icon="fa-check"
                prompt="Are you sure you want to realize this stock move?"
-               onClick="action-group-stock-stockmove-realize-click" />
+               onClick="action-group-stock-stockmove-realize-click-custom" />
          </replace>
       </extend>
       <extend target="//button[@name='cancelBtn']">
