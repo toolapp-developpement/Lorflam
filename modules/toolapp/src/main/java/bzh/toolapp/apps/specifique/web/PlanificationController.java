@@ -51,10 +51,12 @@ public class PlanificationController {
 			// we have to inject TraceBackService to use non static methods
 			TraceBackService traceBackService = Beans.get(TraceBackService.class);
 			long tracebackCount = traceBackService.countMessageTraceBack(stockMove);
-			if (stockMove.getStatusSelect() == null || stockMove.getStatusSelect() != StockMoveRepository.STATUS_PLANNED
-					|| stockMove.getStatusSelect() != StockMoveLineSpecificRepository.STATUS_PREPARED) {
-				throw new AxelorException(TraceBackRepository.CATEGORY_INCONSISTENCY,
-						I18n.get(IExceptionMessage.STOCK_MOVE_REALIZATION_WRONG_STATUS));
+			if (stockMove.getStatusSelect() == null
+					|| stockMove.getStatusSelect() != StockMoveRepository.STATUS_PLANNED) {
+				if (stockMove.getStatusSelect() != StockMoveLineSpecificRepository.STATUS_PREPARED) {
+					throw new AxelorException(TraceBackRepository.CATEGORY_INCONSISTENCY,
+							I18n.get(IExceptionMessage.STOCK_MOVE_REALIZATION_WRONG_STATUS));
+				}
 			}
 			String newSeq = Beans.get(StockMoveService.class).realize(stockMove);
 
@@ -77,7 +79,9 @@ public class PlanificationController {
 								I18n.get(com.axelor.apps.message.exception.IExceptionMessage.SEND_EMAIL_EXCEPTION),
 								traceback.getMessage())));
 			}
-		} catch (Exception e) {
+		} catch (
+
+		Exception e) {
 			TraceBackService.trace(response, e);
 		}
 	}

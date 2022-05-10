@@ -14,8 +14,8 @@
          <replace>
             <field
                name="yard"
-               onChange="action.specifique.method.select.or.create.yard" 
-               colSpan="2"/>
+               onChange="action.specifique.method.select.or.create.yard"
+               colSpan="2" />
          </replace>
       </extend>
    </form>
@@ -25,4 +25,37 @@
          method="selectOrCreateYard(yard)"
          class="bzh.toolapp.apps.specifique.web.PlanificationController" />
    </action-method>
+   <action-record
+      name="action-purchase-order-line-record-new"
+      model="com.axelor.apps.purchase.db.PurchaseOrderLine"
+      id="action-purchase-order-line-record-new-custom">
+      <field
+         name="qty"
+         expr="eval: 1" />
+      <field
+         name="desiredDelivDate"
+         expr="eval: __parent__?.deliveryDate" />
+      <field
+         name="$isFilterOnSupplier"
+         expr="eval: false" />
+      <field
+         if="__parent__ != null &amp;&amp; __parent__._model == 'com.axelor.apps.purchase.db.PurchaseOrder' &amp;&amp; receiptState &lt; 2"
+         name="estimatedDelivDate"
+         expr="eval: __parent__?.deliveryDate" />
+   </action-record>
+
+   <action-group
+      name="action-group-purchase-purchase-orderline-onnew"
+      id="action-group-purchase-purchase-orderline-onnew-custom">
+      <action name="action-purchase-order-line-attrs-title-project" />
+      <action name="action-purchase-order-line-attrs-scale-and-precision" />
+      <action name="action-purchase-order-line-record-new-custom" />
+      <action name="action-purchase-order-line-record-project" />
+      <action name="action-purchase-order-attrs-hide-ati" />
+      <action name="action-purchase-order-line-attrs-show-priceDiscounted" />
+      <action name="action-purchase-order-line-attrs-hide-qty-warning-label" />
+      <action name="action-purchase-order-line-attrs-hide-different-supplier-warning-label" />
+   </action-group>
+
+
 </object-views>
