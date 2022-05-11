@@ -22,9 +22,10 @@
 
    <action-method name="action.specifique.method.select.or.create.yard">
       <call
-         method="selectOrCreateYard(yard)"
-         class="bzh.toolapp.apps.specifique.web.PlanificationController" />
+         class="bzh.toolapp.apps.specifique.web.PlanificationController"
+         method="selectOrCreateYard(__this__.yard)" />
    </action-method>
+   
    <action-record
       name="action-purchase-order-line-record-new"
       model="com.axelor.apps.purchase.db.PurchaseOrderLine"
