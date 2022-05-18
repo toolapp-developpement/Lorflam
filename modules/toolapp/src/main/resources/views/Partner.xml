@@ -14,5 +14,13 @@
         </panel>
       </insert>
     </extend>
+
+    <extend target="//field[@name='supplierCatalogList']">
+      <insert position="after">
+        <field name="customerShippingCarriagePaidList"
+          grid-view="customer-shipping-carriage-paid-grid"
+          form-view="customer-shipping-carriage-paid-form" colSpan="12"/>
+      </insert>
+    </extend>
   </form>
 </object-views>
