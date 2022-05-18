@@ -1,65 +1,178 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<object-views xmlns="http://axelor.com/xml/ns/object-views"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+<object-views
+   xmlns="http://axelor.com/xml/ns/object-views"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://axelor.com/xml/ns/object-views
   http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
-
-  <grid name="planningStockMoveLines.grid" title="planningStockMoveLines.grid" canNew="false"
-    canEdit="false" canDelete="false" edit-icon="false" groupBy="stockMove.estimatedDate"
-    orderBy="stockMove.estimatedDate, -stockMove.origin,-saleOrderLine.saleOrder.saleOrderSeq,-stockMove.fromStockLocation"
-    model="com.axelor.apps.stock.db.StockMoveLine">
-    <hilite background="indigo" strong="true"
-      if="$get('stockMove.fromStockLocation.name') == 'PRODUCTION'"/>
-
-    <field name="stockMove.estimatedDate" title="Date besoin" width="120" hidden="0"/>
-    <field name="custSaleOrderSeq" title="Commande client" width="80" hidden="0"/>
-    <field name="stockMove.origin" width="80"/>
-
-    <field name="saleOrderLine.saleOrder.saleOrderSeq" title="Ligne BL" width="100" hidden="0"/>
-    <field name="producedManufOrder.saleOrderSet.saleOrderSeq" title="A produire" width="100"
-      hidden="0"/>
-    <field name="consumedManufOrder.saleOrderSet.saleOrderSeq" title="Ligne OF" width="100"
-      hidden="0"/>
-    <field name="consumedManufOrder.saleOrderSet.deliveryDate" title="besoin2" width="80"
-      hidden="1"/>
-    <field name="stockMove.partner" width="200" title="Client"/>
-
-    <field name="yard" width="200" title="Référence Chantier"/>
-    <field
-      name="saleOrderLine.product.defaultSupplierPartner.supplierCatalogList.productSupplierCode"
-      width="100" title="Ref fournisseur" hidden="0"/>
-
-    <field name="stockMove.fromStockLocation.name" width="200" hidden="1"/>
-    <field name="createdOn" width="150" hidden="1"/>
-    <field name="name" width="120" hidden="1"/>
-
-    <field name="stockMove.statusSelect" width="80" hidden="1"/>
-    <field name="product.defaultBillOfMaterial" width="80" hidden="0"/>
-    <field name="product" domain="self.dtype = 'Product'" form-view="product-form"
-      grid-view="product-grid" width="350"/>
-    <field name="realQty" onChange="action-stock-move-line-group-real-qty-onchange"
-      aggregate="sum" x-scale="2"/>
-    <field name="unit" form-view="unit-form" grid-view="unit-grid" width="80"/>
-    <field name="trackingNumber" domain="self.product = :product"
-      form-view="tracking-number-form" grid-view="tracking-number-grid" hidden="1"/>
-    <field name="availableQty" title="Stock dispo" width="60" hidden="1"/>
-    <field name="product.StockLocationLine.currentQty" title="Stock" width="60" hidden="1"/>
-
-    <field name="availableStatus" width="150">
-      <hilite background="success" strong="true" if="availableStatusSelect == 1"/>
-      <hilite background="info" strong="true" if="availableStatusSelect == 2"/>
-      <hilite background="danger" strong="true" if="availableStatusSelect == 3"/>
-      <hilite background="warning" strong="true" if="availableStatusSelect == 4"/>
-    </field>
-
-    <field name="stockMove.fromStockLocation" title="De" width="100" hidden="1"/>
-    <field name="stockMove.toStockLocation" title="Vers" width="100" hidden="1"/>
-    <field name="saleOrderLine.pickingOrderInfo" width="200" title="Infos BP"/>
-    <field name="saleOrderLine.saleOrder.carrierPartner" width="120" title="Transporteur"/>
-    <field if="__config__.app.getApp('supplychain')?.getManageStockReservation()"
-      if-module="axelor-supplychain" name="reservedQty" aggregate="sum" x-scale="2" hidden="1"/>
-    <field name="product.productCategory" title="Catégorie de produit" width="120" hidden="1"/>
-  </grid>
+   <grid
+      name="planningStockMoveLines.grid"
+      title="planningStockMoveLines.grid"
+      model="com.axelor.apps.stock.db.StockMoveLine"
+      orderBy="stockMove.estimatedDate,stockMove.origin,-saleOrderLine.saleOrder.saleOrderSeq,-stockMove.fromStockLocation"
+      groupBy="custSaleOrderSeq"
+      canNew="false"
+      canEdit="false"
+      canDelete="false"
+      edit-icon="false">
+      <hilite
+         background="indigo"
+         strong="true"
+         if="$get('stockMove.fromStockLocation.name') == 'PRODUCTION'" />
+      <field
+         name="stockMove.estimatedDate"
+         title="Date besoin"
+         hidden="false"
+         width="100" />
+      <field
+         name="custSaleOrderSeq"
+         title="Commande client"
+         hidden="false"
+         width="120" />
+      <field
+         name="stockMove.origin"
+         width="110" />
+      <field
+         name="saleOrderLine.saleOrder.saleOrderSeq"
+         title="Composants"
+         hidden="false"
+         width="110" />
+      <field
+         name="producedManufOrder.saleOrderSet.saleOrderSeq"
+         title="A produire"
+         hidden="false"
+         width="110" />
+      <field
+         name="consumedManufOrder.saleOrderSet.saleOrderSeq"
+         title="A consommer"
+         hidden="false"
+         width="110" />
+      <field
+         name="consumedManufOrder.saleOrderSet.deliveryDate"
+         title="besoin2"
+         hidden="true"
+         width="80" />
+      <field
+         name="stockMove.partner"
+         title="Client"
+         width="250" />
+      <field
+         name="yard"
+         title="Référence Chantier"
+         width="150" />
+      <field
+         name="saleOrderLine.product.defaultSupplierPartner.supplierCatalogList.productSupplierCode"
+         title="Ref fournisseur"
+         hidden="false"
+         width="150" />
+      <field
+         name="stockMove.fromStockLocation.name"
+         hidden="true"
+         width="200" />
+      <field
+         name="createdOn"
+         hidden="true"
+         width="150" />
+      <field
+         name="name"
+         hidden="true"
+         width="120" />
+      <field
+         name="stockMove.statusSelect"
+         hidden="true"
+         width="80" />
+      <field
+         name="product.defaultBillOfMaterial"
+         title="A produire"
+         hidden="false"
+         width="100" />
+      <field
+         name="product.code"
+         width="200"
+         hidden="false"
+         domain="self.dtype = 'Product'"
+         form-view="product-form"
+         grid-view="product-grid" />
+      <field
+         name="product.name"
+         width="350"
+         hidden="false" />
+      <field
+         name="availableStatus"
+         width="150">
+         <hilite
+            background="success"
+            strong="true"
+            if="availableStatusSelect == 1" />
+         <hilite
+            background="info"
+            strong="true"
+            if="availableStatusSelect == 2" />
+         <hilite
+            background="danger"
+            strong="true"
+            if="availableStatusSelect == 3" />
+         <hilite
+            background="warning"
+            strong="true"
+            if="availableStatusSelect == 4" />
+      </field>
+      <field
+         name="realQty"
+         onChange="action-stock-move-line-group-real-qty-onchange"
+         aggregate="sum"
+         x-scale="2" />
+      <field
+         name="unit"
+         width="80"
+         form-view="unit-form"
+         grid-view="unit-grid" />
+      <field
+         name="trackingNumber"
+         hidden="true"
+         domain="self.product = :product"
+         form-view="tracking-number-form"
+         grid-view="tracking-number-grid" />
+      <field
+         name="availableQty"
+         title="Stock dispo"
+         hidden="true"
+         width="60" />
+      <field
+         name="product.StockLocationLine.currentQty"
+         title="Stock"
+         hidden="true"
+         width="60" />
+      <field
+         name="stockMove.fromStockLocation"
+         title="De"
+         hidden="true"
+         width="100" />
+      <field
+         name="stockMove.toStockLocation"
+         title="Vers"
+         hidden="true"
+         width="100" />
+      <field
+         name="saleOrderLine.pickingOrderInfo"
+         title="Infos BP"
+         width="200" />
+      <field
+         name="saleOrderLine.saleOrder.carrierPartner"
+         title="Transporteur"
+         width="120" />
+      <field
+         if="__config__.app.getApp('supplychain')?.getManageStockReservation()"
+         if-module="axelor-supplychain"
+         name="reservedQty"
+         hidden="true"
+         aggregate="sum"
+         x-scale="2" />
+      <field
+         name="product.productCategory"
+         title="Catégorie de produit"
+         hidden="true"
+         width="120" />
+   </grid>
 
 
 </object-views>
