@@ -83,11 +83,13 @@ public class ProductionOrderSaleOrderSpecifiqueServiceImpl extends ProductionOrd
 			 * Modification de la date de debut de planification de l'OF par la date
 			 * d'expedition de l'entete de commande de vente - 3jours
 			 */
+			System.out.println("Timmmy");
 			LocalDateTime startedDate = LocalDateTime.now();
 			if (saleOrderLine.getSaleOrder().getDeliveryDate() != null) {
 				LocalDate startDate = saleOrderLine.getSaleOrder().getDeliveryDate();
 				startedDate = startDate.minusDays(3).atStartOfDay();
 			}
+
 			return generateManufOrders(productionOrder, billOfMaterial, qty, startedDate, saleOrderLine.getSaleOrder());
 		}
 
