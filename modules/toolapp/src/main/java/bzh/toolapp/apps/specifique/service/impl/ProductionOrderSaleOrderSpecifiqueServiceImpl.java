@@ -21,6 +21,8 @@ import com.axelor.apps.production.service.productionorder.ProductionOrderService
 import com.axelor.apps.sale.db.SaleOrderLine;
 import com.axelor.exception.AxelorException;
 import com.axelor.exception.db.repo.TraceBackRepository;
+import com.axelor.i18n.I18n;
+import com.google.inject.Inject;
 
 public class ProductionOrderSaleOrderSpecifiqueServiceImpl extends ProductionOrderSaleOrderServiceImpl {
 
@@ -31,6 +33,7 @@ public class ProductionOrderSaleOrderSpecifiqueServiceImpl extends ProductionOrd
 	protected ProductionOrderRepository productionOrderRepo;
 	protected AppProductionService appProductionService;
 
+	@Inject
 	public ProductionOrderSaleOrderSpecifiqueServiceImpl(UnitConversionService unitConversionService,
 			ProductionOrderService productionOrderService, ProductionOrderRepository productionOrderRepo,
 			AppProductionService appProductionService) {
@@ -79,7 +82,7 @@ public class ProductionOrderSaleOrderSpecifiqueServiceImpl extends ProductionOrd
 			}
 
 			/*
-			 * Modification de la date de début de planification de l'OF par la date
+			 * Modification de la date de debut de planification de l'OF par la date
 			 * d'expedition de l'entete de commande de vente - 3jours
 			 */
 
