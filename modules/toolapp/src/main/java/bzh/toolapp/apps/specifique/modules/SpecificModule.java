@@ -3,8 +3,8 @@ package bzh.toolapp.apps.specifique.modules;
 import com.avr.apps.helpdesk.service.impl.PurchaseOrderCreateStockServiceImpl;
 import com.avr.apps.helpdesk.service.impl.SaleOrderCreateStockMoveServiceImpl;
 import com.axelor.app.AxelorModule;
+import com.axelor.apps.businessproduction.service.ProductionOrderSaleOrderServiceBusinessImpl;
 import com.axelor.apps.production.db.repo.StockMoveLineProductionRepository;
-import com.axelor.apps.production.service.productionorder.ProductionOrderSaleOrderServiceImpl;
 
 import bzh.toolapp.apps.specifique.repository.StockMoveLineSpecificRepository;
 import bzh.toolapp.apps.specifique.service.SpecifiqueService;
@@ -24,6 +24,6 @@ public class SpecificModule extends AxelorModule {
 		bind(SaleOrderCreateStockMoveServiceImpl.class).to(SaleOrderStockSpecifiqueServiceImpl.class);
 		bind(PurchaseOrderCreateStockServiceImpl.class).to(PurchaseOrderStockSpecifiqueServiceImpl.class);
 		bind(SpecifiqueService.class).to(SpecifiqueServiceImpl.class);
-		bind(ProductionOrderSaleOrderServiceImpl.class).to(ProductionOrderSaleOrderSpecifiqueServiceImpl.class);
+		bind(ProductionOrderSaleOrderServiceBusinessImpl.class).to(ProductionOrderSaleOrderSpecifiqueServiceImpl.class);
 	}
 }
