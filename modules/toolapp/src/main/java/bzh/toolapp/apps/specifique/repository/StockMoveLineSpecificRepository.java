@@ -30,31 +30,29 @@ public class StockMoveLineSpecificRepository extends StockMoveLineProductionRepo
 		StockMoveLine sml = null;
 		if (id != null) {
 			sml = find(id);
-			if (sml.getCustSaleOrderSeq() == null) {
+			// if (sml.getCustSaleOrderSeq() == null) {
 
-				if (sml.getSaleOrderLine() != null && sml.getSaleOrderLine().getSaleOrder() != null) {
-					saleOrderSeq = sml.getSaleOrderLine().getSaleOrder().getSaleOrderSeq();
-				} else if (sml.getProducedManufOrder() != null
-						&& sml.getProducedManufOrder().getSaleOrderSet() != null) {
-					if (!sml.getProducedManufOrder().getSaleOrderSet().isEmpty()) {
-						SaleOrder so = sml.getProducedManufOrder().getSaleOrderSet().iterator().next();
-						saleOrderSeq = so.getSaleOrderSeq();
-					}
-				} else if (sml.getConsumedManufOrder() != null
-						&& sml.getConsumedManufOrder().getSaleOrderSet() != null) {
-					if (!sml.getConsumedManufOrder().getSaleOrderSet().isEmpty()) {
-						SaleOrder so = sml.getConsumedManufOrder().getSaleOrderSet().iterator().next();
-						saleOrderSeq = so.getSaleOrderSeq();
-					}
+			if (sml.getSaleOrderLine() != null && sml.getSaleOrderLine().getSaleOrder() != null) {
+				saleOrderSeq = sml.getSaleOrderLine().getSaleOrder().getSaleOrderSeq();
+			} else if (sml.getProducedManufOrder() != null && sml.getProducedManufOrder().getSaleOrderSet() != null) {
+				if (!sml.getProducedManufOrder().getSaleOrderSet().isEmpty()) {
+					SaleOrder so = sml.getProducedManufOrder().getSaleOrderSet().iterator().next();
+					saleOrderSeq = so.getSaleOrderSeq();
 				}
-
-				sml.setCustSaleOrderSeq(saleOrderSeq);
-				this.save(sml);
-
-				logger.debug("L'origine est {}", saleOrderSeq);
-
-				json.put("custSaleOrderSeq", saleOrderSeq);
+			} else if (sml.getConsumedManufOrder() != null && sml.getConsumedManufOrder().getSaleOrderSet() != null) {
+				if (!sml.getConsumedManufOrder().getSaleOrderSet().isEmpty()) {
+					SaleOrder so = sml.getConsumedManufOrder().getSaleOrderSet().iterator().next();
+					saleOrderSeq = so.getSaleOrderSeq();
+				}
 			}
+
+			sml.setCustSaleOrderSeq(saleOrderSeq);
+			// this.save(sml);
+
+			logger.debug("L'origine est {}", saleOrderSeq);
+
+			json.put("custSaleOrderSeq", saleOrderSeq);
+			// }
 		}
 
 		return super.populate(json, context);
