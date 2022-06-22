@@ -47,7 +47,7 @@ public class StockMoveLineSpecificRepository extends StockMoveLineProductionRepo
 			}
 
 			sml.setCustSaleOrderSeq(saleOrderSeq);
-			// this.save(sml);
+			this.save(sml);
 
 			logger.debug("L'origine est {}", saleOrderSeq);
 
