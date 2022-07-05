@@ -4,8 +4,10 @@ import java.lang.invoke.MethodHandles;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.logging.Logger;
 
-import org.slf4j.Logger;
+import javax.inject.Inject;
+
 import org.slf4j.LoggerFactory;
 
 import com.axelor.apps.base.db.Product;
@@ -24,7 +26,6 @@ import com.axelor.apps.sale.db.SaleOrderLine;
 import com.axelor.exception.AxelorException;
 import com.axelor.exception.db.repo.TraceBackRepository;
 import com.axelor.i18n.I18n;
-import com.google.inject.Inject;
 
 public class ProductionOrderSaleOrderSpecifiqueServiceImpl extends ProductionOrderSaleOrderServiceBusinessImpl {
 
@@ -83,11 +84,10 @@ public class ProductionOrderSaleOrderSpecifiqueServiceImpl extends ProductionOrd
 			 * Modification de la date de debut de planification de l'OF par la date
 			 * d'expedition de l'entete de commande de vente - 3jours
 			 */
-			System.out.println("Timmmy");
 			LocalDateTime startedDate = LocalDateTime.now();
 			if (saleOrderLine.getSaleOrder().getDeliveryDate() != null) {
 				LocalDate startDate = saleOrderLine.getSaleOrder().getDeliveryDate();
-				startedDate = startDate.minusDays(3).atStartOfDay();
+				/* startedDate = startDate.minusDays(3).atStartOfDay(); */
 			}
 
 			return generateManufOrders(productionOrder, billOfMaterial, qty, startedDate, saleOrderLine.getSaleOrder());
