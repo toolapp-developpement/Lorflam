@@ -1,14 +1,10 @@
 package bzh.toolapp.apps.specifique.service.impl;
 
-import java.lang.invoke.MethodHandles;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.logging.Logger;
 
 import javax.inject.Inject;
-
-import org.slf4j.LoggerFactory;
 
 import com.axelor.apps.base.db.Product;
 import com.axelor.apps.base.db.Unit;
@@ -29,7 +25,8 @@ import com.axelor.i18n.I18n;
 
 public class ProductionOrderSaleOrderSpecifiqueServiceImpl extends ProductionOrderSaleOrderServiceBusinessImpl {
 
-	private final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+	// private final Logger logger =
+	// LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	protected ProductionOrderServiceBusinessImpl productionOrderServiceBusinessImpl;
 
