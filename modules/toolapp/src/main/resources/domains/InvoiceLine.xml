@@ -3,13 +3,10 @@
    xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.4.xsd"
 >
 
-   <module name="stock" package="com.axelor.apps.stock.db" />
+   <module name="account" package="com.axelor.apps.account.db" />
 
-   <entity name="StockMoveLine" lang="java">
-
+   <entity name="InvoiceLine" lang="java">
       <string name="yard" title="Référence chantier" />
-
-      <string name="custSaleOrderSeq" title="Commande client" />
    </entity>
-
 </domain-models>
+  
