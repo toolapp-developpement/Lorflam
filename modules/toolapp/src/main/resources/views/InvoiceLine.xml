@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd"
+>
+
+
+   <form name="invoice-line-form" title="Invoice line" model="com.axelor.apps.account.db.InvoiceLine" width="large" readonlyIf="$isReadOnly" onNew="action-account-invoice-line-onnew-group"
+      onLoad="action-group-account-invoice-line-onload" id="custome-invoice-line-form" extension="true"
+   >
+      <extend target="//panel[@name='titlePanel']">
+         <replace>
+            <panel name="titlePanel" showIf="typeSelect > 0">
+               <field name="productName" title="Title" requiredIf="typeSelect != 0" colSpan="6" />
+               <field name="yard" colSpan="3"/>
+               <field name="typeSelect" colSpan="3" onChange="action-invoice-line-method-empty-line" />
+               <field name="qty" colSpan="6" />
+               <field name="isShowTotal" colSpan="3" if="__config__.app.getApp('sale')?.enablePackManagement" onChange="action-invoice-line-record-reset-is-hide-unit-amounts" showIf="typeSelect == 3" />
+               <field name="isHideUnitAmounts" colSpan="3" if="__config__.app.getApp('sale')?.enablePackManagement" showIf="typeSelect == 3 &amp;&amp; isShowTotal" />
+            </panel>
+         </replace>
+      </extend>
+   </form>
+</object-views>
