@@ -5,6 +5,7 @@ import com.avr.apps.helpdesk.service.impl.SaleOrderCreateStockMoveServiceImpl;
 import com.axelor.app.AxelorModule;
 import com.axelor.apps.bankpayment.service.config.BankPaymentConfigService;
 import com.axelor.apps.businessproduction.service.ProductionOrderSaleOrderServiceBusinessImpl;
+import com.axelor.apps.businessproduction.service.SaleOrderLineBusinessProductionServiceImpl;
 import com.axelor.apps.businessproject.service.ProjectStockMoveInvoiceServiceImpl;
 import com.axelor.apps.hr.service.bankorder.BankOrderServiceHRImpl;
 import com.axelor.apps.production.db.repo.StockMoveLineProductionRepository;
@@ -16,6 +17,7 @@ import bzh.toolapp.apps.specifique.service.bankorder.BankOrderServiceSpecifiqueI
 import bzh.toolapp.apps.specifique.service.bankorder.BankPaymentConfigSpecifiqueService;
 import bzh.toolapp.apps.specifique.service.impl.ProductionOrderSaleOrderSpecifiqueServiceImpl;
 import bzh.toolapp.apps.specifique.service.impl.PurchaseOrderStockSpecifiqueServiceImpl;
+import bzh.toolapp.apps.specifique.service.impl.SaleOrderLineSpecifiqueServiceImpl;
 import bzh.toolapp.apps.specifique.service.impl.SaleOrderStockSpecifiqueServiceImpl;
 import bzh.toolapp.apps.specifique.service.impl.SpecifiqueServiceImpl;
 import bzh.toolapp.apps.specifique.service.impl.StockMoveInvoiceSpecifiqueServiceImpl;
@@ -34,5 +36,6 @@ public class SpecificModule extends AxelorModule {
 		bind(ProjectStockMoveInvoiceServiceImpl.class).to(StockMoveInvoiceSpecifiqueServiceImpl.class);
 		bind(BankOrderServiceHRImpl.class).to(BankOrderServiceSpecifiqueImpl.class);
 		bind(BankPaymentConfigService.class).to(BankPaymentConfigSpecifiqueService.class);
+		bind(SaleOrderLineBusinessProductionServiceImpl.class).to(SaleOrderLineSpecifiqueServiceImpl.class);
 	}
 }
