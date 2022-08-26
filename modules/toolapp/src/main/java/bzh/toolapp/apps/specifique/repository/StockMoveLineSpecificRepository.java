@@ -18,13 +18,8 @@ public class StockMoveLineSpecificRepository extends StockMoveLineProductionRepo
 	@Override
 	public Map<String, Object> populate(Map<String, Object> json, Map<String, Object> context) {
 
-		logger.debug("<<<<<<< timmmyyyy >>>>>>>");
-
 		// Recuperation du champ de lecran
 		Long id = (Long) json.get("id");
-		logger.debug(
-				"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Num StockMove est {} >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",
-				id);
 
 		String saleOrderSeq = new String();
 		StockMoveLine sml = null;
@@ -48,9 +43,6 @@ public class StockMoveLineSpecificRepository extends StockMoveLineProductionRepo
 
 			sml.setCustSaleOrderSeq(saleOrderSeq);
 			this.save(sml);
-
-			logger.debug("L'origine est {}", saleOrderSeq);
-
 			json.put("custSaleOrderSeq", saleOrderSeq);
 			// }
 		}
