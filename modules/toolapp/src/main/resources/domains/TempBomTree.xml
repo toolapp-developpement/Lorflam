@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.4.xsd"
+>
+
+ <module name="production" package="com.axelor.apps.production.db"/>
+
+  <entity name="TempBomTree" lang="java">
+    <many-to-one ref="com.axelor.apps.base.db.Company" name="company"/>
+    <many-to-one ref="com.axelor.apps.stock.db.StockLocation" name="stockLocation"/>
+    <decimal name="realQty" title="Real quantity" precision="20" scale="10"/>
+    <decimal name="futureQty" title="Future quantity" precision="20" scale="10"/>
+    <decimal name="reservedQty" title="Reserved quantity" precision="20" scale="10"/>
+    <decimal name="requestedReservedQty" title="Requested reserved quantity" precision="20" scale="10"/>
+    <decimal name="purchaseOrderQty" title="Purchase order quantity" precision="20" scale="10"/>
+    <decimal name="saleOrderQty" title="Sale order quantity" precision="20" scale="10"/>
+    <decimal name="availableQty" title="Available stock" precision="20" scale="10"/>
+    <decimal name="buildingQty" title="Building quantity" precision="20" scale="10"/>
+    <decimal name="consumeManufOrderQty" title="Consume manuf order quantity" precision="20" scale="10"/>
+    <decimal name="missingManufOrderQty" title="Missing manuf order quantity" precision="20" scale="10"/>
+  </entity>
+</domain-models>
