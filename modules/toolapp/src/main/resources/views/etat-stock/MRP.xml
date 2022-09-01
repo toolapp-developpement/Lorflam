@@ -1,28 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd"
->
-   <form name="mrp-form-custom" title="MRP" model="com.axelor.apps.supplychain.db.Mrp" width="large" canNew="false" canSave="false" canCopy="false">
-      <panel name="infoPanel">
-         <field name="product" title="Product" type="many-to-one" x-target="com.axelor.apps.base.db.Product" canEdit="false" />
-         <field name="endDate" title="End Date" widget="date" />
-         <field name="stockLocation" title="Stock location" canEdit="false" />
-      </panel>
-      <panel-dashlet name="mrpLinePanel" action="action-mrp-view-mrp-line-custom" colSpan="12" showIf="product &amp;&amp; endDate  &amp;&amp; stockLocation" canSearch="true" height="800" x-show-bars="true" />
-   </form>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
+  <form name="mrp-form-custom" title="MRP" model="com.axelor.apps.supplychain.db.Mrp"
+    width="large" canNew="false" canSave="false" canCopy="false">
+    <panel name="infoPanel">
+      <field name="product" title="Product" type="many-to-one"
+        x-target="com.axelor.apps.base.db.Product" canEdit="false"/>
+      <field name="endDate" title="End Date" widget="date"/>
+      <field name="stockLocation" title="Stock location" canEdit="false"/>
+    </panel>
+    <panel-dashlet name="mrpLinePanel" action="action-mrp-view-mrp-line-custom"
+      colSpan="12" showIf="product &amp;&amp; endDate  &amp;&amp; stockLocation" canSearch="true"
+      height="800" x-show-bars="true"/>
+  </form>
 
-   <action-view name="action-mrp-view-mrp-line-custom" model="com.axelor.apps.supplychain.db.MrpLine" title="Results">
-      <view name="mrp-line-grid" type="grid" />
-      <view name="mrp-line-form" type="form" />
-      <view-param name="limit" value="200" />
-      <domain>(
-    self.product.id = :_productId AND self.mrpLineType.elementSelect in (:_proposalElementSelect)
-    )
-  </domain>
-      <context name="_productId" expr="eval: product.id" />
-      <context name="_proposalElementSelect"
-         expr="eval: [__repo__(MrpLineType).ELEMENT_PURCHASE_ORDER,__repo__(MrpLineType).ELEMENT_SALE_ORDER,__repo__(MrpLineType).ELEMENT_PURCHASE_PROPOSAL,__repo__(MrpLineType).ELEMENT_MANUFACTURING_PROPOSAL]" />
-   </action-view>
+  <action-view name="action-mrp-view-mrp-line-custom"
+    model="com.axelor.apps.supplychain.db.MrpLine" title="Results">
+    <view name="mrp-line-grid-custom" type="grid"/>
+    <view name="mrp-line-form" type="form"/>
+    <view-param name="limit" value="200"/>
+    <domain>(
+      self.product.id = :_productId AND self.mrpLineType.elementSelect in
+      (:_proposalElementSelect) AND
+      self.mrp.endDate &lt;= :_endDate
+      )
+    </domain>
+    <context name="_productId" expr="eval: product.id"/>
+    <context name="_endDate" expr="eval: endDate"/>
+    <context name="_proposalElementSelect"
+      expr="eval: [__repo__(MrpLineType).ELEMENT_PURCHASE_ORDER,__repo__(MrpLineType).ELEMENT_SALE_ORDER,__repo__(MrpLineType).ELEMENT_PURCHASE_PROPOSAL,__repo__(MrpLineType).ELEMENT_MANUFACTURING_PROPOSAL]"/>
+  </action-view>
 
 
 </object-views>

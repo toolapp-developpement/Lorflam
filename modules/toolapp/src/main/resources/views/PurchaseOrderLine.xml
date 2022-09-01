@@ -1,62 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<object-views
-   xmlns="http://axelor.com/xml/ns/object-views"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
 
-   <form
-      name="purchase-order-line-form"
-      title="PO line"
-      model="com.axelor.apps.purchase.db.PurchaseOrderLine"
-      id="custom-purchase-order-line-form"
-      extension="true">
-      <extend target="//field[@name='enableFreezeFields']">
-         <replace>
-            <field
-               name="yard"
-               onChange="action.specifique.method.select.or.create.yard"
-               colSpan="2" />
-         </replace>
-      </extend>
-   </form>
+  <form name="purchase-order-line-form" title="PO line"
+    model="com.axelor.apps.purchase.db.PurchaseOrderLine" id="custom-purchase-order-line-form"
+    extension="true">
+    <extend target="//field[@name='enableFreezeFields']">
+      <replace>
+        <field name="yard" onChange="action.specifique.method.select.or.create.yard"
+          colSpan="2"/>
+      </replace>
+    </extend>
+  </form>
 
-   <action-method name="action.specifique.method.select.or.create.yard">
-      <call
-         class="bzh.toolapp.apps.specifique.web.PlanificationController"
-         method="selectOrCreateYard(__this__.yard)" />
-   </action-method>
-   
-   <action-record
-      name="action-purchase-order-line-record-new"
-      model="com.axelor.apps.purchase.db.PurchaseOrderLine"
-      id="action-purchase-order-line-record-new-custom">
-      <field
-         name="qty"
-         expr="eval: 1" />
-      <field
-         name="desiredDelivDate"
-         expr="eval: __parent__?.deliveryDate" />
-      <field
-         name="$isFilterOnSupplier"
-         expr="eval: false" />
-      <field
-         if="__parent__ != null &amp;&amp; __parent__._model == 'com.axelor.apps.purchase.db.PurchaseOrder' &amp;&amp; receiptState &lt; 2"
-         name="estimatedDelivDate"
-         expr="eval: __parent__?.deliveryDate" />
-   </action-record>
+  <action-method name="action.specifique.method.select.or.create.yard">
+    <call class="bzh.toolapp.apps.specifique.web.PlanificationController"
+      method="selectOrCreateYard(__this__.yard)"/>
+  </action-method>
 
-   <action-group
-      name="action-group-purchase-purchase-orderline-onnew"
-      id="action-group-purchase-purchase-orderline-onnew-custom">
-      <action name="action-purchase-order-line-attrs-title-project" />
-      <action name="action-purchase-order-line-attrs-scale-and-precision" />
-      <action name="action-purchase-order-line-record-new-custom" />
-      <action name="action-purchase-order-line-record-project" />
-      <action name="action-purchase-order-attrs-hide-ati" />
-      <action name="action-purchase-order-line-attrs-show-priceDiscounted" />
-      <action name="action-purchase-order-line-attrs-hide-qty-warning-label" />
-      <action name="action-purchase-order-line-attrs-hide-different-supplier-warning-label" />
-   </action-group>
+  <action-record name="action-purchase-order-line-record-new"
+    model="com.axelor.apps.purchase.db.PurchaseOrderLine"
+    id="action-purchase-order-line-record-new-custom">
+    <field name="qty" expr="eval: 1"/>
+    <field name="desiredDelivDate" expr="eval: __parent__?.deliveryDate"/>
+    <field name="$isFilterOnSupplier" expr="eval: false"/>
+    <field
+      if="__parent__ != null &amp;&amp; __parent__._model == 'com.axelor.apps.purchase.db.PurchaseOrder' &amp;&amp; receiptState &lt; 2"
+      name="estimatedDelivDate" expr="eval: __parent__?.deliveryDate"/>
+  </action-record>
+
+  <action-group name="action-group-purchase-purchase-orderline-onnew"
+    id="action-group-purchase-purchase-orderline-onnew-custom">
+    <action name="action-purchase-order-line-attrs-title-project"/>
+    <action name="action-purchase-order-line-attrs-scale-and-precision"/>
+    <action name="action-purchase-order-line-record-new-custom"/>
+    <action name="action-purchase-order-line-record-project"/>
+    <action name="action-purchase-order-attrs-hide-ati"/>
+    <action name="action-purchase-order-line-attrs-show-priceDiscounted"/>
+    <action name="action-purchase-order-line-attrs-hide-qty-warning-label"/>
+    <action name="action-purchase-order-line-attrs-hide-different-supplier-warning-label"/>
+  </action-group>
 
 
 </object-views>

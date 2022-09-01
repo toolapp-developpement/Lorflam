@@ -5,7 +5,7 @@ import com.axelor.exception.AxelorException;
 
 public interface SpecifiqueService {
 
-	public Boolean prepared(StockMove stockMove) throws AxelorException;
+  public Boolean prepared(StockMove stockMove) throws AxelorException;
 
-	public void selectOrCreateYard(String yardName) throws AxelorException;
+  public void selectOrCreateYard(String yardName) throws AxelorException;
 }

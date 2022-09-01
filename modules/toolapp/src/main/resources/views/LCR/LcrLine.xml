@@ -1,84 +1,104 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.0.xsd"
->
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
 
-   <grid name="invoice-grid-lcr" title="Invoices" model="com.axelor.apps.account.db.Invoice" orderBy="-invoiceDate" edit-icon="true">
-      <field name="invoiceId" width="120" />
-      <field name="partner.name" width="300" form-view="partner-form" grid-view="partner-grid" title="Nom du client" />
-      <field name="dueDate" width="120" title="Date d'échéance" format="YYMMDD" />
-      <field name="invoiceDate" width="120" title="Date de facture" format="YYMMDD" />
-      <field name="exTaxTotal" aggregate="sum" width="120" />
-      <field name="inTaxTotal" aggregate="sum" width="120" />
-      <field name="currency" width="60" />
-   </grid>
+  <grid name="invoice-grid-lcr" title="Invoices" model="com.axelor.apps.account.db.Invoice"
+    orderBy="-invoiceDate" edit-icon="true">
+    <field name="invoiceId" width="120"/>
+    <field name="partner.name" width="300" form-view="partner-form" grid-view="partner-grid"
+      title="Nom du client"/>
+    <field name="dueDate" width="120" title="Date d'échéance" format="YYMMDD"/>
+    <field name="invoiceDate" width="120" title="Date de facture" format="YYMMDD"/>
+    <field name="exTaxTotal" aggregate="sum" width="120"/>
+    <field name="inTaxTotal" aggregate="sum" width="120"/>
+    <field name="currency" width="60"/>
+  </grid>
 
-   <form name="invoice-form-lcr" title="Select period" model="com.axelor.apps.account.db.Invoice" width="large">
-      <panel name="mainPanel" title="Date details">
-         <field name="dueDate" title="Date d'échéance" widget="date" />
-         <field name="Company" title="Company" colSpan="3" widget="SuggestBox"/>
-         <button name="generateFile" title="Extraction LCR" onClick="action-generate-file" />
-      </panel>
-      <panel-dashlet action="action-invoice-select-lcr" />
-   </form>
+  <form name="invoice-form-lcr" title="Select period"
+    model="com.axelor.apps.account.db.Invoice" width="large">
+    <panel name="mainPanel" title="Date details">
+      <field name="dueDate" title="Date d'échéance" widget="date"/>
+      <field name="Company" title="Company" colSpan="3" widget="SuggestBox"/>
+      <button name="generateFile" title="Extraction LCR" onClick="action-generate-file"/>
+    </panel>
+    <panel-dashlet action="action-invoice-select-lcr"/>
+  </form>
 
-   <action-view name="action-invoice-select-lcr" title="Select LCR date period" model="com.axelor.apps.account.db.Invoice">
-      <view type="grid" name="invoice-grid-lcr" />
-   </action-view>
+  <action-view name="action-invoice-select-lcr" title="Select LCR date period"
+    model="com.axelor.apps.account.db.Invoice">
+    <view type="grid" name="invoice-grid-lcr"/>
+  </action-view>
 
-   <action-method name="action-generate-file">
-      <call method="preparedFile" class="bzh.toolapp.apps.specifique.web.LcrController" />
-   </action-method>
+  <action-method name="action-generate-file">
+    <call method="preparedFile" class="bzh.toolapp.apps.specifique.web.LcrController"/>
+  </action-method>
 
-   <search-filters name="customer-invoices-filters-lcr" title="Customer invoices filters" model="com.axelor.apps.account.db.Invoice">
-      <field if="!__config__.app.getApp('base').getEnableMultiCompany()" name="company" hidden="true" />
-      <field if="!__config__.app.getApp('base').enableTradingNamesManagement" name="tradingName" hidden="true" />
-      <field if="!__config__.app.getApp('account').getActivatePassedForPayment()" name="pfpValidateStatusSelect" hidden="true" />
-      <field if="!__config__.app.getApp('account').getActivatePassedForPayment()" name="pfpValidatorUser" hidden="true" />
-      <field if="!(__config__.app.isApp('business-project') &amp;&amp; __config__.app.getApp('business-project').getGenerateProjectOrder())" name="project" hidden="true" />
-      <field if="!__config__.app.getApp('account').getActivatePassedForPayment()" name="decisionPfpTakenDate" hidden="true" />
-      <field if="!__config__.app.getApp('account').getActivatePassedForPayment()" name="company.accountConfig" hidden="true" />
-      <field if="!__config__.app.getApp('account').getActivatePassedForPayment()" name="company.accountConfig.isManagePassedForPayment" hidden="true" />
-      <field if="!__config__.app.getApp('account').getManageAdvancePaymentInvoice()" name="advancePaymentInvoiceSet" hidden="true" />
-      <field if="!(__config__.app.isApp('supplychain') &amp;&amp; __config__.app.getApp('supplychain').getGenerateInvoiceFromStockMove())" name="stockMoveSet" hidden="true" />
-      <field if="!__config__.app.getApp('account').getActivatePassedForPayment()" name="reasonOfRefusalToPay" hidden="true" />
-      <field if="!__config__.app.getApp('account').getActivatePassedForPayment()" name="company.accountConfig.isManagePFPInRefund" hidden="true" />
-      <field if="!__config__.app.isApp('supplychain')" name="interco" hidden="true" />
-      <field if="!__config__.app.isApp('supplychain')" name="createdByInterco" hidden="true" />
-      <field if="!__config__.app.isApp('supplychain')" name="partnerTaxNbr" hidden="true" />
-      <field if="!__config__.app.isApp('cash-management')" name="estimatedPaymentDate" hidden="true" />
-      <field name="address" hidden="true" />
-      <field name="debitBlockingByUser" title="Debit blocking done by" />
-      <field name="debtRecoveryBlockingByUser" title="Debt recovery blocking done by" />
-      <field name="debitBlockingReason" title="Debit blocking reason" />
-      <field name="debtRecoveryBlockingReason" title="Debt recovery blocking reason" />
-      <field name="debitBlockingToDate" title="Debit blocking until" />
-      <field name="debtRecoveryBlockingToDate" title="Debt recovery blocking until" />
-      <field name="companyExTaxTotal" title="Total W.T. in company currency" />
-      <field name="companyTaxTotal" title="Total tax in company currency" />
-      <field name="companyInTaxTotal" title="Total A.T.I. in company currency" />
-      <filter title="Validated">
-         <domain>self.statusSelect = 2</domain>
-      </filter>
-      <filter title="Ventilated">
-         <domain>self.statusSelect = 3</domain>
-      </filter>
-      <filter title="Unpaid">
-         <domain>self.companyInTaxTotalRemaining > 0</domain>
-      </filter>
-      <filter title="Unpaid Due">
-         <domain>CURRENT_DATE > self.dueDate and self.companyInTaxTotalRemaining > 0</domain>
-      </filter>
-      <filter title="With Payment Rejected">
-         <domain>self.rejectMoveLine IS NOT NULL</domain>
-      </filter>
-      <filter title="B2B">
-         <domain>self.partner.partnerTypeSelect = 1</domain>
-      </filter>
-      <filter title="B2C">
-         <domain>self.partner.partnerTypeSelect = 2</domain>
-      </filter>
-   </search-filters>
+  <search-filters name="customer-invoices-filters-lcr"
+    title="Customer invoices filters" model="com.axelor.apps.account.db.Invoice">
+    <field if="!__config__.app.getApp('base').getEnableMultiCompany()" name="company"
+      hidden="true"/>
+    <field if="!__config__.app.getApp('base').enableTradingNamesManagement" name="tradingName"
+      hidden="true"/>
+    <field if="!__config__.app.getApp('account').getActivatePassedForPayment()"
+      name="pfpValidateStatusSelect" hidden="true"/>
+    <field if="!__config__.app.getApp('account').getActivatePassedForPayment()"
+      name="pfpValidatorUser" hidden="true"/>
+    <field
+      if="!(__config__.app.isApp('business-project') &amp;&amp; __config__.app.getApp('business-project').getGenerateProjectOrder())"
+      name="project" hidden="true"/>
+    <field if="!__config__.app.getApp('account').getActivatePassedForPayment()"
+      name="decisionPfpTakenDate" hidden="true"/>
+    <field if="!__config__.app.getApp('account').getActivatePassedForPayment()"
+      name="company.accountConfig" hidden="true"/>
+    <field if="!__config__.app.getApp('account').getActivatePassedForPayment()"
+      name="company.accountConfig.isManagePassedForPayment" hidden="true"/>
+    <field if="!__config__.app.getApp('account').getManageAdvancePaymentInvoice()"
+      name="advancePaymentInvoiceSet" hidden="true"/>
+    <field
+      if="!(__config__.app.isApp('supplychain') &amp;&amp; __config__.app.getApp('supplychain').getGenerateInvoiceFromStockMove())"
+      name="stockMoveSet" hidden="true"/>
+    <field if="!__config__.app.getApp('account').getActivatePassedForPayment()"
+      name="reasonOfRefusalToPay" hidden="true"/>
+    <field if="!__config__.app.getApp('account').getActivatePassedForPayment()"
+      name="company.accountConfig.isManagePFPInRefund" hidden="true"/>
+    <field if="!__config__.app.isApp('supplychain')" name="interco" hidden="true"/>
+    <field if="!__config__.app.isApp('supplychain')" name="createdByInterco" hidden="true"/>
+    <field if="!__config__.app.isApp('supplychain')" name="partnerTaxNbr" hidden="true"/>
+    <field if="!__config__.app.isApp('cash-management')" name="estimatedPaymentDate"
+      hidden="true"/>
+    <field name="address" hidden="true"/>
+    <field name="debitBlockingByUser" title="Debit blocking done by"/>
+    <field name="debtRecoveryBlockingByUser" title="Debt recovery blocking done by"/>
+    <field name="debitBlockingReason" title="Debit blocking reason"/>
+    <field name="debtRecoveryBlockingReason" title="Debt recovery blocking reason"/>
+    <field name="debitBlockingToDate" title="Debit blocking until"/>
+    <field name="debtRecoveryBlockingToDate" title="Debt recovery blocking until"/>
+    <field name="companyExTaxTotal" title="Total W.T. in company currency"/>
+    <field name="companyTaxTotal" title="Total tax in company currency"/>
+    <field name="companyInTaxTotal" title="Total A.T.I. in company currency"/>
+    <filter title="Validated">
+      <domain>self.statusSelect = 2</domain>
+    </filter>
+    <filter title="Ventilated">
+      <domain>self.statusSelect = 3</domain>
+    </filter>
+    <filter title="Unpaid">
+      <domain>self.companyInTaxTotalRemaining > 0</domain>
+    </filter>
+    <filter title="Unpaid Due">
+      <domain>CURRENT_DATE > self.dueDate and self.companyInTaxTotalRemaining > 0</domain>
+    </filter>
+    <filter title="With Payment Rejected">
+      <domain>self.rejectMoveLine IS NOT NULL</domain>
+    </filter>
+    <filter title="B2B">
+      <domain>self.partner.partnerTypeSelect = 1</domain>
+    </filter>
+    <filter title="B2C">
+      <domain>self.partner.partnerTypeSelect = 2</domain>
+    </filter>
+  </search-filters>
 
 
 </object-views>

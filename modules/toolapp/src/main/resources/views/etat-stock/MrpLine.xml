@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
+  <grid name="mrp-line-grid-custom" model="com.axelor.apps.supplychain.db.MrpLine"
+    title="Results" groupBy="product" sortable="false"
+    orderBy="product.code,maturityDate,mrpLineType.typeSelect,mrpLineType.sequence,id"
+    editable="true">
+    <toolbar>
+      <button name="selectBtn" title="Select" onClick="action-mrp-line-method-select"/>
+      <button name="unselectBtn" title="Unselect" onClick="action-mrp-line-method-unselect"/>
+      <button name="selectAllBtn" title="Select all"
+        onClick="action-mrp-line-method-select-all"/>
+    </toolbar>
+    <hilite if="isEditedByUser" color="danger" strong="true"/>
+    <hilite color="warning" strong="true"
+      if="$get('mrpLineType.elementSelect') == 5 &amp;&amp; $get('product.defaultSupplierPartner.id') != $get('supplierPartner.id')"/>
+    <hilite color="info" strong="true"
+      if="[5,8,9].indexOf($get('mrpLineType.elementSelect')) != -1"/>
+    <field name="product" hidden="true"/>
+    <button name="alertIconButton" showIf="$get('isOutDayNbBetweenPurchaseAndProposal')"
+      onClick="refresh" readonlyIf="true" icon="fa-exclamation-triangle"/>
+    <button name="toggleBtn" icon="fa-exchange" onClick="action-mrp-line-method-toggle"
+      showIf="!proposalGenerated &amp;&amp; [5,8].indexOf($get('mrpLineType.elementSelect')) != -1"/>
+    <field name="proposalToProcess" showIf="!proposalGenerated"/>
+    <field name="mrpLineType" width="300"/>
+    <field name="qty" x-scale="2"/>
+    <field name="maturityDate" width="100"/>
+    <field name="cumulativeQty" css="bold" x-scale="2"/>
+    <field name="product.unit"/>
+    <field name="minQty" x-scale="2"/>
+    <field name="stockLocation"/>
+    <field name="maxLevel"/>
+    <field name="relatedToSelectName"/>
+    <field name="partner"/>
+    <field name="supplierPartner" onSelect="action-mrp-line-attrs-domain-supplier-partner"
+      readonlyIf="proposalGenerated || [5,8].indexOf($get('mrpLineType.elementSelect')) == -1"/>
+    <field name="proposalGenerated" hidden="true"/>
+    <button name="detailProduct" icon="fa-cubes" onClick="action.group.display.product"/>
+    <button name="displayStock" icon="fa-line-chart" onClick="action.group.display.stock"/>
+    <field name="mrpLineType.elementSelect" hidden="true"/>
+    <field name="isEditedByUser" hidden="true"/>
+    <field name="product.defaultSupplierPartner.id" hidden="true"/>
+    <field name="supplierPartner.id" hidden="true"/>
+    <field name="warnDelayFromSupplier" hidden="true"/>
+    <field name="isOutDayNbBetweenPurchaseAndProposal" hidden="true"/>
+  </grid>
+
+  <action-group name="action.group.display.product">
+    <action name="action-view-product-view"/>
+  </action-group>
+
+  <action-group name="action.group.display.stock">
+    <action name="action-method-projected-stock-custome"/>
+  </action-group>
+
+  <action-view name="action-view-product-view" title="Stock location lines by product"
+    model="com.axelor.apps.base.db.Product">
+    <view type="form" name="supplychain-stock-details-by-product-custo-form"/>
+    <view-param name="popup" value="true"/>
+    <view-param name="popup-save" value="false"/>
+    <view-param name="popup.maximized" value="true"/>
+    <context name="_productMrp" expr="eval: product"/>
+    <context name="_stockLocationMrp" expr="eval:__this__.stockLocation"/>
+    <context name="_isFromMenu" expr="eval: true"/>
+  </action-view>
+
+  <action-method name="action-method-projected-stock-custome">
+    <call class="bzh.toolapp.apps.specifique.web.ProductController" method="showProjectedStock"/>
+  </action-method>
+
+</object-views>

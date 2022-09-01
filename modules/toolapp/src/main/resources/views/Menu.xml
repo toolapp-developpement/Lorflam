@@ -1,44 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://axelor.com/xml/ns/object-views
-  http://axelor.com/xml/ns/object-views/object-views_5.4.xsd"
->
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
 
-   <menuitem name="menu-toolapp-planning" title="Planning" action="tdb.planning.view" />
+  <menuitem name="menu-toolapp-planning" title="Planning" action="tdb.planning.view"/>
 
-   <action-view name="tdb.planning.view" title="Planning">
-      <view type="dashboard" name="tdb.planning.dashboard" />
-   </action-view>
+  <action-view name="tdb.planning.view" title="Planning">
+    <view type="dashboard" name="tdb.planning.dashboard"/>
+  </action-view>
 
-   <menuitem name="menu-toolapp-lcr" parent="account-root" order="10" title="Encaissement LCR" action="custome.encaissement.lcr" />
+  <menuitem name="menu-toolapp-lcr" parent="account-root" order="10"
+    title="Encaissement LCR" action="custome.encaissement.lcr"/>
 
-   <action-view name="custome.encaissement.lcr" model="com.axelor.apps.account.db.Invoice" title="LCR">
-      <view name="invoice-form-lcr" type="form" />
-      <view-param name="search-filters" value="customer-invoices-filters-lcr" />
-      <domain>self.operationTypeSelect = 3 and self.statusSelect=3 and self.paymentMode.code='ENC_VIR'</domain>
-      <context name="_operationTypeSelect" expr="eval:3" />
-      <context name="todayDate" expr="eval:__config__.app.getTodayDate(__user__.activeCompany)" />
-   </action-view>
+  <action-view name="custome.encaissement.lcr"
+    model="com.axelor.apps.account.db.Invoice" title="LCR">
+    <view name="invoice-form-lcr" type="form"/>
+    <view-param name="search-filters" value="customer-invoices-filters-lcr"/>
+    <domain>self.operationTypeSelect = 3 and self.statusSelect=3 and self.paymentMode.code='ENC_VIR'</domain>
+    <context name="_operationTypeSelect" expr="eval:3"/>
+    <context name="todayDate"
+      expr="eval:__config__.app.getTodayDate(__user__.activeCompany)"/>
+  </action-view>
 
-   <menuitem title="Menu Stock" name="menu-toolapp-stock" />
-   <menuitem title="Détail des stocks par produit" name="menu-toolapp-stock-detail" parent="menu-toolapp-stock" order="10" action="custome.detail.stock" />
-   <menuitem title="Arborescence des produits et stock" name="menu-toolapp-stock-product" parent="menu-toolapp-stock" order="11" action="custome.detail.stock.bom.vga" />
-   <menuitem title="Projection des stocks" name="menu-toolapp-stock-projection" parent="menu-toolapp-stock" order="12" action="custome.detail.stock.mrp" />
+  <menuitem title="Menu Stock" name="menu-toolapp-stock"/>
+  <menuitem title="Détail des stocks par produit" name="menu-toolapp-stock-detail"
+    parent="menu-toolapp-stock" order="10" action="custome.detail.stock"/>
+  <menuitem title="Arborescence des produits et stock" name="menu-toolapp-stock-product"
+    parent="menu-toolapp-stock" order="11" action="custome.detail.stock.bom.vga"/>
+  <menuitem title="Projection des stocks" name="menu-toolapp-stock-projection"
+    parent="menu-toolapp-stock" order="12" action="custome.detail.stock.mrp"/>
 
-   <action-view name="custome.detail.stock" model="com.axelor.apps.base.db.Product" id="Detail stock" title="Detail Stock">
-      <view name="supplychain-stock-details-by-product-custo-form" type="form" />
-      <domain>self.dtype = 'Product'</domain>
-      <context name="_isFromMenu" expr="eval: true" />
-   </action-view>
+  <action-view name="custome.detail.stock" model="com.axelor.apps.base.db.Product"
+    id="Detail stock" title="Detail Stock">
+    <view name="supplychain-stock-details-by-product-custo-form" type="form"/>
+    <domain>self.dtype = 'Product'</domain>
+    <context name="_isFromMenu" expr="eval: true"/>
+  </action-view>
 
-   <action-view name="custome.detail.stock.bom.vga" title="Arborescence produit et stock" id="Arbre" model="com.axelor.apps.production.db.TempBomTree">
-      <view type="form" name="bom-custo-form" />
-      <context name="_isFromMenu" expr="eval: true" />
-   </action-view>
+  <action-view name="custome.detail.stock.bom.vga" title="Arborescence produit et stock"
+    id="Arbre" model="com.axelor.apps.production.db.TempBomTree">
+    <view type="form" name="bom-custo-form"/>
+    <context name="_isFromMenu" expr="eval: true"/>
+  </action-view>
 
-   <action-view name="custome.detail.stock.mrp" title="Projection des stocks" id="Mrp" model="com.axelor.apps.supplychain.db.Mrp">
-      <view type="form" name="mrp-form-custom" />
-   </action-view>
+  <action-view name="custome.detail.stock.mrp" title="Projection des stocks" id="Mrp"
+    model="com.axelor.apps.supplychain.db.Mrp">
+    <view type="form" name="mrp-form-custom"/>
+  </action-view>
 
 
 </object-views>

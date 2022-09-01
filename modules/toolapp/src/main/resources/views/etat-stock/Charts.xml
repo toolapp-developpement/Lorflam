@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
+
+  <chart name="chart.projected.stock.custom" title="Projected stock">
+    <dataset type="rpc">bzh.toolapp.apps.specifique.web.ProductController:showCustomeChartProjectedStock</dataset>
+    <category key="name" type="date" title="Date"/>
+    <series key="cumulativeQty" type="line" title="Qty"/>
+
+  </chart>
+
+</object-views>

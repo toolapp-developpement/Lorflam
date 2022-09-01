@@ -1,7 +1,5 @@
 package bzh.toolapp.apps.specifique.service.impl;
 
-import java.math.BigDecimal;
-
 import com.axelor.apps.account.db.Invoice;
 import com.axelor.apps.account.db.InvoiceLine;
 import com.axelor.apps.account.db.repo.InvoiceLineRepository;
@@ -18,28 +16,42 @@ import com.axelor.apps.supplychain.service.app.AppSupplychainService;
 import com.axelor.apps.supplychain.service.config.SupplyChainConfigService;
 import com.axelor.exception.AxelorException;
 import com.google.inject.Inject;
+import java.math.BigDecimal;
 
 public class StockMoveInvoiceSpecifiqueServiceImpl extends ProjectStockMoveInvoiceServiceImpl {
-	@Inject
-	public StockMoveInvoiceSpecifiqueServiceImpl(SaleOrderInvoiceService saleOrderInvoiceService,
-			PurchaseOrderInvoiceService purchaseOrderInvoiceService,
-			StockMoveLineServiceSupplychain stockMoveLineServiceSupplychain, InvoiceRepository invoiceRepository,
-			SaleOrderRepository saleOrderRepo, PurchaseOrderRepository purchaseOrderRepo,
-			StockMoveLineRepository stockMoveLineRepository, InvoiceLineRepository invoiceLineRepository,
-			SupplyChainConfigService supplyChainConfigService, AppSupplychainService appSupplychainService) {
-		super(saleOrderInvoiceService, purchaseOrderInvoiceService, stockMoveLineServiceSupplychain, invoiceRepository,
-				saleOrderRepo, purchaseOrderRepo, stockMoveLineRepository, invoiceLineRepository,
-				supplyChainConfigService, appSupplychainService);
-	}
+  @Inject
+  public StockMoveInvoiceSpecifiqueServiceImpl(
+      SaleOrderInvoiceService saleOrderInvoiceService,
+      PurchaseOrderInvoiceService purchaseOrderInvoiceService,
+      StockMoveLineServiceSupplychain stockMoveLineServiceSupplychain,
+      InvoiceRepository invoiceRepository,
+      SaleOrderRepository saleOrderRepo,
+      PurchaseOrderRepository purchaseOrderRepo,
+      StockMoveLineRepository stockMoveLineRepository,
+      InvoiceLineRepository invoiceLineRepository,
+      SupplyChainConfigService supplyChainConfigService,
+      AppSupplychainService appSupplychainService) {
+    super(
+        saleOrderInvoiceService,
+        purchaseOrderInvoiceService,
+        stockMoveLineServiceSupplychain,
+        invoiceRepository,
+        saleOrderRepo,
+        purchaseOrderRepo,
+        stockMoveLineRepository,
+        invoiceLineRepository,
+        supplyChainConfigService,
+        appSupplychainService);
+  }
 
-	@Override
-	public InvoiceLine createInvoiceLine(Invoice invoice, StockMoveLine stockMoveLine, BigDecimal qty)
-			throws AxelorException {
+  @Override
+  public InvoiceLine createInvoiceLine(Invoice invoice, StockMoveLine stockMoveLine, BigDecimal qty)
+      throws AxelorException {
 
-		InvoiceLine invoiceLine = super.createInvoiceLine(invoice, stockMoveLine, qty);
+    InvoiceLine invoiceLine = super.createInvoiceLine(invoice, stockMoveLine, qty);
 
-		invoiceLine.setYard(stockMoveLine.getYard());
+    invoiceLine.setYard(stockMoveLine.getYard());
 
-		return invoiceLine;
-	}
+    return invoiceLine;
+  }
 }

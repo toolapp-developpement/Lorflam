@@ -1,56 +1,58 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd"
->
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
 
-   <tree name="bom-tree-detail" title="Bills of material">
-      <column name="product" type="reference" />
-      <column name="qty" type="decimal" x-scale="2" />
-      <column name="unit" type="reference" />
-      <column name="prodProcess" type="reference" />
-      <column name="realQty" type="decimal" x-scale="2" />
-      <column name="futureQty" type="decimal" x-scale="2" />
-      <column name="reservedQty" type="decimal" x-scale="2" />
-      <column name="requestedReservedQty" type="decimal" x-scale="2" />
-      <column name="purchaseOrderQty" type="decimal" x-scale="2" />
-      <column name="saleOrderQty" type="decimal" x-scale="2" />
-      <column name="availableQty" type="decimal" x-scale="2" />
-      <column name="buildingQty" type="decimal" x-scale="2" />
-      <column name="consumeManufOrderQty" type="decimal" x-scale="2" />
-      <column name="missingManufOrderQty" type="decimal" x-scale="2" />
+  <tree name="bom-tree-detail" title="Bills of material">
+    <column name="product" type="reference"/>
+    <column name="qty" type="decimal" x-scale="2"/>
+    <column name="unit" type="reference"/>
+    <column name="prodProcess" type="reference"/>
+    <column name="realQty" type="decimal" x-scale="2"/>
+    <column name="futureQty" type="decimal" x-scale="2"/>
+    <column name="reservedQty" type="decimal" x-scale="2"/>
+    <column name="requestedReservedQty" type="decimal" x-scale="2"/>
+    <column name="purchaseOrderQty" type="decimal" x-scale="2"/>
+    <column name="saleOrderQty" type="decimal" x-scale="2"/>
+    <column name="availableQty" type="decimal" x-scale="2"/>
+    <column name="buildingQty" type="decimal" x-scale="2"/>
+    <column name="consumeManufOrderQty" type="decimal" x-scale="2"/>
+    <column name="missingManufOrderQty" type="decimal" x-scale="2"/>
 
-      <node model="com.axelor.apps.production.db.TempBomTree" onClick="action-bill-of-material-line-view" domain="self.id = :_tempBomTreeId">
-         <field name="product" as="product" />
-         <field name="qty" as="qty" />
-         <field name="unit" as="unit" />
-         <field name="prodProcess" as="prodProcess" />
-         <field name="realQty" as="realQty" />
-         <field name="futureQty" as="futureQty" />
-         <field name="reservedQty" as="reservedQty" />
-         <field name="requestedReservedQty" as="requestedReservedQty" />
-         <field name="purchaseOrderQty" as="requestedReservedQty" />
-         <field name="saleOrderQty" as="saleOrderQty" />
-         <field name="availableQty" as="availableQty" />
-         <field name="buildingQty" as="buildingQty" />
-         <field name="consumeManufOrderQty" as="consumeManufOrderQty" />
-         <field name="missingManufOrderQty" as="missingManufOrderQty" />
-      </node>
-      <node model="com.axelor.apps.production.db.TempBomTree" parent="parent" onClick="action-bill-of-material-line-view" draggable="true">
-         <field name="product" as="product" />
-         <field name="qty" as="qty" />
-         <field name="unit" as="unit" />
-         <field name="prodProcess" as="prodProcess" />
-         <field name="realQty" as="realQty" />
-         <field name="futureQty" as="futureQty" />
-         <field name="reservedQty" as="reservedQty" />
-         <field name="requestedReservedQty" as="requestedReservedQty" />
-         <field name="purchaseOrderQty" as="requestedReservedQty" />
-         <field name="saleOrderQty" as="saleOrderQty" />
-         <field name="availableQty" as="availableQty" />
-         <field name="buildingQty" as="buildingQty" />
-         <field name="consumeManufOrderQty" as="consumeManufOrderQty" />
-         <field name="missingManufOrderQty" as="missingManufOrderQty" />
-      </node>
-   </tree>
+    <node model="com.axelor.apps.production.db.TempBomTree"
+      onClick="action-bill-of-material-line-view" domain="self.id = :_tempBomTreeId">
+      <field name="product" as="product"/>
+      <field name="qty" as="qty"/>
+      <field name="unit" as="unit"/>
+      <field name="prodProcess" as="prodProcess"/>
+      <field name="realQty" as="realQty"/>
+      <field name="futureQty" as="futureQty"/>
+      <field name="reservedQty" as="reservedQty"/>
+      <field name="requestedReservedQty" as="requestedReservedQty"/>
+      <field name="purchaseOrderQty" as="requestedReservedQty"/>
+      <field name="saleOrderQty" as="saleOrderQty"/>
+      <field name="availableQty" as="availableQty"/>
+      <field name="buildingQty" as="buildingQty"/>
+      <field name="consumeManufOrderQty" as="consumeManufOrderQty"/>
+      <field name="missingManufOrderQty" as="missingManufOrderQty"/>
+    </node>
+    <node model="com.axelor.apps.production.db.TempBomTree" parent="parent"
+      onClick="action-bill-of-material-line-view" draggable="true">
+      <field name="product" as="product"/>
+      <field name="qty" as="qty"/>
+      <field name="unit" as="unit"/>
+      <field name="prodProcess" as="prodProcess"/>
+      <field name="realQty" as="realQty"/>
+      <field name="futureQty" as="futureQty"/>
+      <field name="reservedQty" as="reservedQty"/>
+      <field name="requestedReservedQty" as="requestedReservedQty"/>
+      <field name="purchaseOrderQty" as="requestedReservedQty"/>
+      <field name="saleOrderQty" as="saleOrderQty"/>
+      <field name="availableQty" as="availableQty"/>
+      <field name="buildingQty" as="buildingQty"/>
+      <field name="consumeManufOrderQty" as="consumeManufOrderQty"/>
+      <field name="missingManufOrderQty" as="missingManufOrderQty"/>
+    </node>
+  </tree>
 
 </object-views>
