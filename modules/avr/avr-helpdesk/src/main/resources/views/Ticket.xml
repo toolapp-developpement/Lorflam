@@ -1,134 +1,160 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <object-views xmlns="http://axelor.com/xml/ns/object-views"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
 
-    <grid id="avr-helpdesk-ticket-grid" name="ticket-grid" title="All tickets" model="com.axelor.apps.helpdesk.db.Ticket">
-        <field name="trackingNumber" />
-        <field name="customer" />
-        <field name="yard" />
-        <field name="technicalVisit" />
-        <field name="product" />
-        <field name="saleOrderSeq"/>
-        <field name="stockMoveSeq" />
-        <field name="ticketProblemSource" />
-        <field name="createdOn" title="Date du litige" />
-        <field name="createdBy" title="Déclaration" />
-        <field name="commentText" />
-    </grid>
+  <grid id="avr-helpdesk-ticket-grid" name="ticket-grid" title="All tickets"
+    model="com.axelor.apps.helpdesk.db.Ticket">
+    <field name="trackingNumber"/>
+    <field name="customer"/>
+    <field name="yard"/>
+    <field name="technicalVisit"/>
+    <field name="product"/>
+    <field name="saleOrderSeq"/>
+    <field name="stockMoveSeq"/>
+    <field name="ticketProblemSource"/>
+    <field name="createdOn" title="Date du litige"/>
+    <field name="createdBy" title="Déclaration"/>
+    <field name="commentText"/>
+  </grid>
 
-    <form id="avr-helpdesk-ticket-form" model="com.axelor.apps.helpdesk.db.Ticket" title="Ticket" name="ticket-form" extension="true">
-        <extend target="/">
-            <attribute name="onSave" value="save,action-method-avr-helpdesk-save-seq"/>
-            <attribute name="onLoad" value="action-ticket-group-timer-process,action-stock-location-line-record-total-quantities"/>
-            <insert position="inside">
-                <menubar>
-                    <menu name="ticketToolsMenu" title="Tools" showTitle="true" icon="fa-wrench">
-                        <item name="sendEmailItem" title="Send email" hideIf="customer == null" action="save,action-send-by-email-with-template"/>
-                    </menu>
-                </menubar>
-            </insert>
-        </extend>
+  <form id="avr-helpdesk-ticket-form" model="com.axelor.apps.helpdesk.db.Ticket" title="Ticket"
+    name="ticket-form" extension="true">
+    <extend target="/">
+      <attribute name="onSave" value="save,action-method-avr-helpdesk-save-seq"/>
+      <attribute name="onLoad"
+        value="action-ticket-group-timer-process,action-stock-location-line-record-total-quantities"/>
+      <insert position="inside">
+        <menubar>
+          <menu name="ticketToolsMenu" title="Tools" showTitle="true" icon="fa-wrench">
+            <item name="sendEmailItem" title="Send email" hideIf="customer == null"
+              action="save,action-send-by-email-with-template"/>
+          </menu>
+        </menubar>
+      </insert>
+    </extend>
 
-        <extend target="//field[@name='statusSelect']">
-            <insert position="after">
-                <button name="$realQtyBtn" title="Real qty" colSpan="3" icon="fa-building-o" onClick="action-stock-move-line-product-default-realized-ticket" widget="info-button" showIf="product"/>
-            </insert>
-        </extend>
+    <extend target="//field[@name='statusSelect']">
+      <insert position="after">
+        <button name="$realQtyBtn" title="Real qty" colSpan="3" icon="fa-building-o"
+          onClick="action-stock-move-line-product-default-realized-ticket" widget="info-button"
+          showIf="product"/>
+      </insert>
+    </extend>
 
-        <extend target="//field[@name='mailSubject']">
-            <attribute name="hidden" value="true"/>
-        </extend>
-        <extend target="//field[@name='project']">
-            <attribute name="hidden" value="true"/>
-        </extend>
-        <extend target="//field[@name='contactPartner']">
-            <attribute name="hidden" value="true"/>
-        </extend>
+    <extend target="//field[@name='mailSubject']">
+      <attribute name="hidden" value="true"/>
+    </extend>
+    <extend target="//field[@name='project']">
+      <attribute name="hidden" value="true"/>
+    </extend>
+    <extend target="//field[@name='contactPartner']">
+      <attribute name="hidden" value="true"/>
+    </extend>
 
-        <extend target="//field[@name='assignedToUser']">
-            <attribute name="hidden" value="true"/>
-        </extend>
-        <extend target="//field[@name='responsibleUser']">
-            <attribute name="hidden" value="true"/>
-        </extend>
-        <extend target="//field[@name='lead']">
-            <attribute name="hidden" value="true"/>
-        </extend>
+    <extend target="//field[@name='assignedToUser']">
+      <attribute name="hidden" value="true"/>
+    </extend>
+    <extend target="//field[@name='responsibleUser']">
+      <attribute name="hidden" value="true"/>
+    </extend>
+    <extend target="//field[@name='lead']">
+      <attribute name="hidden" value="true"/>
+    </extend>
 
-        <extend target="//field[@name='duration']">
-            <attribute name="hidden" value="true"/>
-        </extend>
+    <extend target="//field[@name='duration']">
+      <attribute name="hidden" value="true"/>
+    </extend>
 
-        <extend target="//field[@name='customer']">
-            <insert position="after">
-                <field name="metafile" colSpan="6" widget="binary-link"/>
-                <field name="product" colSpan="6" form-view="product-form" grid-view="product-grid" onChange="action-stock-location-line-record-total-quantities, action-empty-all-link-related-to-product-in-ticket"/>
-                <field name="ticketProblemSource" colSpan="6" form-view="ticket-problem-source-form" grid-view="ticket-problem-source-grid"/>
-                <field name="yard" colSpan="6" form-view="yard-form" grid-view="yard-grid"/>
-                <field name="trackingNumber" colSpan="6" form-view="tracking-number-form" grid-view="tracking-number-grid"/>
-                <field name="email" colSpan="6" form-view="email-address-form" grid-view="email-address-grid"/>
-            </insert>
-        </extend>
+    <extend target="//field[@name='customer']">
+      <insert position="after">
+        <field name="metafile" colSpan="6" widget="binary-link"/>
+        <field name="product" colSpan="6" form-view="product-form" grid-view="product-grid"
+          onChange="action-stock-location-line-record-total-quantities, action-empty-all-link-related-to-product-in-ticket"/>
+        <field name="ticketProblemSource" colSpan="6" form-view="ticket-problem-source-form"
+          grid-view="ticket-problem-source-grid"/>
+        <field name="yard" colSpan="6" form-view="yard-form" grid-view="yard-grid"/>
+        <field name="trackingNumber" colSpan="6" form-view="tracking-number-form"
+          grid-view="tracking-number-grid"/>
+        <field name="email" colSpan="6" form-view="email-address-form"
+          grid-view="email-address-grid"/>
+      </insert>
+    </extend>
 
-        <extend target="//field[@name='assignedToUser']">
-            <insert position="after">
-                <field name="guarantee" colSpan="6" form-view="guarantee-form" grid-view="guarantee-grid"/>
-                <field name="technicalVisit" colSpan="6" form-view="technical-visit-form" grid-view="technical-visit-grid"/>
-                <field name="rateToApply" colSpan="6" form-view="rate-to-apply-form" grid-view="rate-to-apply-grid"/>
-            </insert>
-        </extend>
+    <extend target="//field[@name='assignedToUser']">
+      <insert position="after">
+        <field name="guarantee" colSpan="6" form-view="guarantee-form"
+          grid-view="guarantee-grid"/>
+        <field name="technicalVisit" colSpan="6" form-view="technical-visit-form"
+          grid-view="technical-visit-grid"/>
+        <field name="rateToApply" colSpan="6" form-view="rate-to-apply-form"
+          grid-view="rate-to-apply-grid"/>
+      </insert>
+    </extend>
 
-        <extend target="//field[@name='endDateT']">
-            <insert position="after">
-                <field name="invoiceDate" colSpan="6"/>
-            </insert>
-        </extend>
+    <extend target="//field[@name='endDateT']">
+      <insert position="after">
+        <field name="invoiceDate" colSpan="6"/>
+      </insert>
+    </extend>
 
-        <extend target="//panel-tabs[@name='mainPanelTab']">
-            <insert position="after">
-                <panel name="commentPanel" title="Commentaire" colSpan="12">
-                    <field name="commentText" showTitle="false" colSpan="12"/>
-                </panel>
-            </insert>
-        </extend>
+    <extend target="//panel-tabs[@name='mainPanelTab']">
+      <insert position="after">
+        <panel name="commentPanel" title="Commentaire" colSpan="12">
+          <field name="commentText" showTitle="false" colSpan="12"/>
+        </panel>
+      </insert>
+    </extend>
 
-        <extend target="//panel[@name='descriptionPanel']">
-            <insert position="after">
-                <panel name="linkPanel" title="Liens" colSpan="12">
-                    <panel-related field="stockMoveList" name="stockMoveListPanel" canView="true" canNew="true" canEdit="true" canRemove="true" canSelect="true" title="Bon de retour / Bon de livraison" form-view="stock-move-form" grid-view="stock-move-grid" colSpan="12"/>
-                    <panel-related field="saleOrderList" name="saleOrderListPanel" onNew="save" canView="true" canNew="true" canEdit="true" canSelect="true" canRemove="true" title="Commande client" form-view="sale-order-form" grid-view="sale-order-grid" colSpan="12"/>
-                    <panel-related field="purchaseRequestList" name="purchaseRequestListPanel" canView="true" canNew="true" canEdit="true" canSelect="true" canRemove="true" title="Demande d'achat" form-view="purchase-request-form" grid-view="purchase-request-custom-grid" colSpan="12"/>
-                    <panel-dashlet action="action-avr-ticket-view-get-alert-quality-by-product" colSpan="12" />
-                </panel>
-            </insert>
-        </extend>
-    </form>
+    <extend target="//panel[@name='descriptionPanel']">
+      <insert position="after">
+        <panel name="linkPanel" title="Liens" colSpan="12">
+          <panel-related field="stockMoveList" name="stockMoveListPanel"
+            canView="true" canNew="true" canEdit="true" canRemove="true" canSelect="true"
+            title="Bon de retour / Bon de livraison" form-view="stock-move-form"
+            grid-view="stock-move-grid" colSpan="12"/>
+          <panel-related field="saleOrderList" name="saleOrderListPanel" onNew="save"
+            canView="true" canNew="true" canEdit="true" canSelect="true" canRemove="true"
+            title="Commande client" form-view="sale-order-form" grid-view="sale-order-grid"
+            colSpan="12"/>
+          <panel-related field="purchaseRequestList" name="purchaseRequestListPanel"
+            canView="true" canNew="true" canEdit="true" canSelect="true" canRemove="true"
+            title="Demande d'achat" form-view="purchase-request-form"
+            grid-view="purchase-request-custom-grid" colSpan="12"/>
+          <panel-dashlet action="action-avr-ticket-view-get-alert-quality-by-product"
+            colSpan="12"/>
+        </panel>
+      </insert>
+    </extend>
+  </form>
 
-    <action-method name="action-method-avr-helpdesk-save-seq">
-        <call class="com.avr.apps.helpdesk.web.TicketController" method="joinSaleOrderAndStockMoveBy"/>
-    </action-method>
+  <action-method name="action-method-avr-helpdesk-save-seq">
+    <call class="com.avr.apps.helpdesk.web.TicketController"
+      method="joinSaleOrderAndStockMoveBy"/>
+  </action-method>
 
-    <action-record name="action-empty-all-link-related-to-product-in-ticket" model="com.axelor.apps.helpdesk.db.Ticket">
-        <field name="stockMoveList" expr="eval: []"/>
-        <field name="saleOrderList" expr="eval: []"/>
-        <field name="purchaseRequestList" expr="eval: []"/>
-    </action-record>
+  <action-record name="action-empty-all-link-related-to-product-in-ticket"
+    model="com.axelor.apps.helpdesk.db.Ticket">
+    <field name="stockMoveList" expr="eval: []"/>
+    <field name="saleOrderList" expr="eval: []"/>
+    <field name="purchaseRequestList" expr="eval: []"/>
+  </action-record>
 
-    <action-view name="action-avr-ticket-view-get-alert-quality-by-product" title="Quality alert" model="com.axelor.apps.quality.db.QualityAlert">
-        <view type="grid" name="quality-alert-grid"/>
-        <view type="form" name="quality-alert-form"/>
-        <domain>self.product.id = :_productId</domain>
-        <context name="_productId" expr="eval: product.id" />
-    </action-view>
+  <action-view name="action-avr-ticket-view-get-alert-quality-by-product"
+    title="Quality alert" model="com.axelor.apps.quality.db.QualityAlert">
+    <view type="grid" name="quality-alert-grid"/>
+    <view type="form" name="quality-alert-form"/>
+    <domain>self.product.id = :_productId</domain>
+    <context name="_productId" expr="eval: product.id"/>
+  </action-view>
 
-    <action-view name="action-stock-move-line-product-default-realized-ticket"
-                 title="${product.fullName} real st. move" model="com.axelor.apps.stock.db.StockMoveLine">
-        <view type="grid" name="stock-move-line-all-grid"/>
-        <view type="form" name="stock-move-line-all-form"/>
-        <domain>self.stockMove.statusSelect = 3 and (self.stockMove.fromStockLocation.typeSelect = 1 or
-            self.stockMove.toStockLocation.typeSelect = 1) and self.product.id = :_id</domain>
-        <context name="_id" expr="eval: product?.id" />
-    </action-view>
+  <action-view name="action-stock-move-line-product-default-realized-ticket"
+    title="${product.fullName} real st. move" model="com.axelor.apps.stock.db.StockMoveLine">
+    <view type="grid" name="stock-move-line-all-grid"/>
+    <view type="form" name="stock-move-line-all-form"/>
+    <domain>self.stockMove.statusSelect = 3 and (self.stockMove.fromStockLocation.typeSelect = 1 or
+      self.stockMove.toStockLocation.typeSelect = 1) and self.product.id = :_id</domain>
+    <context name="_id" expr="eval: product?.id"/>
+  </action-view>
 
 </object-views>
