@@ -47,9 +47,4 @@ hs_err_pid*
 node_modules
 
 application.properties
-gradle.properties
-.gitignore
 .vscode/settings.json
-gradle.properties
-gradle/wrapper/gradle-wrapper.properties
-gradle/wrapper/gradle-wrapper.properties
