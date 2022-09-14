@@ -48,3 +48,5 @@ node_modules
 
 application.properties
 .vscode/settings.json
+gradle-wrapper.properties
+gradle.properties
