@@ -16,6 +16,8 @@
     <field name="createdOn" title="Date du litige"/>
     <field name="createdBy" title="Déclaration"/>
     <field name="commentText"/>
+    <field name="saleOrderList.statusSelect"/>
+    <field name="stockMoveList.statusSelect"/>
   </grid>
 
   <form id="avr-helpdesk-ticket-form" model="com.axelor.apps.helpdesk.db.Ticket" title="Ticket"
