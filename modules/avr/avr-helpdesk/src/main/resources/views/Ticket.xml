@@ -75,7 +75,8 @@
           onChange="action-stock-location-line-record-total-quantities, action-empty-all-link-related-to-product-in-ticket"/>
         <field name="ticketProblemSource" colSpan="6" form-view="ticket-problem-source-form"
           grid-view="ticket-problem-source-grid"/>
-        <field name="yard" colSpan="6" form-view="yard-form" grid-view="yard-grid"/>
+        <field name="yard" colSpan="6" form-view="yard-form" grid-view="yard-grid"
+          target-name="yardReference"/>
         <field name="trackingNumber" colSpan="6" form-view="tracking-number-form"
           grid-view="tracking-number-grid"/>
         <field name="email" colSpan="6" form-view="email-address-form"
