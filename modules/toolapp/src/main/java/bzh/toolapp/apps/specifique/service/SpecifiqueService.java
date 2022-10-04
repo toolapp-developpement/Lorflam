@@ -12,5 +12,5 @@ public interface SpecifiqueService {
 
   public Boolean enableEditPurchaseOrder(PurchaseOrder purchaseOrder) throws AxelorException;
 
-  public Boolean validateChangesPurchaseOrder(PurchaseOrder purchaseOrder) throws AxelorException;
+  public void validateChangesPurchaseOrder(PurchaseOrder purchaseOrder) throws AxelorException;
 }

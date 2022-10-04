@@ -27,4 +27,17 @@ public class PurchaseOrderSpecifiqueController {
       TraceBackService.trace(response, e);
     }
   }
+
+  public void validateChangesPurchaseOrder(ActionRequest request, ActionResponse response) {
+    PurchaseOrder purchaseOrder =
+        Beans.get(PurchaseOrderRepository.class)
+            .find(request.getContext().asType(PurchaseOrder.class).getId());
+
+    try {
+      Beans.get(SpecifiqueService.class).validateChangesPurchaseOrder(purchaseOrder);
+      response.setReload(true);
+    } catch (Exception e) {
+      TraceBackService.trace(response, e);
+    }
+  }
 }
