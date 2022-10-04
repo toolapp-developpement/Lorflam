@@ -50,3 +50,5 @@ application.properties
 .vscode/settings.json
 gradle-wrapper.properties
 gradle.properties
+gradle/wrapper/gradle-wrapper.properties
+gradle.properties
