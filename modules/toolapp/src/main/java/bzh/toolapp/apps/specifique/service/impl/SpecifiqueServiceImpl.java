@@ -8,6 +8,7 @@ import com.axelor.apps.purchase.db.PurchaseOrder;
 import com.axelor.apps.purchase.db.repo.PurchaseOrderRepository;
 import com.axelor.apps.stock.db.StockMove;
 import com.axelor.apps.stock.db.repo.StockMoveRepository;
+import com.axelor.apps.supplychain.service.PurchaseOrderStockService;
 import com.axelor.exception.AxelorException;
 import com.axelor.exception.db.repo.TraceBackRepository;
 import com.axelor.i18n.I18n;
@@ -24,12 +25,18 @@ public class SpecifiqueServiceImpl implements SpecifiqueService {
   protected StockMoveRepository stockMoveRepository;
   protected final SpecifiqueService specifiqueService;
   protected YardRepository yardRepository;
+  protected PurchaseOrderStockService purchaseOrderStockService;
 
   @Inject
-  public SpecifiqueServiceImpl(StockMoveRepository smr, SpecifiqueService sp, YardRepository yr) {
+  public SpecifiqueServiceImpl(
+      StockMoveRepository smr,
+      SpecifiqueService sp,
+      YardRepository yr,
+      PurchaseOrderStockService poss) {
     this.stockMoveRepository = smr;
     this.specifiqueService = sp;
     this.yardRepository = yr;
+    this.purchaseOrderStockService = poss;
   }
 
   @Transactional
@@ -55,7 +62,7 @@ public class SpecifiqueServiceImpl implements SpecifiqueService {
       yardRepository.save(yard);
     }
   }
-
+  /* Méthode d'autorisation de modification de la commande d'achat */
   @Override
   @Transactional(rollbackOn = {Exception.class})
   public Boolean enableEditPurchaseOrder(PurchaseOrder purchaseOrder) throws AxelorException {
@@ -65,15 +72,19 @@ public class SpecifiqueServiceImpl implements SpecifiqueService {
           TraceBackRepository.CATEGORY_INCONSISTENCY,
           I18n.get(IExceptionSpecifiqueMessage.PURCHASE_ORDER_VALIDATED));
     }
-
+    // Maj du temoin de modification
     purchaseOrder.setOrderBeingEdited(true);
     return false;
   }
-
+  /* Méthode de validation des modifications de la commande d'achat */
   @Override
-  public Boolean validateChangesPurchaseOrder(PurchaseOrder purchaseOrder) throws AxelorException {
+  @Transactional(rollbackOn = {Exception.class})
+  public void validateChangesPurchaseOrder(PurchaseOrder purchaseOrder) throws AxelorException {
+    // MAJ du temoin de modification
     purchaseOrder.setOrderBeingEdited(false);
-    
-    return null;
+    // Annulation des BR associés
+    purchaseOrderStockService.cancelReceipt(purchaseOrder);
+    // Création des nouveaux BR
+    purchaseOrderStockService.createStockMoveFromPurchaseOrder(purchaseOrder);
   }
 }
