@@ -1,11 +1,16 @@
 package bzh.toolapp.apps.specifique.service;
 
+import com.axelor.apps.purchase.db.PurchaseOrder;
 import com.axelor.apps.stock.db.StockMove;
 import com.axelor.exception.AxelorException;
 
 public interface SpecifiqueService {
 
-	public Boolean prepared(StockMove stockMove) throws AxelorException;
+  public Boolean prepared(StockMove stockMove) throws AxelorException;
 
-	public void selectOrCreateYard(String yardName) throws AxelorException;
+  public void selectOrCreateYard(String yardName) throws AxelorException;
+
+  public Boolean enableEditPurchaseOrder(PurchaseOrder purchaseOrder) throws AxelorException;
+
+  public Boolean validateChangesPurchaseOrder(PurchaseOrder purchaseOrder) throws AxelorException;
 }
