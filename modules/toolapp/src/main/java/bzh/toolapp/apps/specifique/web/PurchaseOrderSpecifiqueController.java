@@ -27,18 +27,15 @@ public class PurchaseOrderSpecifiqueController {
       TraceBackService.trace(response, e);
     }
   }
-  public void enableEditOrder(ActionRequest request, ActionResponse response) {
+
+  public void validateChangesPurchaseOrder(ActionRequest request, ActionResponse response) {
     PurchaseOrder purchaseOrder =
         Beans.get(PurchaseOrderRepository.class)
             .find(request.getContext().asType(PurchaseOrder.class).getId());
 
     try {
-      boolean checkAvailabiltyRequest =
-          Beans.get(SpecifiqueService.class).enableEditPurchaseOrder(purchaseOrder);
+      Beans.get(SpecifiqueService.class).validateChangesPurchaseOrder(purchaseOrder);
       response.setReload(true);
-      if (checkAvailabiltyRequest) {
-        response.setNotify(I18n.get(IExceptionSpecifiqueMessage.PURCHASE_ORDER_EDIT_ORDER_NOTIFY));
-      }
     } catch (Exception e) {
       TraceBackService.trace(response, e);
     }
