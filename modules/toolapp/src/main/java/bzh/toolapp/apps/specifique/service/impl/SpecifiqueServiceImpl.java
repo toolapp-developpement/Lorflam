@@ -1,11 +1,16 @@
 package bzh.toolapp.apps.specifique.service.impl;
 
+import bzh.toolapp.apps.specifique.exception.IExceptionSpecifiqueMessage;
 import bzh.toolapp.apps.specifique.service.SpecifiqueService;
 import com.avr.apps.helpdesk.db.Yard;
 import com.avr.apps.helpdesk.db.repo.YardRepository;
+import com.axelor.apps.purchase.db.PurchaseOrder;
+import com.axelor.apps.purchase.db.repo.PurchaseOrderRepository;
 import com.axelor.apps.stock.db.StockMove;
 import com.axelor.apps.stock.db.repo.StockMoveRepository;
 import com.axelor.exception.AxelorException;
+import com.axelor.exception.db.repo.TraceBackRepository;
+import com.axelor.i18n.I18n;
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
 import java.lang.invoke.MethodHandles;
@@ -49,5 +54,26 @@ public class SpecifiqueServiceImpl implements SpecifiqueService {
       yard.setYardReference(yardName);
       yardRepository.save(yard);
     }
+  }
+
+  @Override
+  @Transactional(rollbackOn = {Exception.class})
+  public Boolean enableEditPurchaseOrder(PurchaseOrder purchaseOrder) throws AxelorException {
+    if (purchaseOrder.getStatusSelect() == PurchaseOrderRepository.STATUS_FINISHED) {
+      throw new AxelorException(
+          purchaseOrder,
+          TraceBackRepository.CATEGORY_INCONSISTENCY,
+          I18n.get(IExceptionSpecifiqueMessage.PURCHASE_ORDER_VALIDATED));
+    }
+
+    purchaseOrder.setOrderBeingEdited(true);
+    return false;
+  }
+
+  @Override
+  public Boolean validateChangesPurchaseOrder(PurchaseOrder purchaseOrder) throws AxelorException {
+    purchaseOrder.setOrderBeingEdited(false);
+    
+    return null;
   }
 }
