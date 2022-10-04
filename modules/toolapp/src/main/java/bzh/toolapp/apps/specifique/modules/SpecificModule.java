@@ -20,11 +20,11 @@ import com.avr.apps.helpdesk.service.impl.PurchaseOrderCreateStockServiceImpl;
 import com.avr.apps.helpdesk.service.impl.SaleOrderCreateStockMoveServiceImpl;
 import com.axelor.app.AxelorModule;
 import com.axelor.apps.bankpayment.service.config.BankPaymentConfigService;
-import com.axelor.apps.production.productionorder.service.ProductionOrderSaleOrderServiceBusinessImpl;
 import com.axelor.apps.businessproduction.service.SaleOrderLineBusinessProductionServiceImpl;
 import com.axelor.apps.businessproject.service.ProjectStockMoveInvoiceServiceImpl;
 import com.axelor.apps.hr.service.bankorder.BankOrderServiceHRImpl;
 import com.axelor.apps.production.db.repo.StockMoveLineProductionRepository;
+import com.axelor.apps.production.service.productionorder.ProductionOrderSaleOrderServiceImpl;
 
 public class SpecificModule extends AxelorModule {
 
@@ -37,7 +37,7 @@ public class SpecificModule extends AxelorModule {
     bind(PurchaseOrderCreateStockServiceImpl.class)
         .to(PurchaseOrderStockSpecifiqueServiceImpl.class);
     bind(SpecifiqueService.class).to(SpecifiqueServiceImpl.class);
-    bind(ProductionOrderSaleOrderServiceBusinessImpl.class)
+    bind(ProductionOrderSaleOrderServiceImpl.class)
         .to(ProductionOrderSaleOrderSpecifiqueServiceImpl.class);
     bind(ProjectStockMoveInvoiceServiceImpl.class).to(StockMoveInvoiceSpecifiqueServiceImpl.class);
     bind(BankOrderServiceHRImpl.class).to(BankOrderServiceSpecifiqueImpl.class);
