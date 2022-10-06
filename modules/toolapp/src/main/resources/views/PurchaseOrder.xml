@@ -17,6 +17,17 @@
           onClick="action-purchase-order-method-validate-changes"/>
       </insert>
     </extend>
+    <extend target="//panel-related[@name='purchaseOrderLineListPanel']">
+      <replace>
+        <panel-related name="purchaseOrderLineListPanel" field="purchaseOrderLineList"
+          canNew="statusSelect &lt; 4 &amp;&amp; orderBeingEdited"
+          canRemove="statusSelect &lt; 4 &amp;&amp; orderBeingEdited"
+          canEdit="statusSelect &lt; 4 &amp;&amp; orderBeingEdited"
+          grid-view="purchase-order-line-purchase-order-grid" title="PO lines detail" colSpan="12"
+          onChange="action-purchase-order-method-compute" form-view="purchase-order-line-form"
+          canMove="true" orderBy="sequence" height="30"/>
+      </replace>
+    </extend>
   </form>
   <action-method name="action-purchase-order-method-edit-order">
     <call class="bzh.toolapp.apps.specifique.web.PurchaseOrderSpecifiqueController"

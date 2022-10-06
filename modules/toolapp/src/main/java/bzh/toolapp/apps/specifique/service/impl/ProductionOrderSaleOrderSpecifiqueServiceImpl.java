@@ -17,7 +17,6 @@ import com.axelor.exception.AxelorException;
 import com.axelor.exception.db.repo.TraceBackRepository;
 import com.axelor.i18n.I18n;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.inject.Inject;
 
@@ -93,7 +92,7 @@ public class ProductionOrderSaleOrderSpecifiqueServiceImpl
        */
       LocalDateTime startedDate = LocalDateTime.now();
       if (saleOrderLine.getSaleOrder().getDeliveryDate() != null) {
-        LocalDate startDate = saleOrderLine.getSaleOrder().getDeliveryDate();
+        startedDate = saleOrderLine.getSaleOrder().getDeliveryDate().atStartOfDay();
         /* startedDate = startDate.minusDays(3).atStartOfDay(); */
       }
 
