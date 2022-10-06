@@ -4,6 +4,7 @@ import bzh.toolapp.apps.specifique.service.StockMoveLineSpecifiqueCreationServic
 import com.avr.apps.helpdesk.service.StockMoveCreateService;
 import com.avr.apps.helpdesk.service.impl.PurchaseOrderCreateStockServiceImpl;
 import com.axelor.apps.account.db.TaxLine;
+import com.axelor.apps.base.db.CancelReason;
 import com.axelor.apps.base.db.Product;
 import com.axelor.apps.base.db.Unit;
 import com.axelor.apps.base.service.ShippingCoefService;
@@ -15,15 +16,18 @@ import com.axelor.apps.purchase.db.repo.PurchaseOrderLineRepository;
 import com.axelor.apps.stock.db.StockMove;
 import com.axelor.apps.stock.db.StockMoveLine;
 import com.axelor.apps.stock.db.repo.StockMoveLineRepository;
+import com.axelor.apps.stock.db.repo.StockMoveRepository;
 import com.axelor.apps.stock.service.PartnerStockSettingsService;
 import com.axelor.apps.stock.service.StockMoveLineService;
 import com.axelor.apps.stock.service.StockMoveService;
 import com.axelor.apps.supplychain.service.PurchaseOrderLineServiceSupplychainImpl;
 import com.axelor.apps.supplychain.service.StockMoveLineServiceSupplychain;
 import com.axelor.exception.AxelorException;
+import com.axelor.inject.Beans;
 import com.google.inject.Inject;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.List;
 
 public class PurchaseOrderStockSpecifiqueServiceImpl extends PurchaseOrderCreateStockServiceImpl {
 
@@ -151,5 +155,32 @@ public class PurchaseOrderStockSpecifiqueServiceImpl extends PurchaseOrderCreate
         null,
         null,
         purchaseOrderLine);
+  }
+
+  @Override
+  public void cancelReceipt(PurchaseOrder purchaseOrder) throws AxelorException {
+    //  Recuperation de la liste des bons de reception
+    List<StockMove> stockMoveList =
+        Beans.get(StockMoveRepository.class)
+            .all()
+            .filter(
+                "self.originTypeSelect = ? AND self.originId = ? AND self.statusSelect = 2",
+                StockMoveRepository.ORIGIN_PURCHASE_ORDER,
+                purchaseOrder.getId())
+            .fetch();
+    if (!stockMoveList.isEmpty()) {
+      CancelReason cr = new CancelReason("PurchaseOrderChanged");
+      // Boucle sur les bons pour les annuler et les archiver
+      for (StockMove stockMove : stockMoveList) {
+
+        stockMoveService.cancel(stockMove, cr);
+        stockMove.setArchived(true);
+
+        for (StockMoveLine sml : stockMove.getStockMoveLineList()) {
+          sml.setPurchaseOrderLine(null);
+          sml.setArchived(true);
+        }
+      }
+    }
   }
 }

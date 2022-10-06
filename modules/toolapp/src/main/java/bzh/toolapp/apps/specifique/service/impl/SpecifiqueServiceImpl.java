@@ -74,6 +74,10 @@ public class SpecifiqueServiceImpl implements SpecifiqueService {
     }
     // Maj du temoin de modification
     purchaseOrder.setOrderBeingEdited(true);
+
+    // Annulation et Archivages des BR associés
+    purchaseOrderStockService.cancelReceipt(purchaseOrder);
+
     return false;
   }
   /* Méthode de validation des modifications de la commande d'achat */
@@ -82,8 +86,7 @@ public class SpecifiqueServiceImpl implements SpecifiqueService {
   public void validateChangesPurchaseOrder(PurchaseOrder purchaseOrder) throws AxelorException {
     // MAJ du temoin de modification
     purchaseOrder.setOrderBeingEdited(false);
-    // Annulation des BR associés
-    purchaseOrderStockService.cancelReceipt(purchaseOrder);
+
     // Création des nouveaux BR
     purchaseOrderStockService.createStockMoveFromPurchaseOrder(purchaseOrder);
   }
