@@ -4,7 +4,6 @@ import bzh.toolapp.apps.specifique.service.StockMoveLineSpecifiqueCreationServic
 import com.avr.apps.helpdesk.service.StockMoveCreateService;
 import com.avr.apps.helpdesk.service.impl.PurchaseOrderCreateStockServiceImpl;
 import com.axelor.apps.account.db.TaxLine;
-import com.axelor.apps.base.db.CancelReason;
 import com.axelor.apps.base.db.Product;
 import com.axelor.apps.base.db.Unit;
 import com.axelor.apps.base.service.ShippingCoefService;
@@ -169,11 +168,10 @@ public class PurchaseOrderStockSpecifiqueServiceImpl extends PurchaseOrderCreate
                 purchaseOrder.getId())
             .fetch();
     if (!stockMoveList.isEmpty()) {
-      CancelReason cr = new CancelReason("PurchaseOrderChanged");
       // Boucle sur les bons pour les annuler et les archiver
       for (StockMove stockMove : stockMoveList) {
 
-        stockMoveService.cancel(stockMove, cr);
+        stockMoveService.cancel(stockMove);
         stockMove.setArchived(true);
 
         for (StockMoveLine sml : stockMove.getStockMoveLineList()) {
