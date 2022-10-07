@@ -7,16 +7,11 @@ import bzh.toolapp.apps.specifique.service.bankorder.BankOrderServiceSpecifiqueI
 import bzh.toolapp.apps.specifique.service.bankorder.BankPaymentConfigSpecifiqueService;
 import bzh.toolapp.apps.specifique.service.etatstock.BillOfMaterialServiceSpecifique;
 import bzh.toolapp.apps.specifique.service.etatstock.BillOfMaterialServiceSpecifiqueImpl;
-import bzh.toolapp.apps.specifique.service.impl.ProductionOrderSaleOrderSpecifiqueServiceImpl;
-import bzh.toolapp.apps.specifique.service.impl.PurchaseOrderStockSpecifiqueServiceImpl;
-import bzh.toolapp.apps.specifique.service.impl.SaleOrderLineSpecifiqueServiceImpl;
-import bzh.toolapp.apps.specifique.service.impl.SaleOrderStockSpecifiqueServiceImpl;
-import bzh.toolapp.apps.specifique.service.impl.SpecifiqueServiceImpl;
-import bzh.toolapp.apps.specifique.service.impl.StockMoveInvoiceSpecifiqueServiceImpl;
-import bzh.toolapp.apps.specifique.service.impl.StockMoveLineSpecifiqueCreationServiceImpl;
+import bzh.toolapp.apps.specifique.service.impl.*;
 import bzh.toolapp.apps.specifique.service.lcr.LcrService;
 import bzh.toolapp.apps.specifique.service.lcr.LcrServiceImpl;
 import com.avr.apps.helpdesk.service.impl.PurchaseOrderCreateStockServiceImpl;
+import com.avr.apps.helpdesk.service.impl.PurchaseOrderCreateSupplychainServiceImpl;
 import com.avr.apps.helpdesk.service.impl.SaleOrderCreateStockMoveServiceImpl;
 import com.axelor.app.AxelorModule;
 import com.axelor.apps.bankpayment.service.config.BankPaymentConfigService;
@@ -46,5 +41,7 @@ public class SpecificModule extends AxelorModule {
         .to(SaleOrderLineSpecifiqueServiceImpl.class);
     bind(LcrService.class).to(LcrServiceImpl.class);
     bind(BillOfMaterialServiceSpecifique.class).to(BillOfMaterialServiceSpecifiqueImpl.class);
+    bind(PurchaseOrderCreateSupplychainServiceImpl.class)
+        .to(PurchaseOrderCreateSpecifiqueServiceImpl.class);
   }
 }

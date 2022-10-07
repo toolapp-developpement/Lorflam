@@ -1,11 +1,17 @@
 package bzh.toolapp.apps.specifique.service.impl;
 
+import bzh.toolapp.apps.specifique.exception.IExceptionSpecifiqueMessage;
 import bzh.toolapp.apps.specifique.service.SpecifiqueService;
 import com.avr.apps.helpdesk.db.Yard;
 import com.avr.apps.helpdesk.db.repo.YardRepository;
+import com.axelor.apps.purchase.db.PurchaseOrder;
+import com.axelor.apps.purchase.db.repo.PurchaseOrderRepository;
 import com.axelor.apps.stock.db.StockMove;
 import com.axelor.apps.stock.db.repo.StockMoveRepository;
+import com.axelor.apps.supplychain.service.PurchaseOrderStockService;
 import com.axelor.exception.AxelorException;
+import com.axelor.exception.db.repo.TraceBackRepository;
+import com.axelor.i18n.I18n;
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
 import java.lang.invoke.MethodHandles;
@@ -19,12 +25,18 @@ public class SpecifiqueServiceImpl implements SpecifiqueService {
   protected StockMoveRepository stockMoveRepository;
   protected final SpecifiqueService specifiqueService;
   protected YardRepository yardRepository;
+  protected PurchaseOrderStockService purchaseOrderStockService;
 
   @Inject
-  public SpecifiqueServiceImpl(StockMoveRepository smr, SpecifiqueService sp, YardRepository yr) {
+  public SpecifiqueServiceImpl(
+      StockMoveRepository smr,
+      SpecifiqueService sp,
+      YardRepository yr,
+      PurchaseOrderStockService poss) {
     this.stockMoveRepository = smr;
     this.specifiqueService = sp;
     this.yardRepository = yr;
+    this.purchaseOrderStockService = poss;
   }
 
   @Transactional
@@ -49,5 +61,33 @@ public class SpecifiqueServiceImpl implements SpecifiqueService {
       yard.setYardReference(yardName);
       yardRepository.save(yard);
     }
+  }
+  /* Méthode d'autorisation de modification de la commande d'achat */
+  @Override
+  @Transactional(rollbackOn = {Exception.class})
+  public Boolean enableEditPurchaseOrder(PurchaseOrder purchaseOrder) throws AxelorException {
+    if (purchaseOrder.getStatusSelect() == PurchaseOrderRepository.STATUS_FINISHED) {
+      throw new AxelorException(
+          purchaseOrder,
+          TraceBackRepository.CATEGORY_INCONSISTENCY,
+          I18n.get(IExceptionSpecifiqueMessage.PURCHASE_ORDER_VALIDATED));
+    }
+    // Maj du temoin de modification
+    purchaseOrder.setOrderBeingEdited(true);
+
+    // Annulation et Archivages des BR associés
+    purchaseOrderStockService.cancelReceipt(purchaseOrder);
+
+    return false;
+  }
+  /* Méthode de validation des modifications de la commande d'achat */
+  @Override
+  @Transactional(rollbackOn = {Exception.class})
+  public void validateChangesPurchaseOrder(PurchaseOrder purchaseOrder) throws AxelorException {
+    // MAJ du temoin de modification
+    purchaseOrder.setOrderBeingEdited(false);
+
+    // Création des nouveaux BR
+    purchaseOrderStockService.createStockMoveFromPurchaseOrder(purchaseOrder);
   }
 }

@@ -11,10 +11,19 @@ public interface IExceptionSpecifiqueMessage {
                                                                                                                      */;
   static final String BANK_ORDER_RECEIVER_BANK_DETAILS_MISSING_PARTNER_ADDRESS = /* $$( */
       "Please fill the address in %s's partner details." /* ) */;
+
   static final String BANK_ORDER_RECEIVER_BANK_DETAILS_MISSING_PARTNER_ZIP = /* $$( */
       "Please fill the zip in %s's partner details." /* ) */;
+
   static final String BANK_ORDER_RECEIVER_BANK_DETAILS_MISSING_PARTNER_CITY = /* $$( */
       "Please fill the city in %s's partner details." /* ) */;
+
   static final String ACCOUNT_CONFIG_SEQUENCE_12 = /* $$( */
       "%s : Please, configure a sequence for the Bill of exchange and the company %s" /* ) */;
+
+  static final String PURCHASE_ORDER_VALIDATED = /* $$( */
+      "This purchase order is validated." /* ) */;
+
+  static final String PURCHASE_ORDER_EDIT_ORDER_NOTIFY = /* $$( */
+      "At least one purchase order line has a stock move with availability request." /* ) */;
 }
