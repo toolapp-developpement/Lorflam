@@ -14,7 +14,7 @@
           onClick="action-purchase-order-method-edit-order"/>
         <button name="validatedChangesOrderBtn" title="Validate changes"
           showIf="statusSelect == 3 &amp;&amp; orderBeingEdited" colSpan="12"
-          onClick="action-purchase-order-method-validate-changes"/>
+          onClick="save, action-purchase-order-method-validate-changes"/>
       </insert>
     </extend>
     <extend target="//panel-related[@name='purchaseOrderLineListPanel']">
