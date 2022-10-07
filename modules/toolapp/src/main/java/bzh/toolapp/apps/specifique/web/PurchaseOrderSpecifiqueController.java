@@ -35,6 +35,7 @@ public class PurchaseOrderSpecifiqueController {
 
     try {
       Beans.get(SpecifiqueService.class).validateChangesPurchaseOrder(purchaseOrder);
+
       response.setReload(true);
     } catch (Exception e) {
       TraceBackService.trace(response, e);
