@@ -29,7 +29,7 @@ import com.axelor.i18n.I18n;
 
 public class ProductionOrderSaleOrderSpecifiqueServiceImpl extends ProductionOrderSaleOrderServiceBusinessImpl {
 
-	private final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+//	private final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	protected ProductionOrderServiceBusinessImpl productionOrderServiceBusinessImpl;
 
@@ -86,7 +86,7 @@ public class ProductionOrderSaleOrderSpecifiqueServiceImpl extends ProductionOrd
 			 */
 			LocalDateTime startedDate = LocalDateTime.now();
 			if (saleOrderLine.getSaleOrder().getDeliveryDate() != null) {
-				LocalDate startDate = saleOrderLine.getSaleOrder().getDeliveryDate();
+				startedDate = saleOrderLine.getSaleOrder().getDeliveryDate().atStartOfDay();;
 				/* startedDate = startDate.minusDays(3).atStartOfDay(); */
 			}
 
