@@ -21,7 +21,7 @@
       </extend>
       <extend target="//field[@name='discountTypeSelect']">
          <insert position="after">
-            <field name="rateToApplySol" title="Tarif à appliquer" canEdit="true"/>
+            <field name="rateToApply" colSpan="6" grid-view="rate-to-apply-grid"/>
          </insert>
       </extend>
 

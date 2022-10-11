@@ -14,7 +14,7 @@
       <string
          name="yard2"
          title="Référence chantier" />
-      <string name="rateToApplySol" title="Tarif à appliquer"/>
+      <many-to-one name="rateToApply" ref="com.avr.apps.helpdesk.db.RateToApply" title="Tarif à appliquer" />
    </entity>
 
 </domain-models>
