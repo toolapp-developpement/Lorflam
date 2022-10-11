@@ -79,7 +79,7 @@
             <insert position="after">
                 <field name="guarantee" colSpan="6" form-view="guarantee-form" grid-view="guarantee-grid"/>
                 <field name="technicalVisit" colSpan="6" form-view="technical-visit-form" grid-view="technical-visit-grid"/>
-                <field name="rateToApply" colSpan="6" form-view="rate-to-apply-form" grid-view="rate-to-apply-grid"/>
+                <field name="rateToApply" colSpan="6" form-view="rate-to-apply-form" grid-view="rate-to-apply-grid" hidden="true"/>
             </insert>
         </extend>
 
