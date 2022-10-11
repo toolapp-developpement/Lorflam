@@ -60,12 +60,16 @@
             <attribute name="hidden" value="true"/>
         </extend>
 
+        <extend target="//field[@name='subject']">
+            <attribute name="hidden" value="true"/>
+        </extend>
+
         <extend target="//field[@name='customer']">
             <insert position="after">
                 <field name="metafile" colSpan="6" widget="binary-link"/>
                 <field name="product" colSpan="6" form-view="product-form" grid-view="product-grid" onChange="action-stock-location-line-record-total-quantities, action-empty-all-link-related-to-product-in-ticket"/>
                 <field name="ticketProblemSource" colSpan="6" form-view="ticket-problem-source-form" grid-view="ticket-problem-source-grid"/>
-                <field name="yard" colSpan="6" form-view="yard-form" grid-view="yard-grid"/>
+                <field name="yard" colSpan="6" form-view="yard-form" grid-view="yard-grid" target-name="yardReference" onChange="action-ticket-subject-record-value-yard"/>
                 <field name="trackingNumber" colSpan="6" form-view="tracking-number-form" grid-view="tracking-number-grid"/>
                 <field name="email" colSpan="6" form-view="email-address-form" grid-view="email-address-grid"/>
             </insert>
@@ -75,7 +79,7 @@
             <insert position="after">
                 <field name="guarantee" colSpan="6" form-view="guarantee-form" grid-view="guarantee-grid"/>
                 <field name="technicalVisit" colSpan="6" form-view="technical-visit-form" grid-view="technical-visit-grid"/>
-                <field name="rateToApply" colSpan="6" form-view="rate-to-apply-form" grid-view="rate-to-apply-grid"/>
+                <field name="rateToApply" colSpan="6" form-view="rate-to-apply-form" grid-view="rate-to-apply-grid" hidden="true"/>
             </insert>
         </extend>
 
@@ -113,6 +117,10 @@
         <field name="stockMoveList" expr="eval: []"/>
         <field name="saleOrderList" expr="eval: []"/>
         <field name="purchaseRequestList" expr="eval: []"/>
+    </action-record>
+
+    <action-record name="action-ticket-subject-record-value-yard" model="com.axelor.apps.helpdesk.db.Ticket">
+        <field name="subject" expr="eval: this.yard.name"/>
     </action-record>
 
     <action-view name="action-avr-ticket-view-get-alert-quality-by-product" title="Quality alert" model="com.axelor.apps.quality.db.QualityAlert">

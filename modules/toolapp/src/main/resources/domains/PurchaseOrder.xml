@@ -3,12 +3,10 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.4.xsd">
 
-  <module name="sale" package="com.axelor.apps.sale.db"/>
+  <module name="purchase" package="com.axelor.apps.purchase.db"/>
 
-  <entity name="SaleOrderLine" lang="java">
-    <string name="yard2" title="Référence chantier"/>
-    <many-to-one name="rateToApply" ref="com.avr.apps.helpdesk.db.RateToApply"
-      title="Tarif à appliquer"/>
+  <entity name="PurchaseOrder" lang="java">
+    <boolean name="orderBeingEdited"/>
   </entity>
 
 </domain-models>
