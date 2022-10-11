@@ -22,6 +22,6 @@
         <one-to-many name="saleOrderList" ref="com.axelor.apps.sale.db.SaleOrder" title="Commande client" mappedBy="ticket" />
         <one-to-many name="purchaseRequestList" ref="com.axelor.apps.purchase.db.PurchaseRequest" title="Demande d'achat" mappedBy="ticket" />
 
-        <many-to-one name="metafile" ref="com.axelor.meta.db.MetaFile" title="Facture PDF" required="true"/>
+        <many-to-one name="metafile" ref="com.axelor.meta.db.MetaFile" title="Facture PDF"/>
     </entity>
 </domain-models>
