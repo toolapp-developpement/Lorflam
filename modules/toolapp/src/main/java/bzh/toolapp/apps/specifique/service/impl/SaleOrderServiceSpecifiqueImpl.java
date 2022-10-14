@@ -18,6 +18,7 @@ import com.axelor.apps.supplychain.service.SaleOrderStockService;
 import com.axelor.apps.supplychain.service.app.AppSupplychainService;
 import com.axelor.exception.AxelorException;
 import com.google.inject.Inject;
+import com.google.inject.persist.Transactional;
 
 import java.util.List;
 
@@ -94,6 +95,7 @@ public class SaleOrderServiceSpecifiqueImpl extends SaleOrderServiceSupplychainI
     }
 
     @Override
+    @Transactional(rollbackOn = {Exception.class})
     public void validateChanges(SaleOrder saleOrder) throws AxelorException {
         super.validateChanges(saleOrder);
         //Création des ordres de production et des ordres de fabrication suite à la modification
