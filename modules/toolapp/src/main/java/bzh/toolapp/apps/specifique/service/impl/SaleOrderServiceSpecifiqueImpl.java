@@ -5,8 +5,8 @@ import com.axelor.apps.base.db.repo.CancelReasonRepository;
 import com.axelor.apps.base.service.app.AppBaseService;
 import com.axelor.apps.production.db.ProductionOrder;
 import com.axelor.apps.production.db.repo.ProductionOrderRepository;
+import com.axelor.apps.production.service.SaleOrderWorkflowServiceProductionImpl;
 import com.axelor.apps.production.service.manuforder.ManufOrderWorkflowService;
-import com.axelor.apps.production.service.productionorder.ProductionOrderService;
 import com.axelor.apps.sale.db.SaleOrder;
 import com.axelor.apps.sale.db.repo.SaleOrderLineRepository;
 import com.axelor.apps.sale.db.repo.SaleOrderRepository;
@@ -24,14 +24,13 @@ import java.util.List;
 
 public class SaleOrderServiceSpecifiqueImpl extends SaleOrderServiceSupplychainImpl {
     @Inject
-    private ProductionOrderRepository productionOrderRepository;
+    private final ProductionOrderRepository productionOrderRepository;
     @Inject
-    private ProductionOrderService productionOrderService;
+    private final ManufOrderWorkflowService manufOrderWorkflowService;
     @Inject
-    private ManufOrderWorkflowService manufOrderWorkflowService;
+    private final CancelReasonRepository cancelReasonRepository;
     @Inject
-    private CancelReasonRepository cancelReasonRepository;
-
+    private final SaleOrderWorkflowServiceProductionImpl saleOrderWorkflowServiceProduction;
 
     @Inject
     public SaleOrderServiceSpecifiqueImpl(
@@ -44,8 +43,8 @@ public class SaleOrderServiceSpecifiqueImpl extends SaleOrderServiceSupplychainI
             AppSupplychainService appSupplychainService,
             SaleOrderStockService saleOrderStockService,
             ProductionOrderRepository productionOrderRepository,
-            ProductionOrderService productionOrderService, ManufOrderWorkflowService manufOrderWorkflowService,
-            CancelReasonRepository cancelReasonRepository) {
+            ManufOrderWorkflowService manufOrderWorkflowService,
+            CancelReasonRepository cancelReasonRepository, SaleOrderWorkflowServiceProductionImpl saleOrderWorkflowServiceProduction) {
         super(
                 saleOrderLineService,
                 appBaseService,
@@ -56,9 +55,9 @@ public class SaleOrderServiceSpecifiqueImpl extends SaleOrderServiceSupplychainI
                 appSupplychainService,
                 saleOrderStockService);
         this.productionOrderRepository = productionOrderRepository;
-        this.productionOrderService = productionOrderService;
         this.manufOrderWorkflowService = manufOrderWorkflowService;
         this.cancelReasonRepository = cancelReasonRepository;
+        this.saleOrderWorkflowServiceProduction = saleOrderWorkflowServiceProduction;
     }
 
     @Override
@@ -83,12 +82,13 @@ public class SaleOrderServiceSpecifiqueImpl extends SaleOrderServiceSupplychainI
                                     try {
                                         manufOrderWorkflowService.cancel(manufOrder, cancelReason,
                                                 cancelReason.getName());
+
+                                        manufOrder.setArchived(true);
                                     } catch (AxelorException e) {
                                         throw new RuntimeException(e);
                                     }
                                 }
                         );
-                        productionOrder.setSaleOrder(null);
                         productionOrder.setArchived(true);}
                 );
         return checkAvailabiltyRequest;
@@ -99,7 +99,6 @@ public class SaleOrderServiceSpecifiqueImpl extends SaleOrderServiceSupplychainI
     public void validateChanges(SaleOrder saleOrder) throws AxelorException {
         super.validateChanges(saleOrder);
         //Création des ordres de production et des ordres de fabrication suite à la modification
-        productionOrderService.createProductionOrder(saleOrder);
-
+        saleOrderWorkflowServiceProduction.confirmSaleOrder(saleOrder);
     }
 }
