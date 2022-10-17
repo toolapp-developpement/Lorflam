@@ -5,7 +5,7 @@
 
   <module name="base" package="com.axelor.apps.base.db"/>
 
-  <entity name="CancelReason">
+  <entity name="CancelReason" lang="java">
     <boolean name="isDefault"/>
   </entity>
 
