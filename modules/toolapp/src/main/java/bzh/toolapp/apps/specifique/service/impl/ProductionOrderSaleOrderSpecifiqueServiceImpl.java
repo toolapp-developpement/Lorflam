@@ -82,12 +82,15 @@ public class ProductionOrderSaleOrderSpecifiqueServiceImpl extends ProductionOrd
 
 			/*
 			 * Modification de la date de debut de planification de l'OF par la date
-			 * d'expedition de l'entete de commande de vente - 3jours
+			 * d'expedition de la ligne de la commande et si elle est vide alors
+			 * on applique la date de l'entete de commande de vente
 			 */
 			LocalDateTime startedDate = LocalDateTime.now();
-			if (saleOrderLine.getSaleOrder().getDeliveryDate() != null) {
-				startedDate = saleOrderLine.getSaleOrder().getDeliveryDate().atStartOfDay();;
-				/* startedDate = startDate.minusDays(3).atStartOfDay(); */
+
+			if (saleOrderLine.getEstimatedDelivDate() != null){
+				startedDate = saleOrderLine.getEstimatedDelivDate().atStartOfDay();
+			}else if (saleOrderLine.getSaleOrder().getDeliveryDate() != null) {
+				startedDate = saleOrderLine.getSaleOrder().getDeliveryDate().atStartOfDay();
 			}
 
 			return generateManufOrders(productionOrder, billOfMaterial, qty, startedDate, saleOrderLine.getSaleOrder());
