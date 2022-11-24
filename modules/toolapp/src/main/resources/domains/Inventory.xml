@@ -3,11 +3,9 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.4.xsd">
 
-  <module name="toolapp" package="com.axelor.apps.stock.db"/>
+  <module name="stock" package="com.axelor.apps.stock.db"/>
 
   <entity name="Inventory" lang="java">
-
-    <many-to-one name="vendor" ref="com.axelor.apps.base.db.Partner" title="Vendor"/>
-
-  </entity>
+    <many-to-one name="supplier" ref="com.axelor.apps.base.db.Partner" title="Supplier"/>
+  </entity> 
 </domain-models>
