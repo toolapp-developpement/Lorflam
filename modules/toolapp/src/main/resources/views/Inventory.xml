@@ -8,10 +8,19 @@
     <extend target="//panel[@name='fillInventoryPanel']/field[@name='product']">
       <insert position="after">
         <field name="supplier" domain="self.isSupplier = true"></field>
+      </insert> 
+    </extend> 
+    <extend target="//panel[@name='fillInventoryPanel']/field[@name='includeObsolete']">
+      <insert position="after">
+        <spacer colspan="6"/> 
       </insert>
     </extend>
- 
-    <extend target="//panel[@name='fillInventoryPanel']/field[@name='includeObsolete']">
+    <extend target="//panel[@name='filterPanel']/field[@name='product']">
+      <insert position="after">
+        <field name="supplier" domain="self.isSupplier = true"></field>
+      </insert> 
+    </extend> 
+    <extend target="//panel[@name='filterPanel']/field[@name='includeObsolete']">
       <insert position="after">
         <spacer colspan="6"/> 
       </insert>

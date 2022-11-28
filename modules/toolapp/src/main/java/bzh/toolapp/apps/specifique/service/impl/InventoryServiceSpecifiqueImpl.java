@@ -110,12 +110,37 @@ public class InventoryServiceSpecifiqueImpl extends InventoryService {
     // ajout de code spécifique
     if (inventory.getSupplier() != null)
     {
-      query += this.filterInventoryFromStockMove(inventory);
-      //query += this.filterInventoryFromSupplierCatalog(inventory);
+      //query += this.filterInventoryFromStockMove(inventory);
+      query += this.filterInventoryFromSupplierCatalog(inventory);
     }
     //fin du code spécifique
 
     return stockLocationLineRepository.all().filter(query, params.toArray()).fetch();
+  }
+
+  
+  private String filterInventoryFromSupplierCatalog(Inventory inventory)
+  {
+    ArrayList<Long> listProduct = new ArrayList<>();
+    String query = "";
+    String idString;
+    //on parcourt la liste des articles du catalogue fournisseur
+    for (SupplierCatalog supplierCatalog :
+        supplierCatalogRepository
+            .all()
+            .filter("self.supplierPartner =  ?", inventory.getSupplier())
+            .fetch()) {
+      // on remplit les listes avec les valeurs des lignes de mouvement de stock      
+      if (!listProduct.contains(supplierCatalog.getProduct().getId())) {
+        listProduct.add(supplierCatalog.getProduct().getId());
+      }
+    }
+    // on filtre les lignes d'inventaires selon la liste des articles du catalogue fournisseur
+    if (!listProduct.isEmpty()) {
+      idString = listProduct.stream().map(l -> l.toString()).collect(Collectors.joining(","));
+      query += "and self.product.id IN (" + idString + ")";        
+    }
+    return query;
   }
 
   // on va chercher les lignes de mouvement de stock qui correspondent au filtre fournisseur
@@ -138,6 +163,7 @@ public class InventoryServiceSpecifiqueImpl extends InventoryService {
         stockMoveLineRepository
             .all()
             .filter("self.stockMove.partner =  ?", inventory.getSupplier())
+            //TODO ajouter un filtre sur le type de mouvement de stock et sur le statut du mouvement de stock
             .fetch()) {
       // on remplit les listes avec les valeurs des lignes de mouvement de stock
       if (stockMoveLine.getTrackingNumber() != null
@@ -180,27 +206,4 @@ public class InventoryServiceSpecifiqueImpl extends InventoryService {
     return query;
   }
 
-  private String filterInventoryFromSupplierCatalog(Inventory inventory)
-  {
-    ArrayList<Long> listProduct = new ArrayList<>();
-    String query = "";
-    String idString;
-    //on parcourt la liste des articles du catalogue fournisseur
-    for (SupplierCatalog supplierCatalog :
-        supplierCatalogRepository
-            .all()
-            .filter("self.supplierPartner =  ?", inventory.getSupplier())
-            .fetch()) {
-      // on remplit les listes avec les valeurs des lignes de mouvement de stock      
-      if (!listProduct.contains(supplierCatalog.getProduct().getId())) {
-        listProduct.add(supplierCatalog.getProduct().getId());
-      }
-    }
-    // on filtre les lignes d'inventaires selon la liste des articles du catalogue fournisseur
-    if (!listProduct.isEmpty()) {
-      idString = listProduct.stream().map(l -> l.toString()).collect(Collectors.joining(","));
-      query += "and self.product.id IN (" + idString + ")";        
-    }
-    return query;
-  }
 }
