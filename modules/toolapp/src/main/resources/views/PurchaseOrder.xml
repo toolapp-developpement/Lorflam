@@ -44,25 +44,20 @@
     </extend>
 
     <extend target="//field[@name='supplierPartner']">
-      <attribute name="onChange"
-        value="action-group-purchase-order-partner-onchange,action-initialize-order-edit-true "/>
+      <attribute name="onChange" value="action-group-purchase-order-partner-onchange,action-initialize-order-edit-true " />
     </extend>
 
     <extend target="//button[@name='draftBtn']">
-      <attribute name="onClick"
-        value="action-initialize-order-edit-true,action-purchase-order-record-draft,save"/>
-    </extend>
+      <attribute name="onClick" value="action-initialize-order-edit-true,action-purchase-order-record-draft,save" />
+    </extend> 
     <extend target="//button[@name='validateBtn']">
-      <attribute name="onClick"
-        value="action-initialize-order-edit,action-group-purchase-order-on-validate-actions"/>
+      <attribute name="onClick" value="action-initialize-order-edit,action-group-purchase-order-on-validate-actions" />
     </extend>
     <extend target="//button[@name='cancelBtn']">
-      <attribute name="onClick"
-        value="action-initialize-order-edit,save,action-group-purchase-order-cancel"/>
+      <attribute name="onClick" value="action-initialize-order-edit,save,action-group-purchase-order-cancel" />
     </extend>
     <extend target="//button[@name='finishManuallyPurchaseOrderBtn']">
-      <attribute name="onClick"
-        value="action-initialize-order-edit,save,action-purchase-order-method-finish-purchase-order"/>
+      <attribute name="onClick" value="action-initialize-order-edit,save,action-purchase-order-method-finish-purchase-order" />
     </extend>
 
   </form>
@@ -75,13 +70,11 @@
       method="validateChangesPurchaseOrder"/>
   </action-method>
 
-  <action-record name="action-initialize-order-edit"
-    model="com.axelor.apps.purchase.db.PurchaseOrder">
+  <action-record name="action-initialize-order-edit" model="com.axelor.apps.purchase.db.PurchaseOrder">
     <field name="orderBeingEdited" expr="eval: false"/>
   </action-record>
 
-  <action-record name="action-initialize-order-edit-true"
-    model="com.axelor.apps.purchase.db.PurchaseOrder">
+  <action-record name="action-initialize-order-edit-true" model="com.axelor.apps.purchase.db.PurchaseOrder">
     <field name="orderBeingEdited" expr="eval: true"/>
   </action-record>
 
