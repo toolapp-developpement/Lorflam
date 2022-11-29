@@ -35,7 +35,7 @@ public class SpecificModule extends AxelorModule {
     bind(PurchaseOrderCreateSupplychainServiceImpl.class)
         .to(PurchaseOrderCreateSpecifiqueServiceImpl.class);
     bind(PurchaseOrderServiceProductionImpl.class)
-            .to(PurchaseOrderServiceSupplychainSpecifiqueImpl.class);
+        .to(PurchaseOrderServiceSupplychainSpecifiqueImpl.class);
     bind(SaleOrderServiceSupplychainImpl.class).to(SaleOrderServiceSpecifiqueImpl.class);
     bind(InventoryService.class).to(InventoryServiceSpecifiqueImpl.class);
   }

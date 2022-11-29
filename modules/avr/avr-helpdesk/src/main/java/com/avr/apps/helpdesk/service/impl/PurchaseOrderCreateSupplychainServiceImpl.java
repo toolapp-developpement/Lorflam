@@ -30,62 +30,59 @@ import org.slf4j.LoggerFactory;
  * @author David
  * @version 1.0
  * @date 25/04/2022
- * @time 11:35
- * @Update 25/04/2022
+ * @time 11:35 @Update 25/04/2022
  */
-public class PurchaseOrderCreateSupplychainServiceImpl
-    extends PurchaseOrderServiceSupplychainImpl
+public class PurchaseOrderCreateSupplychainServiceImpl extends PurchaseOrderServiceSupplychainImpl
     implements PurchaseOrderCreationService {
 
-    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static final Logger logger =
+      LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    @Inject
-    public PurchaseOrderCreateSupplychainServiceImpl(
-        AppSupplychainService appSupplychainService,
-        AccountConfigService accountConfigService,
-        AppAccountService appAccountService,
-        AppBaseService appBaseService,
-        PurchaseOrderStockService purchaseOrderStockService,
-        BudgetSupplychainService budgetSupplychainService,
-        PurchaseOrderLineRepository purchaseOrderLineRepository,
-        PurchaseOrderLineService purchaseOrderLineService
-    ) {
-        super(
-            appSupplychainService,
-            accountConfigService,
-            appAccountService,
-            appBaseService,
-            purchaseOrderStockService,
-            budgetSupplychainService,
-            purchaseOrderLineRepository,
-            purchaseOrderLineService
-        );
-    }
+  @Inject
+  public PurchaseOrderCreateSupplychainServiceImpl(
+      AppSupplychainService appSupplychainService,
+      AccountConfigService accountConfigService,
+      AppAccountService appAccountService,
+      AppBaseService appBaseService,
+      PurchaseOrderStockService purchaseOrderStockService,
+      BudgetSupplychainService budgetSupplychainService,
+      PurchaseOrderLineRepository purchaseOrderLineRepository,
+      PurchaseOrderLineService purchaseOrderLineService) {
+    super(
+        appSupplychainService,
+        accountConfigService,
+        appAccountService,
+        appBaseService,
+        purchaseOrderStockService,
+        budgetSupplychainService,
+        purchaseOrderLineRepository,
+        purchaseOrderLineService);
+  }
 
-    @Override
-    public PurchaseOrder createPurchaseOrder(
-        User buyerUser,
-        Company company,
-        Partner contactPartner,
-        Currency currency,
-        LocalDate deliveryDate,
-        String internalReference,
-        String externalReference,
-        StockLocation stockLocation,
-        LocalDate orderDate,
-        PriceList priceList,
-        Partner supplierPartner,
-        TradingName tradingName,
-        Yard yard
-    ) throws AxelorException {
-        logger.debug(
-            "Création d'une commande fournisseur : Société = {},  Reference externe = {}, Fournisseur = {}",
-            company.getName(),
-            externalReference,
-            supplierPartner.getFullName()
-        );
+  @Override
+  public PurchaseOrder createPurchaseOrder(
+      User buyerUser,
+      Company company,
+      Partner contactPartner,
+      Currency currency,
+      LocalDate deliveryDate,
+      String internalReference,
+      String externalReference,
+      StockLocation stockLocation,
+      LocalDate orderDate,
+      PriceList priceList,
+      Partner supplierPartner,
+      TradingName tradingName,
+      Yard yard)
+      throws AxelorException {
+    logger.debug(
+        "Création d'une commande fournisseur : Société = {},  Reference externe = {}, Fournisseur = {}",
+        company.getName(),
+        externalReference,
+        supplierPartner.getFullName());
 
-        PurchaseOrder purchaseOrder = createPurchaseOrder(
+    PurchaseOrder purchaseOrder =
+        createPurchaseOrder(
             buyerUser,
             company,
             contactPartner,
@@ -97,68 +94,69 @@ public class PurchaseOrderCreateSupplychainServiceImpl
             priceList,
             supplierPartner,
             tradingName,
-            yard
-        );
+            yard);
 
-        purchaseOrder.setStockLocation(stockLocation);
+    purchaseOrder.setStockLocation(stockLocation);
 
-        purchaseOrder.setPaymentMode(supplierPartner.getOutPaymentMode());
-        purchaseOrder.setPaymentCondition(supplierPartner.getPaymentCondition());
+    purchaseOrder.setPaymentMode(supplierPartner.getOutPaymentMode());
+    purchaseOrder.setPaymentCondition(supplierPartner.getPaymentCondition());
 
-        if (purchaseOrder.getPaymentMode() == null) {
-            purchaseOrder.setPaymentMode(this.accountConfigService.getAccountConfig(company).getOutPaymentMode());
-        }
-
-        if (purchaseOrder.getPaymentCondition() == null) {
-            purchaseOrder.setPaymentCondition(this.accountConfigService.getAccountConfig(company).getDefPaymentCondition());
-        }
-
-        purchaseOrder.setTradingName(tradingName);
-
-        return purchaseOrder;
+    if (purchaseOrder.getPaymentMode() == null) {
+      purchaseOrder.setPaymentMode(
+          this.accountConfigService.getAccountConfig(company).getOutPaymentMode());
     }
 
-    @Override
-    public PurchaseOrder createPurchaseOrder(
-        User buyerUser,
-        Company company,
-        Partner contactPartner,
-        Currency currency,
-        LocalDate deliveryDate,
-        String internalReference,
-        String externalReference,
-        LocalDate orderDate,
-        PriceList priceList,
-        Partner supplierPartner,
-        TradingName tradingName,
-        Yard yard
-    ) throws AxelorException {
-        logger.debug(
-            "Création d'une commande fournisseur : Société = {},  Reference externe = {}, Fournisseur = {}",
-            new Object[] { company.getName(), externalReference, supplierPartner.getFullName() }
-        );
-
-        PurchaseOrder purchaseOrder = new PurchaseOrder();
-        purchaseOrder.setBuyerUser(buyerUser);
-        purchaseOrder.setCompany(company);
-        purchaseOrder.setContactPartner(contactPartner);
-        purchaseOrder.setCurrency(currency);
-        purchaseOrder.setDeliveryDate(deliveryDate);
-        purchaseOrder.setInternalReference(internalReference);
-        purchaseOrder.setExternalReference(externalReference);
-        purchaseOrder.setOrderDate(orderDate);
-        purchaseOrder.setPriceList(priceList);
-        purchaseOrder.setTradingName(tradingName);
-        purchaseOrder.setPurchaseOrderLineList(new ArrayList<>());
-
-        purchaseOrder.setPrintingSettings(Beans.get(TradingNameService.class).getDefaultPrintingSettings(null, company));
-
-        purchaseOrder.setPurchaseOrderSeq(this.getSequence(company));
-        purchaseOrder.setStatusSelect(PurchaseOrderRepository.STATUS_DRAFT);
-        purchaseOrder.setSupplierPartner(supplierPartner);
-
-        purchaseOrder.setYard(yard);
-
-        return purchaseOrder;
+    if (purchaseOrder.getPaymentCondition() == null) {
+      purchaseOrder.setPaymentCondition(
+          this.accountConfigService.getAccountConfig(company).getDefPaymentCondition());
     }
+
+    purchaseOrder.setTradingName(tradingName);
+
+    return purchaseOrder;
+  }
+
+  @Override
+  public PurchaseOrder createPurchaseOrder(
+      User buyerUser,
+      Company company,
+      Partner contactPartner,
+      Currency currency,
+      LocalDate deliveryDate,
+      String internalReference,
+      String externalReference,
+      LocalDate orderDate,
+      PriceList priceList,
+      Partner supplierPartner,
+      TradingName tradingName,
+      Yard yard)
+      throws AxelorException {
+    logger.debug(
+        "Création d'une commande fournisseur : Société = {},  Reference externe = {}, Fournisseur = {}",
+        new Object[] {company.getName(), externalReference, supplierPartner.getFullName()});
+
+    PurchaseOrder purchaseOrder = new PurchaseOrder();
+    purchaseOrder.setBuyerUser(buyerUser);
+    purchaseOrder.setCompany(company);
+    purchaseOrder.setContactPartner(contactPartner);
+    purchaseOrder.setCurrency(currency);
+    purchaseOrder.setDeliveryDate(deliveryDate);
+    purchaseOrder.setInternalReference(internalReference);
+    purchaseOrder.setExternalReference(externalReference);
+    purchaseOrder.setOrderDate(orderDate);
+    purchaseOrder.setPriceList(priceList);
+    purchaseOrder.setTradingName(tradingName);
+    purchaseOrder.setPurchaseOrderLineList(new ArrayList<>());
+
+    purchaseOrder.setPrintingSettings(
+        Beans.get(TradingNameService.class).getDefaultPrintingSettings(null, company));
+
+    purchaseOrder.setPurchaseOrderSeq(this.getSequence(company));
+    purchaseOrder.setStatusSelect(PurchaseOrderRepository.STATUS_DRAFT);
+    purchaseOrder.setSupplierPartner(supplierPartner);
+
+    purchaseOrder.setYard(yard);
+
+    return purchaseOrder;
+  }
 }
