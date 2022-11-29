@@ -7,5 +7,5 @@
 
   <entity name="Inventory" lang="java">
     <many-to-one name="supplier" ref="com.axelor.apps.base.db.Partner" title="Supplier"/>
-  </entity> 
+  </entity>
 </domain-models>

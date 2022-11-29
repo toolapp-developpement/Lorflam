@@ -5,7 +5,7 @@
 
   <module name="toolapp" package="com.axelor.apps.toolapp.db"/>
 
-  <entity name="MrpLineCustom" lang="java" persistable="false"> 
+  <entity name="MrpLineCustom" lang="java" persistable="false">
 
     <many-to-one name="mrp" ref="com.axelor.apps.supplychain.db.Mrp" title="Mrp"/>
     <many-to-one name="stockLocation" ref="com.axelor.apps.stock.db.StockLocation"
@@ -21,8 +21,8 @@
     <decimal name="idealQty" title="Ideal Qty" precision="20" scale="10"/>
     <decimal name="reOrderQty" title="Refill Qty" precision="20" scale="10"/>
     <string name="relatedToSelectName" title="Related to"/>
-    <integer name="weekNumber" title ="Week number"></integer>
-    
+    <integer name="weekNumber" title="Week number"></integer>
+
     <boolean name="proposalGenerated" default="false" required="true" readonly="true"/>
     <boolean name="proposalToProcess" title="To process" default="false"/>
     <string name="proposalSelect" selection="mrp.line.proposal.ref.select" readonly="true"/>

@@ -1,55 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <object-views xmlns="http://axelor.com/xml/ns/object-views"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
 
 
-    <form name="purchase-order-form" model="com.axelor.apps.purchase.db.PurchaseOrder"
-          title="Supplier RFQ/PO" id="custome-purchase-order-form" extension="true">
-        <extend target="//button[@name='generateInvoiceBtn']">
-            <insert position="before">
-                <field name="orderBeingEdited" hidden="true"/>
-                <button name="editOrderBtn" title="Edit order"
-                        showIf="statusSelect == 3 &amp;&amp; !orderBeingEdited" colSpan="12"
-                        onClick="action-purchase-order-method-edit-order"/>
-                <button name="validatedChangesOrderBtn" title="Validate changes"
-                        showIf="statusSelect == 3 &amp;&amp; orderBeingEdited" colSpan="12"
-                        onClick="save, action-purchase-order-method-validate-changes"/>
-            </insert>
-        </extend>
-        <extend target="//panel-related[@name='purchaseOrderLineListPanel']">
-            <replace>
-                <panel-related name="purchaseOrderLineListPanel" field="purchaseOrderLineList"
-                               canNew="statusSelect &lt; 4 &amp;&amp; orderBeingEdited"
-                               canRemove="statusSelect &lt; 4 &amp;&amp; orderBeingEdited"
-                               canEdit="statusSelect &lt; 4 &amp;&amp; orderBeingEdited"
-                               grid-view="purchase-order-line-purchase-order-grid" title="PO lines detail" colSpan="12"
-                               onChange="action-purchase-order-method-compute" form-view="purchase-order-line-form"
-                               canMove="true" orderBy="sequence" height="30"/>
-            </replace>
-        </extend>
-        <extend target="//field[@name='statusSelect']">
-            <insert position="before">
-                <field name="$viewerOrderBeingEdited" showTitle="false" readonly="true" showIf="orderBeingEdited"
-                       colSpan="9">
-                    <viewer depends="orderBeingEdited">
+  <form name="purchase-order-form" model="com.axelor.apps.purchase.db.PurchaseOrder"
+    title="Supplier RFQ/PO" id="custome-purchase-order-form" extension="true">
+    <extend target="//button[@name='generateInvoiceBtn']">
+      <insert position="before">
+        <field name="orderBeingEdited" hidden="true"/>
+        <button name="editOrderBtn" title="Edit order"
+          showIf="statusSelect == 3 &amp;&amp; !orderBeingEdited" colSpan="12"
+          onClick="action-purchase-order-method-edit-order"/>
+        <button name="validatedChangesOrderBtn" title="Validate changes"
+          showIf="statusSelect == 3 &amp;&amp; orderBeingEdited" colSpan="12"
+          onClick="save, action-purchase-order-method-validate-changes"/>
+      </insert>
+    </extend>
+    <extend target="//panel-related[@name='purchaseOrderLineListPanel']">
+      <replace>
+        <panel-related name="purchaseOrderLineListPanel" field="purchaseOrderLineList"
+          canNew="statusSelect &lt; 4 &amp;&amp; orderBeingEdited"
+          canRemove="statusSelect &lt; 4 &amp;&amp; orderBeingEdited"
+          canEdit="statusSelect &lt; 4 &amp;&amp; orderBeingEdited"
+          grid-view="purchase-order-line-purchase-order-grid" title="PO lines detail" colSpan="12"
+          onChange="action-purchase-order-method-compute" form-view="purchase-order-line-form"
+          canMove="true" orderBy="sequence" height="30"/>
+      </replace>
+    </extend>
+    <extend target="//field[@name='statusSelect']">
+      <insert position="before">
+        <field name="$viewerOrderBeingEdited" showTitle="false" readonly="true"
+          showIf="orderBeingEdited" colSpan="9">
+          <viewer depends="orderBeingEdited">
                         <![CDATA[
                            <h4>
                              <span class="label label-important" ng-show="record.orderBeingEdited" x-translate>Order being edited</span>
                            </h4>
                         ]]>
-                    </viewer>
-                </field>
-            </insert>
-        </extend>
-    </form>
-    <action-method name="action-purchase-order-method-edit-order">
-        <call class="bzh.toolapp.apps.specifique.web.PurchaseOrderSpecifiqueController"
-              method="enableEditOrder"/>
-    </action-method>
-    <action-method name="action-purchase-order-method-validate-changes">
-        <call class="bzh.toolapp.apps.specifique.web.PurchaseOrderSpecifiqueController"
-              method="validateChangesPurchaseOrder"/>
-    </action-method>
+          </viewer>
+        </field>
+      </insert>
+    </extend>
+  </form>
+  <action-method name="action-purchase-order-method-edit-order">
+    <call class="bzh.toolapp.apps.specifique.web.PurchaseOrderSpecifiqueController"
+      method="enableEditOrder"/>
+  </action-method>
+  <action-method name="action-purchase-order-method-validate-changes">
+    <call class="bzh.toolapp.apps.specifique.web.PurchaseOrderSpecifiqueController"
+      method="validateChangesPurchaseOrder"/>
+  </action-method>
 
 </object-views>
