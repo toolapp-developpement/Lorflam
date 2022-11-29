@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <object-views xmlns="http://axelor.com/xml/ns/object-views"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
 
 
   <form name="purchase-order-form" model="com.axelor.apps.purchase.db.PurchaseOrder"
@@ -31,7 +31,7 @@
     <extend target="//field[@name='statusSelect']">
       <insert position="before">
         <field name="$viewerOrderBeingEdited" showTitle="false" readonly="true"
-          showIf="orderBeingEdited" colSpan="9">
+          showIf="statusSelect &gt; 3 &amp;&amp; orderBeingEdited" colSpan="9">
           <viewer depends="orderBeingEdited">
                         <![CDATA[
                            <h4>
@@ -42,6 +42,24 @@
         </field>
       </insert>
     </extend>
+
+    <extend target="//field[@name='supplierPartner']">
+      <attribute name="onChange" value="action-group-purchase-order-partner-onchange,action-initialize-order-edit-true " />
+    </extend>
+
+    <extend target="//button[@name='draftBtn']">
+      <attribute name="onClick" value="action-initialize-order-edit-true,action-purchase-order-record-draft,save" />
+    </extend> 
+    <extend target="//button[@name='validateBtn']">
+      <attribute name="onClick" value="action-initialize-order-edit,action-group-purchase-order-on-validate-actions" />
+    </extend>
+    <extend target="//button[@name='cancelBtn']">
+      <attribute name="onClick" value="action-initialize-order-edit,save,action-group-purchase-order-cancel" />
+    </extend>
+    <extend target="//button[@name='finishManuallyPurchaseOrderBtn']">
+      <attribute name="onClick" value="action-initialize-order-edit,save,action-purchase-order-method-finish-purchase-order" />
+    </extend>
+
   </form>
   <action-method name="action-purchase-order-method-edit-order">
     <call class="bzh.toolapp.apps.specifique.web.PurchaseOrderSpecifiqueController"
@@ -51,5 +69,13 @@
     <call class="bzh.toolapp.apps.specifique.web.PurchaseOrderSpecifiqueController"
       method="validateChangesPurchaseOrder"/>
   </action-method>
+
+  <action-record name="action-initialize-order-edit" model="com.axelor.apps.purchase.db.PurchaseOrder">
+    <field name="orderBeingEdited" expr="eval: false"/>
+  </action-record>
+
+  <action-record name="action-initialize-order-edit-true" model="com.axelor.apps.purchase.db.PurchaseOrder">
+    <field name="orderBeingEdited" expr="eval: true"/>
+  </action-record>
 
 </object-views>
