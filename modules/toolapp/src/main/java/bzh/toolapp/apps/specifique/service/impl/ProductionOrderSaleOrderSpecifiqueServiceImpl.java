@@ -7,7 +7,9 @@ import com.axelor.apps.base.service.UnitConversionService;
 import com.axelor.apps.businessproduction.service.ProductionOrderSaleOrderServiceBusinessImpl;
 import com.axelor.apps.businessproduction.service.ProductionOrderServiceBusinessImpl;
 import com.axelor.apps.production.db.BillOfMaterial;
+import com.axelor.apps.production.db.ManufOrder;
 import com.axelor.apps.production.db.ProductionOrder;
+import com.axelor.apps.production.db.repo.ManufOrderRepository;
 import com.axelor.apps.production.db.repo.ProductionOrderRepository;
 import com.axelor.apps.production.exceptions.IExceptionMessage;
 import com.axelor.apps.production.service.app.AppProductionService;
@@ -21,6 +23,7 @@ import com.google.inject.persist.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -28,8 +31,10 @@ public class ProductionOrderSaleOrderSpecifiqueServiceImpl
     extends ProductionOrderSaleOrderServiceBusinessImpl {
 
   //	private final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-
+  private BigDecimal qtyToProduce = BigDecimal.ZERO;
   protected ProductionOrderServiceBusinessImpl productionOrderServiceBusinessImpl;
+
+  ManufOrderRepository manufOrderRepo;
 
   @Inject
   public ProductionOrderSaleOrderSpecifiqueServiceImpl(
@@ -37,7 +42,8 @@ public class ProductionOrderSaleOrderSpecifiqueServiceImpl
       ProductionOrderService productionOrderService,
       ProductionOrderRepository productionOrderRepo,
       ProductionOrderServiceBusinessImpl productionOrderServiceBusinessImpl,
-      AppProductionService appProductionService) {
+      AppProductionService appProductionService,
+      ManufOrderRepository manufOrderRepo) {
     super(
         unitConversionService,
         productionOrderService,
@@ -46,6 +52,7 @@ public class ProductionOrderSaleOrderSpecifiqueServiceImpl
         appProductionService);
 
     this.productionOrderServiceBusinessImpl = productionOrderServiceBusinessImpl;
+    this.manufOrderRepo = manufOrderRepo;
   }
 
   @Override
@@ -82,11 +89,17 @@ public class ProductionOrderSaleOrderSpecifiqueServiceImpl
       }
 
       Unit unit = saleOrderLine.getProduct().getUnit();
+
       BigDecimal qty = saleOrderLine.getQty();
-      if (unit != null && !unit.equals(saleOrderLine.getUnit())) {
-        qty =
-            unitConversionService.convert(
-                saleOrderLine.getUnit(), unit, qty, qty.scale(), saleOrderLine.getProduct());
+      // si la quantité à produire est différente de la quantité de la ligne de commande
+      if (qtyToProduce.compareTo(BigDecimal.ZERO) != 0) {
+        qty = qtyToProduce;
+      } else {
+        if (unit != null && !unit.equals(saleOrderLine.getUnit())) {
+          qty =
+              unitConversionService.convert(
+                  saleOrderLine.getUnit(), unit, qty, qty.scale(), saleOrderLine.getProduct());
+        }
       }
 
       /*
@@ -121,8 +134,55 @@ public class ProductionOrderSaleOrderSpecifiqueServiceImpl
     }
 
     ProductionOrder productionOrder = null;
+
+    // On rempli une map avec la quantité les lignes de commande de vente pour chaque produit
+    HashMap<Long, BigDecimal> qtyPerProductMap = new HashMap<>();
+    for (SaleOrderLine saleOrderLine : saleOrder.getSaleOrderLineList()) {
+      if (qtyPerProductMap.containsKey(saleOrderLine.getProduct().getId())) {
+        qtyPerProductMap.put(
+            saleOrderLine.getProduct().getId(),
+            qtyPerProductMap.get(saleOrderLine.getProduct().getId()).add(saleOrderLine.getQty()));
+      } else {
+        qtyPerProductMap.put(saleOrderLine.getProduct().getId(), saleOrderLine.getQty());
+      }
+    }
+
     for (SaleOrderLine saleOrderLine : saleOrder.getSaleOrderLineList()) {
 
+      BigDecimal manufOrderQty = BigDecimal.ZERO;
+
+      // si on a plus rien à produire, on ignore la ligne
+      if (qtyPerProductMap.get(saleOrderLine.getProduct().getId()).compareTo(BigDecimal.ZERO)
+          == 0) {
+        continue;
+      }
+
+      // on parcours les OFs de la commande de vente
+      // pour calculer la quantité déjà produite pour l'article
+      for (ManufOrder manufOrder :
+          manufOrderRepo
+              .all()
+              .filter(
+                  ":_saleOrderId member of self.saleOrderSet AND self.statusSelect != 1 AND self.statusSelect != 3 AND self.statusSelect != 2 AND self.product = :_product")
+              .bind("_saleOrderId", saleOrderLine.getSaleOrder().getId())
+              .bind("_product", saleOrderLine.getProduct())
+              .fetch()) {
+        manufOrderQty = manufOrderQty.add(manufOrder.getQty());
+      }
+
+      // si la quantité déjà produite est supérieur ou égale à la quantité de la ligne de commande
+      // alors on ne fait rien
+      if (manufOrderQty.compareTo(qtyPerProductMap.get(saleOrderLine.getProduct().getId())) >= 0) {
+        continue;
+      }
+
+      // On calcul la quantité à produire = somme des quantité de la ligne de commande pour
+      // l'article - quantité déjà produite
+      qtyToProduce =
+          qtyPerProductMap.get(saleOrderLine.getProduct().getId()).subtract(manufOrderQty);
+      // On remets à zéro la quantité à produire
+      qtyPerProductMap.put(saleOrderLine.getProduct().getId(), BigDecimal.ZERO);
+      // sinon on crée un OF pour la quantité restante à produire
       if (productionOrder == null || !oneProdOrderPerSO) {
         productionOrder = this.createProductionOrder(saleOrder);
       }

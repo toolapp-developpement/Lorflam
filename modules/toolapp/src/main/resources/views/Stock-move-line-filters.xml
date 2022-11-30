@@ -2,16 +2,24 @@
 <object-views xmlns="http://axelor.com/xml/ns/object-views"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
-  <search-filters name="stock-move-line-filters" title="Stock move line filters" model="com.axelor.apps.stock.db.StockMoveLine">
-    <field if="!(__config__.app.isApp('supplychain') &amp;&amp; __config__.app.getApp('supplychain')?.getManageStockReservation())" name="reservationDateTime" hidden="true"/>
-    <field if="!(__config__.app.isApp('supplychain') &amp;&amp; __config__.app.getApp('supplychain')?.getManageStockReservation())" name="reservedQty" hidden="true"/>
-    <field if="!(__config__.app.isApp('supplychain') &amp;&amp; __config__.app.getApp('supplychain').getManageStockReservation())" name="requestedReservedQty" hidden="true"/>
-    <field if="!__config__.app.getApp('base').getManageProductVariants()" name="productModel" hidden="true"/>
+  <search-filters name="stock-move-line-filters" title="Stock move line filters"
+    model="com.axelor.apps.stock.db.StockMoveLine">
+    <field
+      if="!(__config__.app.isApp('supplychain') &amp;&amp; __config__.app.getApp('supplychain')?.getManageStockReservation())"
+      name="reservationDateTime" hidden="true"/>
+    <field
+      if="!(__config__.app.isApp('supplychain') &amp;&amp; __config__.app.getApp('supplychain')?.getManageStockReservation())"
+      name="reservedQty" hidden="true"/>
+    <field
+      if="!(__config__.app.isApp('supplychain') &amp;&amp; __config__.app.getApp('supplychain').getManageStockReservation())"
+      name="requestedReservedQty" hidden="true"/>
+    <field if="!__config__.app.getApp('base').getManageProductVariants()" name="productModel"
+      hidden="true"/>
     <field if="!__config__.app.isApp('supplychain')" name="isQtyRequested" hidden="true"/>
     <field name="stockMove.typeSelect" title="Type de mouvement"/>
     <field name="stockMove.statusSelect" title="Statut du mouvement"/>
     <field name="stockMove.realDate" title="Date de mouvement"/>
     <field name="stockMove.estimatedDate" title="Date estimée"/>
   </search-filters>
-  
-  </object-views>   
+
+</object-views>
