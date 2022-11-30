@@ -16,20 +16,7 @@
       <field name="$endDate" colSpan="3" title="End date" type="date"
         onChange="action-mrp-line-custom-refresh-data"/>
     </panel>
-    <panel name="product" showIf="$product">
-      <field name="$minQty" type="decimal" x-scale="2" colSpan="2" readonly="true"
-        title="Stock mini"/>
-      <field name="$qtyN2" type="decimal" x-scale="2" colSpan="2" readonly="true"
-        title="Consommation année N-2"/>
-      <field name="$qtyN1" type="decimal" x-scale="2" colSpan="2" readonly="true"
-        title="Consommation année N-1"/>
-      <field name="$qtyN" type="decimal" x-scale="2" colSpan="2" readonly="true"
-        title="Consommation 12 derniers mois"/>
-      <button name="detailProduct" icon="fa-cubes" onClick="action-view-product-view-custom"
-        colSpan="1"/>
-      <button name="displayStock" icon="fa-line-chart" onClick="action.group.display.stock"
-        colSpan="1"/>
-    </panel>
+    
     <panel name="mrpLinePanel" colSpan="12"
       showIf="$product &amp;&amp; $endDate  &amp;&amp; $stockLocation" height="800">
       <field name="$mrpLineCustomList" type="one-to-many"
@@ -38,26 +25,34 @@
     </panel>
   </form>
 
+
   <grid name="mrp-line-grid-custom" title="Results"
     model="com.axelor.apps.toolapp.db.MrpLineCustom" editable="false" sortable="false"
-    edit-icon="false">
+    edit-icon="false" groupBy="product">
     <hilite color="danger" strong="true" if="isEditedByUser"/>
     <hilite color="warning" strong="true"
       if="$get('mrpLineType.elementSelect') == 5 &amp;&amp; $get('product.defaultSupplierPartner.id') != $get('supplierPartner.id')"/>
     <hilite color="info" strong="true"
       if="[5,8,9].indexOf($get('mrpLineType.elementSelect')) != -1"/>
-    <field name="mrpLineType" width="200"/>
+    <field name="product"></field>
+    <field name="minQty" title="Stock Mini" x-scale="2"></field>
+    <field name="qtyN2" title="Conso N-2" x-scale="2"></field>
+    <field name="qtyN1" title="Conso N-1" x-scale="2"></field>
+    <field name="qtyN" title="Conso 12 mois" x-scale="2"></field> 
+    <field name="mrpLineType" />
     <field name="qty" x-scale="2"/>
     <field name="maturityDate"/>
-    <field name="weekNumber"/>
-    <field name="cumulativeQty" css="bold" x-scale="2"/>
-    <field name="product.unit"/>
-    <field name="stockLocation"/>
+    <field name="weekNumber" title="N° Semaine" />
+    <field name="cumulativeQty" css="bold" x-scale="2"/>    
     <field name="maxLevel"/>
-    <field name="relatedToSelectName" width="300"/>
+    <field name="relatedToSelectName" />
     <field name="partner"/>
     <field name="supplierPartner"/>
-  </grid>
+    <button name="detailProduct" icon="fa-cubes" onClick="action-view-product-view-custom"
+      colSpan="1"/>
+    <button name="displayStock" icon="fa-line-chart"
+      onClick="action-method-projected-stock-custome" colSpan="1"/>
+  </grid> 
 
   <action-view name="action-mrp-view-mrp-line-custom"
     model="com.axelor.apps.toolapp.db.MrpLineCustom" title="Results">
@@ -81,9 +76,10 @@
     <view name="mrp-form-custom" type="form"/>
   </action-view>
 
+
+
   <action-method name="action-method-projected-stock-custome">
-    <call method="showProjectedStock"
-      class="com.axelor.apps.supplychain.web.ProjectedStockController"/>
+    <call method="showProjectedStock" class="bzh.toolapp.apps.specifique.web.ProductController"/>
   </action-method>
 
   <action-view name="action-view-product-view-custom"
