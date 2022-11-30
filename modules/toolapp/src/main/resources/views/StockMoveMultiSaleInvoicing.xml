@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<object-views xmlns="http://axelor.com/xml/ns/object-views" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.0.xsd"
->
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
 
-   <form name="stock-move-multi-sale-invoicing-form" model="com.axelor.apps.stock.db.StockMove" title="Mass Cust. Stock Move Invoicing" id="stock-move-multi-sale-invoicing-form-custome" extension="true">
+  <form name="stock-move-multi-sale-invoicing-form" model="com.axelor.apps.stock.db.StockMove"
+    title="Mass Cust. Stock Move Invoicing" id="stock-move-multi-sale-invoicing-form-custome"
+    extension="true">
 
-      <extend target="//button[@name='generateInvoiceConcatStockMoveBtn']">
-         <replace>
-            <button name="generateInvoiceConcatStockMoveBtn" title="Generate single invoice" onClick="action-group-stock-move-multi-sale-invoicing" />
-         </replace>
-      </extend>
+    <extend target="//button[@name='generateInvoiceConcatStockMoveBtn']">
+      <replace>
+        <button name="generateInvoiceConcatStockMoveBtn" title="Generate single invoice"
+          onClick="action-group-stock-move-multi-sale-invoicing"/>
+      </replace>
+    </extend>
 
-   </form>
+  </form>
 
-   <action-group name="action-group-stock-move-multi-sale-invoicing">
-      <action name="action-validate-supplychain-outgoing-stock-move-check-selection" />
-      <action name="action-supplychain-stock-move-method-generate-concat-cust-invoice-check-fields-custome" />
-   </action-group>
-   
-   <action-method name="action-supplychain-stock-move-method-generate-concat-cust-invoice-check-fields-custome">
-      <call method="generateInvoiceConcatOutStockMoveCheckMissingFields" class="bzh.toolapp.apps.specifique.web.StockMoveInvoiceController" />
-   </action-method>
+  <action-group name="action-group-stock-move-multi-sale-invoicing">
+    <action name="action-validate-supplychain-outgoing-stock-move-check-selection"/>
+    <action
+      name="action-supplychain-stock-move-method-generate-concat-cust-invoice-check-fields-custome"/>
+  </action-group>
+
+  <action-method
+    name="action-supplychain-stock-move-method-generate-concat-cust-invoice-check-fields-custome">
+    <call method="generateInvoiceConcatOutStockMoveCheckMissingFields"
+      class="bzh.toolapp.apps.specifique.web.StockMoveInvoiceController"/>
+  </action-method>
 </object-views>

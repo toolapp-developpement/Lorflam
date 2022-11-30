@@ -1,29 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<object-views
-   xmlns="http://axelor.com/xml/ns/object-views"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
 
-   <form
-      name="stock-move-line-form"
-      title="Stock move line"
-      model="com.axelor.apps.stock.db.StockMoveLine"
-      id="custome-stock-move-line-form"
-      extension="true">
-      <extend target="//field[@name='product']">
-         <insert position="after">
-            <field
-               name="yard"
-               title="Référence Chantier"
-               onChange="action.specifique.method.select.or.create.yard"
-               colSpan="2" />
-         </insert>
-      </extend>
-   </form>
+  <form name="stock-move-line-form" title="Stock move line"
+    model="com.axelor.apps.stock.db.StockMoveLine" id="custome-stock-move-line-form"
+    extension="true">
+    <extend target="//field[@name='product']">
+      <insert position="after">
+        <field name="yard" title="Référence Chantier"
+          onChange="action.specifique.method.select.or.create.yard" colSpan="2"/>
+      </insert>
+    </extend>
+  </form>
 
-   <action-method name="action.specifique.method.select.or.create.yard">
-      <call
-         method="selectOrCreateYard(yard)"
-         class="bzh.toolapp.apps.specifique.web.PlanificationController" />
-   </action-method>
+  <action-method name="action.specifique.method.select.or.create.yard">
+    <call method="selectOrCreateYard(yard)"
+      class="bzh.toolapp.apps.specifique.web.PlanificationController"/>
+  </action-method>
 </object-views>

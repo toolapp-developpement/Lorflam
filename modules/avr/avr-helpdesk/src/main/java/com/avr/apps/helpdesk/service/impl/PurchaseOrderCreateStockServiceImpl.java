@@ -34,54 +34,52 @@ import java.util.List;
  * @author David
  * @version 1.0
  * @date 25/04/2022
- * @time 12:16
- * @Update 25/04/2022
+ * @time 12:16 @Update 25/04/2022
  */
 public class PurchaseOrderCreateStockServiceImpl extends PurchaseOrderStockServiceImpl {
 
-    protected final StockMoveCreateService stockMoveCreateService;
+  protected final StockMoveCreateService stockMoveCreateService;
 
-    @Inject
-    public PurchaseOrderCreateStockServiceImpl(
-        UnitConversionService unitConversionService,
-        StockMoveLineRepository stockMoveLineRepository,
-        PurchaseOrderLineServiceSupplychainImpl purchaseOrderLineServiceSupplychainImpl,
-        AppBaseService appBaseService,
-        ShippingCoefService shippingCoefService,
-        StockMoveLineServiceSupplychain stockMoveLineServiceSupplychain,
-        StockMoveService stockMoveService,
-        PartnerStockSettingsService partnerStockSettingsService,
-        StockMoveCreateService stockMoveCreateService
-    ) {
-        super(
-            unitConversionService,
-            stockMoveLineRepository,
-            purchaseOrderLineServiceSupplychainImpl,
-            appBaseService,
-            shippingCoefService,
-            stockMoveLineServiceSupplychain,
-            stockMoveService,
-            partnerStockSettingsService
-        );
-        this.stockMoveCreateService = stockMoveCreateService;
-    }
+  @Inject
+  public PurchaseOrderCreateStockServiceImpl(
+      UnitConversionService unitConversionService,
+      StockMoveLineRepository stockMoveLineRepository,
+      PurchaseOrderLineServiceSupplychainImpl purchaseOrderLineServiceSupplychainImpl,
+      AppBaseService appBaseService,
+      ShippingCoefService shippingCoefService,
+      StockMoveLineServiceSupplychain stockMoveLineServiceSupplychain,
+      StockMoveService stockMoveService,
+      PartnerStockSettingsService partnerStockSettingsService,
+      StockMoveCreateService stockMoveCreateService) {
+    super(
+        unitConversionService,
+        stockMoveLineRepository,
+        purchaseOrderLineServiceSupplychainImpl,
+        appBaseService,
+        shippingCoefService,
+        stockMoveLineServiceSupplychain,
+        stockMoveService,
+        partnerStockSettingsService);
+    this.stockMoveCreateService = stockMoveCreateService;
+  }
 
-    @Override
-    protected List<Long> createStockMove(
-        PurchaseOrder purchaseOrder,
-        LocalDate estimatedDeliveryDate,
-        List<PurchaseOrderLine> purchaseOrderLineList
-    ) throws AxelorException {
-        List<Long> stockMoveIdList = new ArrayList<>();
+  @Override
+  protected List<Long> createStockMove(
+      PurchaseOrder purchaseOrder,
+      LocalDate estimatedDeliveryDate,
+      List<PurchaseOrderLine> purchaseOrderLineList)
+      throws AxelorException {
+    List<Long> stockMoveIdList = new ArrayList<>();
 
-        Partner supplierPartner = purchaseOrder.getSupplierPartner();
-        Company company = purchaseOrder.getCompany();
+    Partner supplierPartner = purchaseOrder.getSupplierPartner();
+    Company company = purchaseOrder.getCompany();
 
-        Address address = Beans.get(PartnerService.class).getDeliveryAddress(supplierPartner);
+    Address address = Beans.get(PartnerService.class).getDeliveryAddress(supplierPartner);
 
-        StockLocation startLocation = getStartStockLocation(purchaseOrder);
+    StockLocation startLocation = getStartStockLocation(purchaseOrder);
 
-        StockMove stockMove = stockMoveCreateService.createStockMove(
+    StockMove stockMove =
+        stockMoveCreateService.createStockMove(
             address,
             null,
             company,
@@ -97,10 +95,10 @@ public class PurchaseOrderCreateStockServiceImpl extends PurchaseOrderStockServi
             null,
             null,
             StockMoveRepository.TYPE_INCOMING,
-            purchaseOrder.getYard()
-        );
+            purchaseOrder.getYard());
 
-        StockMove qualityStockMove = stockMoveCreateService.createStockMove(
+    StockMove qualityStockMove =
+        stockMoveCreateService.createStockMove(
             address,
             null,
             company,
@@ -118,54 +116,53 @@ public class PurchaseOrderCreateStockServiceImpl extends PurchaseOrderStockServi
             null,
             null,
             StockMoveRepository.TYPE_INCOMING,
-            purchaseOrder.getYard()
-        );
+            purchaseOrder.getYard());
 
-        stockMove.setOriginId(purchaseOrder.getId());
-        stockMove.setOriginTypeSelect(StockMoveRepository.ORIGIN_PURCHASE_ORDER);
-        stockMove.setOrigin(purchaseOrder.getPurchaseOrderSeq());
-        stockMove.setTradingName(purchaseOrder.getTradingName());
-        stockMove.setGroupProductsOnPrintings(purchaseOrder.getGroupProductsOnPrintings());
+    stockMove.setOriginId(purchaseOrder.getId());
+    stockMove.setOriginTypeSelect(StockMoveRepository.ORIGIN_PURCHASE_ORDER);
+    stockMove.setOrigin(purchaseOrder.getPurchaseOrderSeq());
+    stockMove.setTradingName(purchaseOrder.getTradingName());
+    stockMove.setGroupProductsOnPrintings(purchaseOrder.getGroupProductsOnPrintings());
 
-        qualityStockMove.setOriginId(purchaseOrder.getId());
-        qualityStockMove.setOriginTypeSelect(StockMoveRepository.ORIGIN_PURCHASE_ORDER);
-        qualityStockMove.setOrigin(purchaseOrder.getPurchaseOrderSeq());
-        qualityStockMove.setTradingName(purchaseOrder.getTradingName());
-        qualityStockMove.setGroupProductsOnPrintings(purchaseOrder.getGroupProductsOnPrintings());
+    qualityStockMove.setOriginId(purchaseOrder.getId());
+    qualityStockMove.setOriginTypeSelect(StockMoveRepository.ORIGIN_PURCHASE_ORDER);
+    qualityStockMove.setOrigin(purchaseOrder.getPurchaseOrderSeq());
+    qualityStockMove.setTradingName(purchaseOrder.getTradingName());
+    qualityStockMove.setGroupProductsOnPrintings(purchaseOrder.getGroupProductsOnPrintings());
 
-        SupplyChainConfig supplychainConfig = Beans
-            .get(SupplyChainConfigService.class)
-            .getSupplyChainConfig(purchaseOrder.getCompany());
-        if (
-            supplychainConfig.getDefaultEstimatedDateForPurchaseOrder() == SupplyChainConfigRepository.CURRENT_DATE &&
-            stockMove.getEstimatedDate() == null
-        ) {
-            stockMove.setEstimatedDate(appBaseService.getTodayDate(company));
-        } else if (
-            supplychainConfig.getDefaultEstimatedDateForPurchaseOrder() == SupplyChainConfigRepository.CURRENT_DATE_PLUS_DAYS &&
-            stockMove.getEstimatedDate() == null
-        ) {
-            stockMove.setEstimatedDate(
-                appBaseService.getTodayDate(company).plusDays(supplychainConfig.getNumberOfDaysForPurchaseOrder().longValue())
-            );
-        }
-
-        for (PurchaseOrderLine purchaseOrderLine : purchaseOrderLineList) {
-            BigDecimal qty = purchaseOrderLineServiceSupplychainImpl.computeUndeliveredQty(purchaseOrderLine);
-
-            if (qty.signum() > 0 && !existActiveStockMoveForPurchaseOrderLine(purchaseOrderLine)) {
-                this.createStockMoveLine(stockMove, qualityStockMove, purchaseOrderLine, qty);
-            }
-        }
-        if (stockMove.getStockMoveLineList() != null && !stockMove.getStockMoveLineList().isEmpty()) {
-            stockMoveService.plan(stockMove);
-            stockMoveIdList.add(stockMove.getId());
-        }
-        if (qualityStockMove.getStockMoveLineList() != null && !qualityStockMove.getStockMoveLineList().isEmpty()) {
-            stockMoveService.plan(qualityStockMove);
-            stockMoveIdList.add(qualityStockMove.getId());
-        }
-
-        return stockMoveIdList;
+    SupplyChainConfig supplychainConfig =
+        Beans.get(SupplyChainConfigService.class).getSupplyChainConfig(purchaseOrder.getCompany());
+    if (supplychainConfig.getDefaultEstimatedDateForPurchaseOrder()
+            == SupplyChainConfigRepository.CURRENT_DATE
+        && stockMove.getEstimatedDate() == null) {
+      stockMove.setEstimatedDate(appBaseService.getTodayDate(company));
+    } else if (supplychainConfig.getDefaultEstimatedDateForPurchaseOrder()
+            == SupplyChainConfigRepository.CURRENT_DATE_PLUS_DAYS
+        && stockMove.getEstimatedDate() == null) {
+      stockMove.setEstimatedDate(
+          appBaseService
+              .getTodayDate(company)
+              .plusDays(supplychainConfig.getNumberOfDaysForPurchaseOrder().longValue()));
     }
+
+    for (PurchaseOrderLine purchaseOrderLine : purchaseOrderLineList) {
+      BigDecimal qty =
+          purchaseOrderLineServiceSupplychainImpl.computeUndeliveredQty(purchaseOrderLine);
+
+      if (qty.signum() > 0 && !existActiveStockMoveForPurchaseOrderLine(purchaseOrderLine)) {
+        this.createStockMoveLine(stockMove, qualityStockMove, purchaseOrderLine, qty);
+      }
+    }
+    if (stockMove.getStockMoveLineList() != null && !stockMove.getStockMoveLineList().isEmpty()) {
+      stockMoveService.plan(stockMove);
+      stockMoveIdList.add(stockMove.getId());
+    }
+    if (qualityStockMove.getStockMoveLineList() != null
+        && !qualityStockMove.getStockMoveLineList().isEmpty()) {
+      stockMoveService.plan(qualityStockMove);
+      stockMoveIdList.add(qualityStockMove.getId());
+    }
+
+    return stockMoveIdList;
+  }
 }

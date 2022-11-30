@@ -30,77 +30,84 @@ import org.slf4j.LoggerFactory;
  * @author David
  * @version 1.0
  * @date 25/04/2022
- * @time 11:32
- * @Update 25/04/2022
+ * @time 11:32 @Update 25/04/2022
  */
 public class SaleOrderCreatePurchaseServiceImpl extends ProjectPurchaseServiceImpl {
 
-    private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    protected final PurchaseOrderCreationService purchaseOrderCreationWithYardService;
+  protected final PurchaseOrderCreationService purchaseOrderCreationWithYardService;
 
-    @Inject
-    public SaleOrderCreatePurchaseServiceImpl(
-        PurchaseOrderSupplychainService purchaseOrderSupplychainService,
-        PurchaseOrderLineServiceSupplyChain purchaseOrderLineServiceSupplychain,
-        PurchaseOrderService purchaseOrderService,
-        PurchaseOrderCreationService purchaseOrderCreationWithYardService
-    ) {
-        super(purchaseOrderSupplychainService, purchaseOrderLineServiceSupplychain, purchaseOrderService);
-        this.purchaseOrderCreationWithYardService = purchaseOrderCreationWithYardService;
-    }
+  @Inject
+  public SaleOrderCreatePurchaseServiceImpl(
+      PurchaseOrderSupplychainService purchaseOrderSupplychainService,
+      PurchaseOrderLineServiceSupplyChain purchaseOrderLineServiceSupplychain,
+      PurchaseOrderService purchaseOrderService,
+      PurchaseOrderCreationService purchaseOrderCreationWithYardService) {
+    super(
+        purchaseOrderSupplychainService, purchaseOrderLineServiceSupplychain, purchaseOrderService);
+    this.purchaseOrderCreationWithYardService = purchaseOrderCreationWithYardService;
+  }
 
-    @Override
-    @Transactional(rollbackOn = { Exception.class })
-    public PurchaseOrder createPurchaseOrder(Partner supplierPartner, List<SaleOrderLine> saleOrderLineList, SaleOrder saleOrder)
-        throws AxelorException {
-        LOG.debug("Création d'une commande fournisseur pour le devis client : {}", saleOrder.getSaleOrderSeq());
+  @Override
+  @Transactional(rollbackOn = {Exception.class})
+  public PurchaseOrder createPurchaseOrder(
+      Partner supplierPartner, List<SaleOrderLine> saleOrderLineList, SaleOrder saleOrder)
+      throws AxelorException {
+    LOG.debug(
+        "Création d'une commande fournisseur pour le devis client : {}",
+        saleOrder.getSaleOrderSeq());
 
-        PurchaseOrder purchaseOrder = purchaseOrderCreationWithYardService.createPurchaseOrder(
+    PurchaseOrder purchaseOrder =
+        purchaseOrderCreationWithYardService.createPurchaseOrder(
             AuthUtils.getUser(),
             saleOrder.getCompany(),
-            supplierPartner.getContactPartnerSet().size() == 1 ? supplierPartner.getContactPartnerSet().iterator().next() : null,
+            supplierPartner.getContactPartnerSet().size() == 1
+                ? supplierPartner.getContactPartnerSet().iterator().next()
+                : null,
             supplierPartner.getCurrency(),
             null,
             saleOrder.getSaleOrderSeq(),
             saleOrder.getExternalReference(),
             saleOrder.getDirectOrderLocation()
                 ? saleOrder.getStockLocation()
-                : Beans.get(StockLocationService.class).getDefaultReceiptStockLocation(saleOrder.getCompany()),
+                : Beans.get(StockLocationService.class)
+                    .getDefaultReceiptStockLocation(saleOrder.getCompany()),
             Beans.get(AppBaseService.class).getTodayDate(saleOrder.getCompany()),
-            Beans.get(PartnerPriceListService.class).getDefaultPriceList(supplierPartner, PriceListRepository.TYPE_PURCHASE),
+            Beans.get(PartnerPriceListService.class)
+                .getDefaultPriceList(supplierPartner, PriceListRepository.TYPE_PURCHASE),
             supplierPartner,
             saleOrder.getTradingName(),
-            saleOrder.getYard()
-        );
+            saleOrder.getYard());
 
-        purchaseOrder.setGeneratedSaleOrderId(saleOrder.getId());
-        purchaseOrder.setGroupProductsOnPrintings(supplierPartner.getGroupProductsOnPrintings());
+    purchaseOrder.setGeneratedSaleOrderId(saleOrder.getId());
+    purchaseOrder.setGroupProductsOnPrintings(supplierPartner.getGroupProductsOnPrintings());
 
-        Integer atiChoice = Beans
-            .get(PurchaseConfigService.class)
+    Integer atiChoice =
+        Beans.get(PurchaseConfigService.class)
             .getPurchaseConfig(saleOrder.getCompany())
             .getPurchaseOrderInAtiSelect();
-        if (atiChoice == AccountConfigRepository.INVOICE_ATI_ALWAYS || atiChoice == AccountConfigRepository.INVOICE_ATI_DEFAULT) {
-            purchaseOrder.setInAti(true);
-        } else {
-            purchaseOrder.setInAti(false);
-        }
-
-        for (SaleOrderLine saleOrderLine : saleOrderLineList) {
-            if (saleOrderLine.getProduct() != null) {
-                purchaseOrder.addPurchaseOrderLineListItem(
-                    purchaseOrderLineServiceSupplychain.createPurchaseOrderLine(purchaseOrder, saleOrderLine)
-                );
-            }
-        }
-
-        purchaseOrderService.computePurchaseOrder(purchaseOrder);
-
-        purchaseOrder.setNotes(supplierPartner.getPurchaseOrderComments());
-
-        Beans.get(PurchaseOrderRepository.class).save(purchaseOrder);
-
-        return purchaseOrder;
+    if (atiChoice == AccountConfigRepository.INVOICE_ATI_ALWAYS
+        || atiChoice == AccountConfigRepository.INVOICE_ATI_DEFAULT) {
+      purchaseOrder.setInAti(true);
+    } else {
+      purchaseOrder.setInAti(false);
     }
+
+    for (SaleOrderLine saleOrderLine : saleOrderLineList) {
+      if (saleOrderLine.getProduct() != null) {
+        purchaseOrder.addPurchaseOrderLineListItem(
+            purchaseOrderLineServiceSupplychain.createPurchaseOrderLine(
+                purchaseOrder, saleOrderLine));
+      }
+    }
+
+    purchaseOrderService.computePurchaseOrder(purchaseOrder);
+
+    purchaseOrder.setNotes(supplierPartner.getPurchaseOrderComments());
+
+    Beans.get(PurchaseOrderRepository.class).save(purchaseOrder);
+
+    return purchaseOrder;
+  }
 }
