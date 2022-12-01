@@ -1,5 +1,6 @@
 package bzh.toolapp.apps.specifique.service.impl;
 
+import com.axelor.apps.base.db.Product;
 import com.axelor.apps.base.db.repo.ProductRepository;
 import com.axelor.apps.base.service.administration.SequenceService;
 import com.axelor.apps.base.service.app.AppBaseService;
@@ -29,6 +30,7 @@ public class InventoryServiceSpecifiqueImpl extends InventoryService {
 
   StockMoveLineRepository stockMoveLineRepository;
   SupplierCatalogRepository supplierCatalogRepository;
+  ProductRepository productRepository;
 
   @Inject
   public InventoryServiceSpecifiqueImpl(
@@ -45,7 +47,8 @@ public class InventoryServiceSpecifiqueImpl extends InventoryService {
       TrackingNumberRepository trackingNumberRepository,
       AppBaseService appBaseService,
       StockMoveLineRepository stockMoveLineRepository,
-      SupplierCatalogRepository supplierCatalogRepository) {
+      SupplierCatalogRepository supplierCatalogRepository,
+      ProductRepository productRepository) {
     super(
         inventoryLineService,
         sequenceService,
@@ -61,6 +64,7 @@ public class InventoryServiceSpecifiqueImpl extends InventoryService {
         appBaseService);
     this.stockMoveLineRepository = stockMoveLineRepository;
     this.supplierCatalogRepository = supplierCatalogRepository;
+    this.productRepository = productRepository;
   }
 
   @Override
@@ -110,18 +114,42 @@ public class InventoryServiceSpecifiqueImpl extends InventoryService {
     // ajout de code spécifique
     if (inventory.getSupplier() != null) {
       // query += this.filterInventoryFromStockMove(inventory);
-      query += this.filterInventoryFromSupplierCatalog(inventory);
+      // query += this.filterInventoryFromSupplierCatalog(inventory);
+      query += this.filterInventoryFromDefaultSupplier(inventory);
     }
     // fin du code spécifique
 
     return stockLocationLineRepository.all().filter(query, params.toArray()).fetch();
   }
 
+  private String filterInventoryFromDefaultSupplier(Inventory inventory) {
+    ArrayList<Long> listProduct = new ArrayList<>();
+    String query = "";
+    String idString;
+    // on parcourt la liste des articles où le fournisseur est le fournisseur par défaut
+    for (Product product :
+        productRepository
+            .all()
+            .filter("self.defaultSupplierPartner =  ?", inventory.getSupplier())
+            .fetch()) {
+      // on remplit la liste  avec les articles
+      if (!listProduct.contains(product.getId())) {
+        listProduct.add(product.getId());
+      }
+    }
+    // on construit la requête
+    if (!listProduct.isEmpty()) {
+      idString = listProduct.stream().map(l -> l.toString()).collect(Collectors.joining(","));
+      query += "and self.product.id IN (" + idString + ")";
+    }
+    return query;
+  }
+
   private String filterInventoryFromSupplierCatalog(Inventory inventory) {
     ArrayList<Long> listProduct = new ArrayList<>();
     String query = "";
     String idString;
-    // on parcourt la liste des articles du catalogue fournisseur
+    // on parcourt la liste des articles du catalogue fournisseur defaultSupplierPartner
     for (SupplierCatalog supplierCatalog :
         supplierCatalogRepository
             .all()
