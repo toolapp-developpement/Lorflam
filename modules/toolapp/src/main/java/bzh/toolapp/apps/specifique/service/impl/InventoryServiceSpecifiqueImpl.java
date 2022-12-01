@@ -1,5 +1,6 @@
 package bzh.toolapp.apps.specifique.service.impl;
 
+import com.axelor.apps.base.db.Product;
 import com.axelor.apps.base.db.repo.ProductRepository;
 import com.axelor.apps.base.service.administration.SequenceService;
 import com.axelor.apps.base.service.app.AppBaseService;
@@ -29,6 +30,7 @@ public class InventoryServiceSpecifiqueImpl extends InventoryService {
 
   StockMoveLineRepository stockMoveLineRepository;
   SupplierCatalogRepository supplierCatalogRepository;
+  ProductRepository productRepository;
 
   @Inject
   public InventoryServiceSpecifiqueImpl(
@@ -45,7 +47,8 @@ public class InventoryServiceSpecifiqueImpl extends InventoryService {
       TrackingNumberRepository trackingNumberRepository,
       AppBaseService appBaseService,
       StockMoveLineRepository stockMoveLineRepository,
-      SupplierCatalogRepository supplierCatalogRepository) {
+      SupplierCatalogRepository supplierCatalogRepository,
+      ProductRepository productRepository) {
     super(
         inventoryLineService,
         sequenceService,
@@ -61,12 +64,13 @@ public class InventoryServiceSpecifiqueImpl extends InventoryService {
         appBaseService);
     this.stockMoveLineRepository = stockMoveLineRepository;
     this.supplierCatalogRepository = supplierCatalogRepository;
+    this.productRepository = productRepository;
   }
 
   @Override
   public List<? extends StockLocationLine> getStockLocationLines(Inventory inventory) {
-    
-    // copie de la méthode de la classe parente    
+
+    // copie de la méthode de la classe parente
     String query = "(self.stockLocation = ? OR self.detailsStockLocation = ?)";
     List<Object> params = new ArrayList<>();
 
@@ -108,14 +112,60 @@ public class InventoryServiceSpecifiqueImpl extends InventoryService {
     }
 
     // ajout de code spécifique
-    if (inventory.getSupplier() != null)
-    {
-      query += this.filterInventoryFromStockMove(inventory);
-      //query += this.filterInventoryFromSupplierCatalog(inventory);
+    if (inventory.getSupplier() != null) {
+      // query += this.filterInventoryFromStockMove(inventory);
+      // query += this.filterInventoryFromSupplierCatalog(inventory);
+      query += this.filterInventoryFromDefaultSupplier(inventory);
     }
-    //fin du code spécifique
+    // fin du code spécifique
 
     return stockLocationLineRepository.all().filter(query, params.toArray()).fetch();
+  }
+
+  private String filterInventoryFromDefaultSupplier(Inventory inventory) {
+    ArrayList<Long> listProduct = new ArrayList<>();
+    String query = "";
+    String idString;
+    // on parcourt la liste des articles où le fournisseur est le fournisseur par défaut
+    for (Product product :
+        productRepository
+            .all()
+            .filter("self.defaultSupplierPartner =  ?", inventory.getSupplier())
+            .fetch()) {
+      // on remplit la liste  avec les articles
+      if (!listProduct.contains(product.getId())) {
+        listProduct.add(product.getId());
+      }
+    }
+    // on construit la requête
+    if (!listProduct.isEmpty()) {
+      idString = listProduct.stream().map(l -> l.toString()).collect(Collectors.joining(","));
+      query += "and self.product.id IN (" + idString + ")";
+    }
+    return query;
+  }
+
+  private String filterInventoryFromSupplierCatalog(Inventory inventory) {
+    ArrayList<Long> listProduct = new ArrayList<>();
+    String query = "";
+    String idString;
+    // on parcourt la liste des articles du catalogue fournisseur defaultSupplierPartner
+    for (SupplierCatalog supplierCatalog :
+        supplierCatalogRepository
+            .all()
+            .filter("self.supplierPartner =  ?", inventory.getSupplier())
+            .fetch()) {
+      // on remplit les listes avec les valeurs des lignes de mouvement de stock
+      if (!listProduct.contains(supplierCatalog.getProduct().getId())) {
+        listProduct.add(supplierCatalog.getProduct().getId());
+      }
+    }
+    // on filtre les lignes d'inventaires selon la liste des articles du catalogue fournisseur
+    if (!listProduct.isEmpty()) {
+      idString = listProduct.stream().map(l -> l.toString()).collect(Collectors.joining(","));
+      query += "and self.product.id IN (" + idString + ")";
+    }
+    return query;
   }
 
   // on va chercher les lignes de mouvement de stock qui correspondent au filtre fournisseur
@@ -124,13 +174,12 @@ public class InventoryServiceSpecifiqueImpl extends InventoryService {
   // fournisseur
   // il y a probablement une meilleure façon de faire, code potentiellement à améliorer s'il y a
   // des soucis de performance
-  private String filterInventoryFromStockMove(Inventory inventory)
-  {
+  private String filterInventoryFromStockMove(Inventory inventory) {
     String idString;
     String query = "";
-     
+
     ArrayList<Long> listTrackingNumber = new ArrayList<>();
-    //ArrayList<Long> listStockLocation = new ArrayList<>();
+    // ArrayList<Long> listStockLocation = new ArrayList<>();
     ArrayList<Long> listProduct = new ArrayList<>();
 
     // on récupère les lignes de mouvement de stock qui correspondent au filtre fournisseur
@@ -138,6 +187,8 @@ public class InventoryServiceSpecifiqueImpl extends InventoryService {
         stockMoveLineRepository
             .all()
             .filter("self.stockMove.partner =  ?", inventory.getSupplier())
+            // TODO ajouter un filtre sur le type de mouvement de stock et sur le statut du
+            // mouvement de stock
             .fetch()) {
       // on remplit les listes avec les valeurs des lignes de mouvement de stock
       if (stockMoveLine.getTrackingNumber() != null
@@ -156,9 +207,10 @@ public class InventoryServiceSpecifiqueImpl extends InventoryService {
       }
     }
     // on filtre les lignes d'inventaires selon la liste de numéro de série du fournisseur
-    if (!listTrackingNumber.isEmpty()) {        
-      idString = listTrackingNumber.stream().map(l -> l.toString()).collect(Collectors.joining(","));
-      query += "and self.trackingNumber.id IN ("+ idString +")";
+    if (!listTrackingNumber.isEmpty()) {
+      idString =
+          listTrackingNumber.stream().map(l -> l.toString()).collect(Collectors.joining(","));
+      query += "and self.trackingNumber.id IN (" + idString + ")";
     }
     // on filtre les lignes d'inventaires selon la liste des emplacements où on a mis la
     // marchandise du fournisseur
@@ -166,41 +218,16 @@ public class InventoryServiceSpecifiqueImpl extends InventoryService {
     /*
     if (!listStockLocation.isEmpty()) {
       idString = listStockLocation.stream().map(l -> l.toString()).collect(Collectors.joining(","));
-      query += "and (self.stockLocation.id IN ("+ idString +") OR self.detailsStockLocation.id IN ("+ idString +"))";       
+      query += "and (self.stockLocation.id IN ("+ idString +") OR self.detailsStockLocation.id IN ("+ idString +"))";
     }
     */
     // on filtre les lignes d'inventaires selon la liste des articles effectivement envoyé par ce
     // fournisseur
     if (!listProduct.isEmpty()) {
       idString = listProduct.stream().map(l -> l.toString()).collect(Collectors.joining(","));
-      query += "and self.product.id IN (" + idString + ")";        
+      query += "and self.product.id IN (" + idString + ")";
     }
-    
 
-    return query;
-  }
-
-  private String filterInventoryFromSupplierCatalog(Inventory inventory)
-  {
-    ArrayList<Long> listProduct = new ArrayList<>();
-    String query = "";
-    String idString;
-    //on parcourt la liste des articles du catalogue fournisseur
-    for (SupplierCatalog supplierCatalog :
-        supplierCatalogRepository
-            .all()
-            .filter("self.supplierPartner =  ?", inventory.getSupplier())
-            .fetch()) {
-      // on remplit les listes avec les valeurs des lignes de mouvement de stock      
-      if (!listProduct.contains(supplierCatalog.getProduct().getId())) {
-        listProduct.add(supplierCatalog.getProduct().getId());
-      }
-    }
-    // on filtre les lignes d'inventaires selon la liste des articles du catalogue fournisseur
-    if (!listProduct.isEmpty()) {
-      idString = listProduct.stream().map(l -> l.toString()).collect(Collectors.joining(","));
-      query += "and self.product.id IN (" + idString + ")";        
-    }
     return query;
   }
 }
