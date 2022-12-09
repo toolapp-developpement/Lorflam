@@ -1,21 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<domain-models
-   xmlns="http://axelor.com/xml/ns/domain-models"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.4.xsd">
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.4.xsd">
 
-   <module
-      name="base"
-      package="com.axelor.apps.base.db" />
+  <module name="base" package="com.axelor.apps.base.db"/>
 
-   <entity
-      name="Product"
-      lang="java">
+  <entity name="Product" lang="java">
 
-      <many-to-one
-         name="abcAnalysisClass"
-         ref="com.axelor.apps.base.db.ABCAnalysisClass"
-         title="Class" />
+    <many-to-one name="abcAnalysisClass" ref="com.axelor.apps.base.db.ABCAnalysisClass"
+      title="Class"/>
 
-   </entity>
+  </entity>
 </domain-models>
