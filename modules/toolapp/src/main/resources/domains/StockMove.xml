@@ -1,24 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<domain-models
-   xmlns="http://axelor.com/xml/ns/domain-models"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.4.xsd">
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.4.xsd">
 
-   <module
-      name="stock"
-      package="com.axelor.apps.stock.db" />
+  <module name="stock" package="com.axelor.apps.stock.db"/>
 
-   <entity
-      name="StockMove"
-      lang="java">
+  <entity name="StockMove" lang="java">
 
-      <string
-         name="yard"
-         title="Référence chantier" />
+    <string name="yard" title="Référence chantier"/>
 
-      <string
-         name="custSaleOrderSeq"
-         title="Commande client" />
-   </entity>
+    <string name="custSaleOrderSeq" title="Commande client"/>
+  </entity>
 
 </domain-models>
