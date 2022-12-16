@@ -10,6 +10,11 @@
         <field name="abcAnalysisClass"/>
       </insert>
     </extend>
+    <extend target="//field[@name='fullName']">
+      <insert position="after">
+        <field name="refSupProd"/>
+      </insert>
+    </extend>
   </form>
 
 </object-views>
