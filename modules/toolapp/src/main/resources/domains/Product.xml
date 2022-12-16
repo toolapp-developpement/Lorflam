@@ -10,5 +10,6 @@
     <many-to-one name="abcAnalysisClass" ref="com.axelor.apps.base.db.ABCAnalysisClass"
       title="Class"/>
 
+    <string name="refSupProd" title="Supplier reference"/>
   </entity>
 </domain-models>
