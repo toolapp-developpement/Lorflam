@@ -4,6 +4,7 @@ import com.axelor.apps.base.db.Product;
 import com.axelor.apps.base.db.Unit;
 import com.axelor.apps.base.service.UnitConversionService;
 import com.axelor.apps.base.service.app.AppBaseService;
+import com.axelor.apps.businessproduction.service.CostSheetServiceBusinessImpl;
 import com.axelor.apps.production.db.CostSheet;
 import com.axelor.apps.production.db.CostSheetLine;
 import com.axelor.apps.production.db.ManufOrder;
@@ -13,11 +14,11 @@ import com.axelor.apps.production.db.repo.CostSheetRepository;
 import com.axelor.apps.production.service.app.AppProductionService;
 import com.axelor.apps.production.service.costsheet.CostSheetLineService;
 import com.axelor.apps.production.service.costsheet.CostSheetService;
-import com.axelor.apps.production.service.costsheet.CostSheetServiceImpl;
 import com.axelor.apps.stock.db.StockMove;
 import com.axelor.apps.stock.db.StockMoveLine;
 import com.axelor.apps.stock.db.repo.StockMoveRepository;
 import com.axelor.exception.AxelorException;
+import com.google.inject.Inject;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -27,8 +28,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class CostSheetServiceSpecifiqueImpl extends CostSheetServiceImpl {
+public class CostSheetServiceSpecifiqueImpl extends CostSheetServiceBusinessImpl {
 
+  @Inject
   public CostSheetServiceSpecifiqueImpl(
       AppProductionService appProductionService,
       UnitConversionService unitConversionService,
