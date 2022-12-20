@@ -16,6 +16,7 @@ import com.axelor.app.AxelorModule;
 import com.axelor.apps.businessproduction.service.ProductionOrderSaleOrderServiceBusinessImpl;
 import com.axelor.apps.production.db.repo.StockMoveLineProductionRepository;
 import com.axelor.apps.production.service.PurchaseOrderServiceProductionImpl;
+import com.axelor.apps.production.service.costsheet.CostSheetServiceImpl;
 import com.axelor.apps.stock.service.InventoryService;
 import com.axelor.apps.supplychain.service.SaleOrderServiceSupplychainImpl;
 
@@ -38,5 +39,6 @@ public class SpecificModule extends AxelorModule {
         .to(PurchaseOrderServiceSupplychainSpecifiqueImpl.class);
     bind(SaleOrderServiceSupplychainImpl.class).to(SaleOrderServiceSpecifiqueImpl.class);
     bind(InventoryService.class).to(InventoryServiceSpecifiqueImpl.class);
+    bind(CostSheetServiceImpl.class).to(CostSheetServiceSpecifiqueImpl.class);
   }
 }
