@@ -1,6 +1,7 @@
 package bzh.toolapp.apps.specifique.modules;
 
 import bzh.toolapp.apps.specifique.repository.StockMoveLineSpecificRepository;
+import bzh.toolapp.apps.specifique.repository.StockMoveSpecificRepository;
 import bzh.toolapp.apps.specifique.service.SpecifiqueService;
 import bzh.toolapp.apps.specifique.service.StockMoveLineSpecifiqueCreationService;
 import bzh.toolapp.apps.specifique.service.impl.*;
@@ -16,6 +17,7 @@ import com.axelor.app.AxelorModule;
 import com.axelor.apps.businessproduction.service.CostSheetServiceBusinessImpl;
 import com.axelor.apps.businessproduction.service.ProductionOrderSaleOrderServiceBusinessImpl;
 import com.axelor.apps.production.db.repo.StockMoveLineProductionRepository;
+import com.axelor.apps.production.db.repo.StockMoveProductionRepository;
 import com.axelor.apps.production.service.PurchaseOrderServiceProductionImpl;
 import com.axelor.apps.stock.service.InventoryService;
 import com.axelor.apps.supplychain.service.SaleOrderServiceSupplychainImpl;
@@ -40,5 +42,6 @@ public class SpecificModule extends AxelorModule {
     bind(SaleOrderServiceSupplychainImpl.class).to(SaleOrderServiceSpecifiqueImpl.class);
     bind(InventoryService.class).to(InventoryServiceSpecifiqueImpl.class);
     bind(CostSheetServiceBusinessImpl.class).to(CostSheetServiceSpecifiqueImpl.class);
+    bind(StockMoveProductionRepository.class).to(StockMoveSpecificRepository.class);
   }
 }
