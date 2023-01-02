@@ -10,10 +10,10 @@
         <field name="supplier" domain="self.isSupplier = true"></field>
       </insert>
     </extend>
- 
+
     <extend target="//panel[@name='fillInventoryPanel']/field[@name='includeObsolete']">
       <insert position="after">
-        <spacer colspan="6"/> 
+        <spacer colspan="6"/>
       </insert>
     </extend>
   </form>

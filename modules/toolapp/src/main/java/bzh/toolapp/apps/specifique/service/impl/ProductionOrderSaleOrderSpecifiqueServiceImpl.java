@@ -27,7 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 import javax.inject.Inject;
 
-
 public class ProductionOrderSaleOrderSpecifiqueServiceImpl
     extends ProductionOrderSaleOrderServiceBusinessImpl {
 
@@ -91,14 +90,11 @@ public class ProductionOrderSaleOrderSpecifiqueServiceImpl
 
       Unit unit = saleOrderLine.getProduct().getUnit();
 
-
       BigDecimal qty = saleOrderLine.getQty();
       // si la quantité à produire est différente de la quantité de la ligne de commande
       if (qtyToProduce.compareTo(BigDecimal.ZERO) != 0) {
         qty = qtyToProduce;
-      }
-      else
-      {
+      } else {
         if (unit != null && !unit.equals(saleOrderLine.getUnit())) {
           qty =
               unitConversionService.convert(
@@ -142,11 +138,11 @@ public class ProductionOrderSaleOrderSpecifiqueServiceImpl
     // On rempli une map avec la quantité les lignes de commande de vente pour chaque produit
     HashMap<Long, BigDecimal> qtyPerProductMap = new HashMap<>();
     for (SaleOrderLine saleOrderLine : saleOrder.getSaleOrderLineList()) {
-      if(qtyPerProductMap.containsKey(saleOrderLine.getProduct().getId())){
-        qtyPerProductMap.put(saleOrderLine.getProduct().getId(), 
-          qtyPerProductMap.get(saleOrderLine.getProduct().getId()).add(saleOrderLine.getQty()));
-      }
-      else{
+      if (qtyPerProductMap.containsKey(saleOrderLine.getProduct().getId())) {
+        qtyPerProductMap.put(
+            saleOrderLine.getProduct().getId(),
+            qtyPerProductMap.get(saleOrderLine.getProduct().getId()).add(saleOrderLine.getQty()));
+      } else {
         qtyPerProductMap.put(saleOrderLine.getProduct().getId(), saleOrderLine.getQty());
       }
     }
@@ -155,11 +151,12 @@ public class ProductionOrderSaleOrderSpecifiqueServiceImpl
 
       BigDecimal manufOrderQty = BigDecimal.ZERO;
 
-      //si on a plus rien à produire, on ignore la ligne
-      if(qtyPerProductMap.get(saleOrderLine.getProduct().getId()).compareTo(BigDecimal.ZERO) == 0){
+      // si on a plus rien à produire, on ignore la ligne
+      if (qtyPerProductMap.get(saleOrderLine.getProduct().getId()).compareTo(BigDecimal.ZERO)
+          == 0) {
         continue;
       }
-      
+
       // on parcours les OFs de la commande de vente
       // pour calculer la quantité déjà produite pour l'article
       for (ManufOrder manufOrder :
@@ -179,9 +176,11 @@ public class ProductionOrderSaleOrderSpecifiqueServiceImpl
         continue;
       }
 
-      // On calcul la quantité à produire = somme des quantité de la ligne de commande pour l'article - quantité déjà produite  
-      qtyToProduce = qtyPerProductMap.get(saleOrderLine.getProduct().getId()).subtract(manufOrderQty);
-      //On remets à zéro la quantité à produire
+      // On calcul la quantité à produire = somme des quantité de la ligne de commande pour
+      // l'article - quantité déjà produite
+      qtyToProduce =
+          qtyPerProductMap.get(saleOrderLine.getProduct().getId()).subtract(manufOrderQty);
+      // On remets à zéro la quantité à produire
       qtyPerProductMap.put(saleOrderLine.getProduct().getId(), BigDecimal.ZERO);
       // sinon on crée un OF pour la quantité restante à produire
       if (productionOrder == null || !oneProdOrderPerSO) {

@@ -7,11 +7,11 @@
     model="com.axelor.apps.stock.db.StockMoveLine"
     orderBy="stockMove.statusSelect,-stockMove.estimatedDate" canNew="false" canDelete="false"
     edit-icon="true">
-    
+
     <field name="saleOrderLine.saleOrder.ticket.ticketSeq"/>
-    <button name="viewTicket" onClick="stoctkMoveViewTicket" icon="fa-edit" />
+    <button name="viewTicket" onClick="stoctkMoveViewTicket" icon="fa-edit"/>
     <field name="stockMove.partner.partnerSeq" title="Client"/>
-    <field name="stockMove.partner"/> 
+    <field name="stockMove.partner"/>
     <field name="yard"/>
     <field name="trackingNumber" readonlyIf="$get('stockMove.statusSelect') > 1"
       domain="self.product = :product" form-view="tracking-number-form"
@@ -62,7 +62,7 @@
     </domain>
   </action-view>
 
-  <action-method name="stoctkMoveViewTicket"> 
+  <action-method name="stoctkMoveViewTicket">
     <call class="bzh.toolapp.apps.specifique.web.StockMoveTicketController"
       method="viewTicketfromStockMove"/>
   </action-method>

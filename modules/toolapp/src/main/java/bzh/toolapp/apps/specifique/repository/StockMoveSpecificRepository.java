@@ -16,8 +16,7 @@ public class StockMoveSpecificRepository extends StockMoveProductionRepository {
     if (entity.getOriginTypeSelect() != null
         && StockMoveRepository.ORIGIN_SALE_ORDER.equals(entity.getOriginTypeSelect())) {
       SaleOrder saleOrder = saleOrderRepo.find(entity.getOriginId());
-      if (saleOrder.getTicket() != null) 
-      {        
+      if (saleOrder.getTicket() != null) {
         entity.setTicket(saleOrder.getTicket());
       }
     }

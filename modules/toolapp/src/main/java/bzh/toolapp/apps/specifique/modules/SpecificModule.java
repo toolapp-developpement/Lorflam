@@ -46,6 +46,5 @@ public class SpecificModule extends AxelorModule {
     bind(StockMoveProductionRepository.class).to(StockMoveSpecificRepository.class);
     bind(TemplateMessageServiceMarketingImpl.class)
         .to(TemplateMessageSpecifiqueServiceBaseImpl.class);
-
   }
 }
