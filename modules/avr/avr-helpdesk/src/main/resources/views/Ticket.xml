@@ -118,10 +118,12 @@
             canView="true" canNew="true" canEdit="true" canRemove="true" canSelect="true"
             title="Bon de retour / Bon de livraison" form-view="stock-move-form"
             grid-view="stock-move-grid" colSpan="12"/>
-          <panel-related field="saleOrderList" name="saleOrderListPanel" onNew="save"
-            canView="true" canNew="true" canEdit="true" canSelect="true" canRemove="true"
+          <button name="stockMoveBtn" title="Créer une commande" colSpan="3"
+              onClick="save,action-method-ticket-new-sale-order" /> 
+          <panel-related field="saleOrderList" name="saleOrderListPanel" 
+            canView="true" canNew="false" canEdit="true" canSelect="true" canRemove="true"
             title="Commande client" form-view="sale-order-form" grid-view="sale-order-grid"
-            colSpan="12" edit-window="blank"/>
+            colSpan="12" edit-window="blank" />
           <panel-related field="purchaseRequestList" name="purchaseRequestListPanel"
             canView="true" canNew="true" canEdit="true" canSelect="true" canRemove="true"
             title="Demande d'achat" form-view="purchase-request-form"
@@ -137,6 +139,11 @@
     <call class="com.avr.apps.helpdesk.web.TicketController"
       method="joinSaleOrderAndStockMoveBy"/>
   </action-method>
+
+  <action-view title="Create sale order" name="action-method-ticket-new-sale-order"  model="com.axelor.apps.sale.db.SaleOrder">
+    <view type="form" name="sale-order-form"/>
+    <context name="_ticket" expr="eval: __this__"/>    
+  </action-view>
 
   <action-record name="action-empty-all-link-related-to-product-in-ticket"
     model="com.axelor.apps.helpdesk.db.Ticket">
