@@ -37,17 +37,15 @@ public class TicketController {
     response.setValue("stockMoveList", stockMoveList);
     response.setValue("purchaseRequestList", purchaseRequestList);
   }
-  
 
-  public void newSaleOrder(ActionRequest request, ActionResponse response)
-      throws AxelorException {
+  public void newSaleOrder(ActionRequest request, ActionResponse response) throws AxelorException {
     Ticket ticket = request.getContext().asType(Ticket.class);
     response.setView(
-            ActionView.define(I18n.get("Sale order"))
-                .model("com.axelor.apps.sale.db.SaleOrder")
-                .add("form", "sale-order-form")
-                .param("forceEdit", "true")
-                .context("__parent__", ticket)
-                .map());
+        ActionView.define(I18n.get("Sale order"))
+            .model("com.axelor.apps.sale.db.SaleOrder")
+            .add("form", "sale-order-form")
+            .param("forceEdit", "true")
+            .context("__parent__", ticket)
+            .map());
   }
 }
