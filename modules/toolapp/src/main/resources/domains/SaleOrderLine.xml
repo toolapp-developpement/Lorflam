@@ -9,6 +9,11 @@
     <string name="yard2" title="Référence chantier"/>
     <many-to-one name="rateToApply" ref="com.avr.apps.helpdesk.db.RateToApply"
       title="Tarif à appliquer"/>
+    <decimal name="qtyToDeliver" title="Quantité restante à livrer">
+    <![CDATA[
+
+    return qty.subtract(deliveredQty);
+    ]]></decimal>
   </entity>
 
 </domain-models>
