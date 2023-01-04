@@ -10,6 +10,11 @@
     <string name="yard" title="Référence chantier"/>
 
     <string name="custSaleOrderSeq" title="Commande client"/>
+
+    <decimal name="discountAmount" title="Discount amount" precision="20" scale="10"/>
+    <integer name="discountTypeSelect" title="Discount type"
+      selection="base.price.list.line.amount.type.select" default="0"/>
+    <decimal name="priceDiscounted" title="Unit price discounted" precision="20" scale="10"/>
   </entity>
 
 </domain-models>

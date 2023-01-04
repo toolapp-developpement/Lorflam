@@ -12,7 +12,34 @@
           onChange="action.specifique.method.select.or.create.yard" colSpan="2"/>
       </insert>
     </extend>
+    <extend target="//field[@name='unitPriceUntaxed']">
+      <insert position="after">
+        <spacer/>
+        <field name="discountTypeSelect" colSpan="4" onChange="action.stock.move.line.update.discount.price"/>
+        <field name="discountAmount" colSpan="4" x-scale="2" onChange="action.stock.move.line.update.discount.price"/>
+        <field name="priceDiscounted" colSpan="4" readonly="true"  x-scale="2"/>
+      </insert>
+    </extend>
   </form>
+
+  <grid name="stock-move-line-grid" title="Stock move line"
+    model="com.axelor.apps.stock.db.StockMoveLine" id="custome-stock-move-line-fogridrm"
+    extension="true">
+    <extend target="//field[@name='unitPriceUntaxed']">
+      <insert position="after">
+        <field name="discountTypeSelect"
+          onChange="action.stock.move.line.update.discount.price, action-invoice-line-attrs-discountamount-title"/>
+        <field name="discountAmount" x-scale="2"
+          onChange="action.stock.move.line.update.discount.price"/>
+        <field name="priceDiscounted" x-scale="2" readonly="true" canEdit="false"/>
+      </insert>
+    </extend>
+  </grid>
+
+  <action-method name="action.stock.move.line.update.discount.price">
+    <call method="computeDiscountPrice"
+      class="bzh.toolapp.apps.specifique.web.StockMoveLineControllerSpecifique"/>
+  </action-method>
 
   <action-method name="action.specifique.method.select.or.create.yard">
     <call method="selectOrCreateYard(yard)"
