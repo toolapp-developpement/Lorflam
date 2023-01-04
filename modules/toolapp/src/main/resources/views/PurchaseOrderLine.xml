@@ -13,7 +13,7 @@
     <extend target="//field[@name='enableFreezeFields']">
       <replace>
         <field name="yard" onChange="action.specifique.method.select.or.create.yard"
-          colSpan="2"/> 
+          colSpan="2"/>
       </replace>
     </extend>
   </form>

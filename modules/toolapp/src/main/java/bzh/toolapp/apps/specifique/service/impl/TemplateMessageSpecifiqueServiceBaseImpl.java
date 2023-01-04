@@ -50,10 +50,7 @@ public class TemplateMessageSpecifiqueServiceBaseImpl extends TemplateMessageSer
               + "-"
               + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
     } else {
-      fileName =
-          birtTemplate.getName()
-              + "-"
-              + saleOrderNumber;
+      fileName = birtTemplate.getName() + "-" + saleOrderNumber;
     }
 
     File file =
