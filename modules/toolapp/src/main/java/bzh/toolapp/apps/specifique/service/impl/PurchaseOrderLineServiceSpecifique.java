@@ -26,7 +26,7 @@ public class PurchaseOrderLineServiceSpecifique extends PurchaseOrderLineService
         PurchaseOrderLine purchaseOrderLine = super.createPurchaseOrderLine(purchaseOrder, product, productName, description, qty, unit);
         Integer sequence = sequenceMap.get(purchaseOrder.getId());
         if (sequence == null) {
-          sequence = 0;
+          sequence = 1;
         }
         purchaseOrderLine.setSequence(sequence);
 
