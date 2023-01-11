@@ -52,7 +52,6 @@ public class SpecificModule extends AxelorModule {
         .to(TemplateMessageSpecifiqueServiceBaseImpl.class);
     bind(StockMoveLineController.class).to(StockMoveLineControllerSpecifique.class);
     bind(ProjectStockMoveInvoiceServiceImpl.class).to(StockMoveInvoiceServiceImplSpecifique.class);
-    bind(PurchaseOrderLineServiceProjectImpl.class)
-        .to(PurchaseOrderLineServiceSpecifique.class);
+    bind(PurchaseOrderLineServiceProjectImpl.class).to(PurchaseOrderLineServiceSpecifique.class);
   }
 }

@@ -130,12 +130,10 @@ public class InventoryServiceSpecifiqueImpl extends InventoryService {
     for (Product product :
         productRepository
             .all()
-            .filter("self.defaultSupplierPartner =  ? ", 
-                inventory.getSupplier())
+            .filter("self.defaultSupplierPartner =  ? ", inventory.getSupplier())
             .fetch()) {
       // on remplit la liste  avec les articles
-      if (product.getArchived() != null &&  product.getArchived())
-        continue;
+      if (product.getArchived() != null && product.getArchived()) continue;
       if (!listProduct.contains(product.getId())) {
         listProduct.add(product.getId());
       }
@@ -144,8 +142,7 @@ public class InventoryServiceSpecifiqueImpl extends InventoryService {
     if (!listProduct.isEmpty()) {
       idString = listProduct.stream().map(l -> l.toString()).collect(Collectors.joining(","));
       query += "and self.product.id IN (" + idString + ")";
-    }
-    else {
+    } else {
       query += "and self.product.id = 0";
     }
     return query;

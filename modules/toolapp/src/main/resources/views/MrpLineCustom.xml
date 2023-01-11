@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
+  <form name="mrp-form-custom" title="MRP" model="com.axelor.apps.base.db.Wizard" width="large"
+    canNew="false" canSave="false" canCopy="false">
+
+    <panel name="infoPanel">
+      <field name="$product" colSpan="6" title="Product" type="many-to-one"
+        target="com.axelor.apps.base.db.Product" domain="self.dtype = 'Product'"
+        onChange="action-mrp-line-custom-refresh-data"/>
+      <field name="$stockLocation" colSpan="3" title="Stock location" type="many-to-one"
+        target="com.axelor.apps.stock.db.StockLocation"
+        onChange="action-mrp-line-custom-refresh-data"
+        domain="self.typeSelect != 3 AND (self.isNotInMrp = false OR self.isNotInMrp = null)"/>
+      <field name="$endDate" colSpan="3" title="End date" type="date"
+        onChange="action-mrp-line-custom-refresh-data"/>
+    </panel>
+
+    <panel name="mrpLinePanel" colSpan="12"
+      showIf="$product &amp;&amp; $endDate  &amp;&amp; $stockLocation" height="800">
+      <field name="$mrpLineCustomList" type="one-to-many"
+        target="com.axelor.apps.toolapp.db.MrpLineCustom" colSpan="12" readonly="true" height="800"
+        x-order="date" grid-view="mrp-line-grid-custom"/>
+    </panel>
+  </form>
+
+
+  <grid name="mrp-line-grid-custom" title="Results"
+    model="com.axelor.apps.toolapp.db.MrpLineCustom" editable="false" sortable="false"
+    edit-icon="false" groupBy="product">
+    <hilite color="danger" strong="true" if="isEditedByUser"/>
+    <hilite color="warning" strong="true"
+      if="$get('mrpLineType.elementSelect') == 5 &amp;&amp; $get('product.defaultSupplierPartner.id') != $get('supplierPartner.id')"/>
+    <hilite color="info" strong="true"
+      if="[5,8,9].indexOf($get('mrpLineType.elementSelect')) != -1"/>
+    <field name="product"></field>
+    <field name="minQty" title="Stock Mini" x-scale="2"></field>
+    <field name="qtyN2" title="Conso N-2" x-scale="2"></field>
+    <field name="qtyN1" title="Conso N-1" x-scale="2"></field>
+    <field name="qtyN" title="Conso 12 mois" x-scale="2"></field>
+    <field name="mrpLineType"/>
+    <field name="qty" x-scale="2"/>
+    <field name="maturityDate"/>
+    <field name="weekNumber" title="N° Semaine"/>
+    <field name="cumulativeQty" css="bold" x-scale="2"/>
+    <field name="maxLevel"/>
+    <field name="relatedToSelectName"/>
+    <field name="partner"/>
+    <field name="supplierPartner"/>
+    <button name="detailProduct" icon="fa-cubes" onClick="action-view-product-view-custom"
+      colSpan="1"/>
+    <button name="displayStock" icon="fa-line-chart"
+      onClick="action-method-projected-stock-custome" colSpan="1"/>
+  </grid>
+
+  <action-view name="action-mrp-view-mrp-line-custom"
+    model="com.axelor.apps.toolapp.db.MrpLineCustom" title="Results">
+    <view name="mrp-line-grid-custom" type="grid"/>
+    <view name="mrp-line-form" type="form"/>
+    <view-param name="limit" value="200"/>
+
+    <context name="_productId" expr="eval: product.id"/>
+    <context name="_endDate" expr="eval: endDate"/>
+    <context name="_proposalElementSelect"
+      expr="eval: [__repo__(MrpLineType).ELEMENT_PURCHASE_ORDER,__repo__(MrpLineType).ELEMENT_SALE_ORDER,__repo__(MrpLineType).ELEMENT_PURCHASE_PROPOSAL,__repo__(MrpLineType).ELEMENT_MANUFACTURING_PROPOSAL]"/>
+  </action-view>
+
+  <action-method name="action-mrp-line-custom-refresh-data">
+    <call class="bzh.toolapp.apps.specifique.web.MrpLineCustomController"
+      method="fillMrpLineCustom"/>
+  </action-method>
+ 
+  <action-view id="Mrp" name="custome.detail.stock.mrp"
+    model="com.axelor.apps.base.db.Wizard" title="Projection des stocks">
+    <view name="mrp-form-custom" type="form"/>
+  </action-view>
+
+  <action-method name="action-method-projected-stock-custome">
+    <call method="showProjectedStock" class="bzh.toolapp.apps.specifique.web.ProductController"/>
+  </action-method>
+
+  <action-view name="action-view-product-view-custom"
+    model="com.axelor.apps.base.db.Product" title="Stock location lines by product">
+    <view name="supplychain-stock-details-by-product-custo-form" type="form"/>
+    <view-param name="popup" value="true"/>
+    <view-param name="popup-save" value="false"/>
+    <view-param name="popup.maximized" value="true"/>
+    <context name="_productMrp" expr="eval: product"/>
+    <context name="_stockLocationMrp" expr="eval: stockLocation"/>
+    <context name="_isFromMenu" expr="eval: true"/>
+  </action-view>
+
+</object-views>

@@ -3,7 +3,13 @@ package bzh.toolapp.apps.specifique.web;
 // import bzh.toolapp.apps.specifique.service.etatstock.BillOfMaterialServiceSpecifique;
 
 import com.axelor.apps.supplychain.db.MrpLine;
+import com.axelor.apps.supplychain.service.ProjectedStockService;
+import com.axelor.apps.toolapp.db.MrpLineCustom;
 import com.axelor.db.mapper.Mapper;
+import com.axelor.exception.service.TraceBackService;
+import com.axelor.i18n.I18n;
+import com.axelor.inject.Beans;
+import com.axelor.meta.schema.actions.ActionView;
 import com.axelor.rpc.ActionRequest;
 import com.axelor.rpc.ActionResponse;
 import com.axelor.rpc.Context;
@@ -40,40 +46,39 @@ public class ProductController {
 
   public void showProjectedStock(ActionRequest request, ActionResponse response) {
 
-    //    try {
-    //      ProjectedStockService projectedStockService = Beans.get(ProjectedStockService.class);
+    try {
+      ProjectedStockService projectedStockService = Beans.get(ProjectedStockService.class);
 
-    //      MrpLineCustom mrpLine = request.getContext().asType(MrpLineCustom.class);
-    //
-    //      Map<String, Long> mapId = new HashMap<>();
-    //
-    //      mapId.put("productId", mrpLine.getProduct().getId());
-    //      mapId.put("companyId", mrpLine.getStockLocation().getCompany().getId());
-    //      mapId.put("stockLocationId", mrpLine.getStockLocation().getId());
-    //
-    //      final List<MrpLine> mrpLineList = new ArrayList<>();
-    //      try {
-    //        mrpLineList.addAll(
-    //            projectedStockService.createProjectedStock(
-    //                mapId.get("productId"), mapId.get("companyId"),
-    // mapId.get("stockLocationId")));
-    //        response.setView(
-    //            ActionView.define(I18n.get("Projected stock"))
-    //                .model(MrpLine.class.getName())
-    //                .add("form", "projected-stock-form-custome")
-    //                .param("popup", "true")
-    //                .param("popup-save", "false")
-    //                .param("popup.maximized", "true")
-    //                .context("_mrpLineList", mrpLineList)
-    //                .map());
-    //      } catch (Exception e) {
-    //        TraceBackService.trace(response, e);
-    //      } finally {
-    //        projectedStockService.removeMrpAndMrpLine(mrpLineList);
-    //      }
-    //    } catch (Exception e) {
-    ////      TraceBackService.trace(response, e);
-    //    }
+      MrpLineCustom mrpLine = request.getContext().asType(MrpLineCustom.class);
+
+      Map<String, Long> mapId = new HashMap<>();
+
+      mapId.put("productId", mrpLine.getProduct().getId());
+      mapId.put("companyId", mrpLine.getStockLocation().getCompany().getId());
+      mapId.put("stockLocationId", mrpLine.getStockLocation().getId());
+
+      final List<MrpLine> mrpLineList = new ArrayList<>();
+      try {
+        mrpLineList.addAll(
+            projectedStockService.createProjectedStock(
+                mapId.get("productId"), mapId.get("companyId"), mapId.get("stockLocationId")));
+        response.setView(
+            ActionView.define(I18n.get("Projected stock"))
+                .model(MrpLine.class.getName())
+                .add("form", "projected-stock-form-custome")
+                .param("popup", "true")
+                .param("popup-save", "false")
+                .param("popup.maximized", "true")
+                .context("_mrpLineList", mrpLineList)
+                .map());
+      } catch (Exception e) {
+        TraceBackService.trace(response, e);
+      } finally {
+        projectedStockService.removeMrpAndMrpLine(mrpLineList);
+      }
+    } catch (Exception e) {
+      //      TraceBackService.trace(response, e);
+    }
   }
 
   public void showCustomeChartProjectedStock(ActionRequest request, ActionResponse response) {

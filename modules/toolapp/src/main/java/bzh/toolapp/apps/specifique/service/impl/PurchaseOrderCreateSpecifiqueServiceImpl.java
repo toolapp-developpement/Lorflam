@@ -76,13 +76,14 @@ public class PurchaseOrderCreateSpecifiqueServiceImpl
             yard);
     po.setOrderBeingEdited(true);
 
-    //begin MA1-I53 karl
+    // begin MA1-I53 karl
     PurchaseConfigRepository purchaseConfigRepo = Beans.get(PurchaseConfigRepository.class);
     Boolean displayPriceOnQuotationRequest =
         purchaseConfigRepo
-        .all()
-        .filter("self.company = ?",po.getCompany())
-        .fetchOne().getDisplayPriceOnQuotationRequest();
+            .all()
+            .filter("self.company = ?", po.getCompany())
+            .fetchOne()
+            .getDisplayPriceOnQuotationRequest();
     po.setDisplayPriceOnQuotationRequest(displayPriceOnQuotationRequest);
     // end MA1-I53
     return po;

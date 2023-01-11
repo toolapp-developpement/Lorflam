@@ -36,12 +36,26 @@
 
     <extend target="//panel-related[@name='stockMoveLineListPanel']">
       <replace>
-       
-        
-        <panel-related name="stockMoveLineListPanel" title="Stock move lines" showIf="originId" readonlyIf="company == null || fromStockLocation == null || statusSelect == 3" height="12" field="stockMoveLineList" form-view="stock-move-line-form" grid-view="stock-move-line-grid" orderBy="sequence" onNew="action-stock-move-line-record-filter-on-available-products" onChange="action-stock-move-line-change-group" canNew="true" canRemove="!(statusSelect == 2 &amp;&amp; pickingIsEdited)" canMove="true"/>
-        <panel-related name="stockMoveLineListPanelWithDiscount" title="Stock move lines" showIf="!originId" readonlyIf="company == null || fromStockLocation == null || statusSelect == 3" height="12" field="stockMoveLineList" form-view="stock-move-line-form" grid-view="stock-move-line-grid-with-discount" orderBy="sequence" onNew="action-stock-move-line-record-filter-on-available-products" onChange="action-stock-move-line-change-group" canNew="true" canRemove="!(statusSelect == 2 &amp;&amp; pickingIsEdited)" canMove="true"/>
-        <panel hidden="true"> 
-          <field name="originId" hidden="true"></field> 
+
+
+        <panel-related name="stockMoveLineListPanel" title="Stock move lines"
+          showIf="originId"
+          readonlyIf="company == null || fromStockLocation == null || statusSelect == 3" height="12"
+          field="stockMoveLineList" form-view="stock-move-line-form"
+          grid-view="stock-move-line-grid" orderBy="sequence"
+          onNew="action-stock-move-line-record-filter-on-available-products"
+          onChange="action-stock-move-line-change-group" canNew="true"
+          canRemove="!(statusSelect == 2 &amp;&amp; pickingIsEdited)" canMove="true"/>
+        <panel-related name="stockMoveLineListPanelWithDiscount"
+          title="Stock move lines" showIf="!originId"
+          readonlyIf="company == null || fromStockLocation == null || statusSelect == 3" height="12"
+          field="stockMoveLineList" form-view="stock-move-line-form"
+          grid-view="stock-move-line-grid-with-discount" orderBy="sequence"
+          onNew="action-stock-move-line-record-filter-on-available-products"
+          onChange="action-stock-move-line-change-group" canNew="true"
+          canRemove="!(statusSelect == 2 &amp;&amp; pickingIsEdited)" canMove="true"/>
+        <panel hidden="true">
+          <field name="originId" hidden="true"></field>
         </panel>
       </replace>
     </extend>
