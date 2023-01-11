@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
+
+  
+  <action-attrs name="action-supplier-catalog-attrs-init" id="action-supplier-catalog-attrs-init-specifique">
+    <attribute name="scale" expr="eval: __config__.app.getNbDecimalDigitForUnitPrice()" for="price"/>
+    <attribute name="scale" expr="eval: __config__.app.getNbDecimalDigitForQty()" for="minQty"/>
+    <attribute if="eval: __parent__?._model == 'com.axelor.apps.base.db.Product'" name="hidden" expr="eval: __parent__ &amp;&amp; !__parent__.defShipCoefByPartner" for="shippingCoefList"/>
+    <attribute if="eval: __parent__?._model != 'com.axelor.apps.base.db.Product'" name="hidden" expr="eval: product &amp;&amp; !product.defShipCoefByPartner" for="shippingCoefList"/>
+  </action-attrs>
+</object-views>
