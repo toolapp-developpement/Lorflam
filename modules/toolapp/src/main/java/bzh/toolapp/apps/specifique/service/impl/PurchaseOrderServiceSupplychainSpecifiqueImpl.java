@@ -81,6 +81,7 @@ public class PurchaseOrderServiceSupplychainSpecifiqueImpl
             .fetchOne()
             .getDisplayPriceOnQuotationRequest();
     purchaseOrder.setDisplayPriceOnQuotationRequest(displayPriceOnQuotationRequest);
+    purchaseOrder.setDeliveryDate(null);
     // end MA1-I53
     return purchaseOrder;
   }
