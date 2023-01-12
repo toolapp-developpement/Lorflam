@@ -86,7 +86,7 @@ public class PurchaseOrderCreateSpecifiqueServiceImpl
             .getDisplayPriceOnQuotationRequest();
     po.setDisplayPriceOnQuotationRequest(displayPriceOnQuotationRequest);
     po.setDeliveryDate(null);
-    // end MA1-I53 
+    // end MA1-I53
     return po;
   }
 

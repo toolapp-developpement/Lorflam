@@ -31,8 +31,8 @@ public class PurchaseOrderLineServiceSpecifique extends PurchaseOrderLineService
     purchaseOrderLine.setSequence(sequence);
 
     sequenceMap.put(purchaseOrder.getId(), sequence + 1);
-        purchaseOrderLine.setDesiredDelivDate(null);
-        purchaseOrderLine.setEstimatedDelivDate(null);
+    purchaseOrderLine.setDesiredDelivDate(null);
+    purchaseOrderLine.setEstimatedDelivDate(null);
     return purchaseOrderLine;
   }
 }

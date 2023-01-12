@@ -70,7 +70,7 @@
     <call class="bzh.toolapp.apps.specifique.web.MrpLineCustomController"
       method="fillMrpLineCustom"/>
   </action-method>
- 
+
   <action-view id="Mrp" name="custome.detail.stock.mrp"
     model="com.axelor.apps.base.db.Wizard" title="Projection des stocks">
     <view name="mrp-form-custom" type="form"/>

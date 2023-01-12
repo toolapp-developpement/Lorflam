@@ -16,7 +16,7 @@ import java.util.List;
 public class MrpLineCustomController {
 
   public void fillMrpLineCustom(ActionRequest request, ActionResponse response) {
-    try { 
+    try {
       Context context = request.getContext();
       Long productId = null;
       if (context.get("product") != null) {

@@ -15,7 +15,6 @@ import com.axelor.apps.stock.service.config.StockConfigService;
 import com.axelor.apps.supplychain.db.Mrp;
 import com.axelor.apps.supplychain.db.MrpLine;
 import com.axelor.apps.supplychain.db.repo.MrpLineRepository;
-import com.axelor.apps.supplychain.db.repo.MrpLineTypeRepository;
 import com.axelor.apps.supplychain.db.repo.MrpRepository;
 import com.axelor.apps.toolapp.db.MrpLineCustom;
 import com.axelor.auth.AuthUtils;
@@ -102,8 +101,8 @@ public class MrpLineCustomService {
             .all()
             .filter(
                 "self.product = ?1 AND self.mrp.endDate <= ?2 AND self.mrp.stockLocation = ?3 AND self.mrp.statusSelect = 2 ",
-                //AND self.mrpLineType.elementSelect IN "
-                 //   + filtreType,
+                // AND self.mrpLineType.elementSelect IN "
+                //   + filtreType,
                 product,
                 date,
                 stockLocation)
