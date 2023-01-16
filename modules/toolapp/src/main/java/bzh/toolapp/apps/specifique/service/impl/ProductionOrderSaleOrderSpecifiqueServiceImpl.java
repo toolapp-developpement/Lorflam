@@ -138,6 +138,11 @@ public class ProductionOrderSaleOrderSpecifiqueServiceImpl
     // On rempli une map avec la quantité les lignes de commande de vente pour chaque produit
     HashMap<Long, BigDecimal> qtyPerProductMap = new HashMap<>();
     for (SaleOrderLine saleOrderLine : saleOrder.getSaleOrderLineList()) {
+      //MA1-I54 - Karl - begin cas Pack = ligne de commande sans article associé
+      if (saleOrderLine.getProduct() == null) {
+        continue;
+      }
+      //MA1-I54 - Karl - end
       if (qtyPerProductMap.containsKey(saleOrderLine.getProduct().getId())) {
         qtyPerProductMap.put(
             saleOrderLine.getProduct().getId(),
