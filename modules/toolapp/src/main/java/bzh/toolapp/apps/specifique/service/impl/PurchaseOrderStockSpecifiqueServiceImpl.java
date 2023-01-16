@@ -116,22 +116,27 @@ public class PurchaseOrderStockSpecifiqueServiceImpl extends PurchaseOrderCreate
       purchaseOrderLine.setReceiptState(PurchaseOrderLineRepository.RECEIPT_STATE_NOT_RECEIVED);
     }
 
-    return stockMoveLineSpecifiqueCreationService.createStockMoveLine(
-        product,
-        purchaseOrderLine.getProductName(),
-        purchaseOrderLine.getDescription(),
-        qty,
-        BigDecimal.ZERO,
-        priceDiscounted,
-        companyUnitPriceUntaxed,
-        companyPurchasePrice,
-        unit,
-        stockMove,
-        StockMoveLineService.TYPE_PURCHASES,
-        purchaseOrder.getInAti(),
-        taxRate,
-        null,
-        purchaseOrderLine);
+    StockMoveLine stockMoveLine =
+        stockMoveLineSpecifiqueCreationService.createStockMoveLine(
+            product,
+            purchaseOrderLine.getProductName(),
+            purchaseOrderLine.getDescription(),
+            qty,
+            BigDecimal.ZERO,
+            priceDiscounted,
+            companyUnitPriceUntaxed,
+            companyPurchasePrice,
+            unit,
+            stockMove,
+            StockMoveLineService.TYPE_PURCHASES,
+            purchaseOrder.getInAti(),
+            taxRate,
+            null,
+            purchaseOrderLine);
+    // MA1-I48 karl - begin
+    stockMoveLine.setRealQty(BigDecimal.ZERO);
+    // MA1-I48 - end
+    return stockMoveLine;
   }
 
   @Override

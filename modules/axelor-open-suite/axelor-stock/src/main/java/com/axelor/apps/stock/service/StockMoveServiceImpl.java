@@ -636,6 +636,7 @@ public class StockMoveServiceImpl implements StockMoveService {
 
       if (stockMoveLine.getQty().compareTo(stockMoveLine.getRealQty()) > 0) {
         StockMoveLine newStockMoveLine = copySplittedStockMoveLine(stockMoveLine);
+        //newStockMoveLine.setRealQty(BigDecimal.ZERO);
         newStockMove.addStockMoveLineListItem(newStockMoveLine);
       }
     }
