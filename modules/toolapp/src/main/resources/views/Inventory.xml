@@ -3,7 +3,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
   <form name="inventory-form" title="Inventory" model="com.axelor.apps.stock.db.Inventory"
-    id="custom-inventory-form" extension="true">
+    id="custom-inventory-form" extension="true" onNew="action-inventory-record-new,inventory.custom.init.onload">
 
     <extend target="//panel[@name='fillInventoryPanel']/field[@name='product']">
       <insert position="after">
@@ -22,9 +22,16 @@
     model="com.axelor.apps.stock.db.InventoryLine" editable="true" orderBy="product.code"
     edit-icon="true" extension="true">
     <extend target="//field[@name='product']">
-      <insert position="after">
+      <insert position="after"> 
         <field name="product.refSupProd"/>
       </insert>
     </extend>
   </grid>
+
+  <action-record model="com.axelor.apps.stock.db.Inventory" name="inventory.custom.init.onload">
+    <field name="company" expr="eval:__user__.activeCompany"
+    if="__user__.activeCompany != null"/>
+    <field name="company" expr="eval:__repo__(Company).all().fetchOne()"
+      if="__user__.activeCompany == null &amp;&amp; __repo__(Company).all().fetch().size == 1"/>
+  </action-record>
 </object-views>
