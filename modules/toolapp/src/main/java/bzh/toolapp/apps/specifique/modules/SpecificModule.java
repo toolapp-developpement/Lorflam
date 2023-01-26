@@ -22,6 +22,7 @@ import com.axelor.apps.businessproject.service.PurchaseOrderLineServiceProjectIm
 import com.axelor.apps.marketing.service.TemplateMessageServiceMarketingImpl;
 import com.axelor.apps.production.db.repo.StockMoveLineProductionRepository;
 import com.axelor.apps.production.db.repo.StockMoveProductionRepository;
+import com.axelor.apps.production.service.MrpLineServiceProductionImpl;
 import com.axelor.apps.production.service.MrpServiceProductionImpl;
 import com.axelor.apps.production.service.PurchaseOrderServiceProductionImpl;
 import com.axelor.apps.production.web.StockMoveLineController;
@@ -55,5 +56,6 @@ public class SpecificModule extends AxelorModule {
     bind(ProjectStockMoveInvoiceServiceImpl.class).to(StockMoveInvoiceServiceImplSpecifique.class);
     bind(PurchaseOrderLineServiceProjectImpl.class).to(PurchaseOrderLineServiceSpecifique.class);
     bind(MrpServiceProductionImpl.class).to(MrpServiceImplSpecifique.class);
+    bind(MrpLineServiceProductionImpl.class).to(MrpLineServiceProductionSpecifiqueImpl.class);
   }
 }

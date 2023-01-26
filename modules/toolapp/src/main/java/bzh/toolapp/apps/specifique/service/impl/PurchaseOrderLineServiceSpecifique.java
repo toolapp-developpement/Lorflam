@@ -7,6 +7,7 @@ import com.axelor.apps.purchase.db.PurchaseOrder;
 import com.axelor.apps.purchase.db.PurchaseOrderLine;
 import com.axelor.exception.AxelorException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +32,12 @@ public class PurchaseOrderLineServiceSpecifique extends PurchaseOrderLineService
     purchaseOrderLine.setSequence(sequence);
 
     sequenceMap.put(purchaseOrder.getId(), sequence + 1);
-    purchaseOrderLine.setDesiredDelivDate(null);
+    // si la date désirée est égal à la date du jour, on la met à null
+    if (purchaseOrderLine.getDesiredDelivDate() != null
+        && purchaseOrderLine.getDesiredDelivDate().isEqual(LocalDate.now())) {
+      purchaseOrderLine.setDesiredDelivDate(null);
+    }
+
     purchaseOrderLine.setEstimatedDelivDate(null);
     return purchaseOrderLine;
   }
