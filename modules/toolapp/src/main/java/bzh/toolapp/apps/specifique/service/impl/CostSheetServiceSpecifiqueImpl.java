@@ -141,10 +141,16 @@ public class CostSheetServiceSpecifiqueImpl extends CostSheetServiceBusinessImpl
       if ((calculationType == CostSheetRepository.CALCULATION_PARTIAL_END_OF_PRODUCTION
               || calculationType == CostSheetRepository.CALCULATION_END_OF_PRODUCTION)
           && previousCostSheetDate != null
+          // <-- MA1-I42 Karl Alexandersson
+          && stockMove.getRealDate() != null
+          // MA1-I42 Karl Alexandersson -->
           && !previousCostSheetDate.isBefore(stockMove.getRealDate())) {
         continue;
 
       } else if (calculationType == CostSheetRepository.CALCULATION_WORK_IN_PROGRESS
+          // <-- MA1-I42 Karl Alexandersson
+          && stockMove.getRealDate() != null
+          // MA1-I42 Karl Alexandersson -->
           && calculationDate.isBefore(stockMove.getRealDate())) {
         continue;
       }

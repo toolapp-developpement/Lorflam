@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
+
+ 
+    <grid id="manuf-order-grid-custome" name="manuf-order-grid" title="Manufacturing orders" model="com.axelor.apps.production.db.ManufOrder" orderBy="-manufOrderSeq" edit-icon="true" extension="true">
+        <extend target="//field[@name='qty']">
+            <insert position="after">
+                <field name="qtyToProduce" x-scale="2" title="Qté à produire"/>
+                <field name="qtyProduced" x-scale="2" title="Qté produite"/>
+            </insert>
+        </extend>
+
+    </grid>
+
+</object-views>
