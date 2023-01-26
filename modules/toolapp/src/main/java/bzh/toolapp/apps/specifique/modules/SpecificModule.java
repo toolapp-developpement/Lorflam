@@ -28,6 +28,7 @@ import com.axelor.apps.production.service.PurchaseOrderServiceProductionImpl;
 import com.axelor.apps.production.web.StockMoveLineController;
 import com.axelor.apps.stock.service.InventoryService;
 import com.axelor.apps.supplychain.service.SaleOrderServiceSupplychainImpl;
+import com.axelor.apps.supplychain.service.StockLocationServiceSupplychainImpl;
 
 public class SpecificModule extends AxelorModule {
 
@@ -57,5 +58,7 @@ public class SpecificModule extends AxelorModule {
     bind(PurchaseOrderLineServiceProjectImpl.class).to(PurchaseOrderLineServiceSpecifique.class);
     bind(MrpServiceProductionImpl.class).to(MrpServiceImplSpecifique.class);
     bind(MrpLineServiceProductionImpl.class).to(MrpLineServiceProductionSpecifiqueImpl.class);
+    bind(StockLocationServiceSupplychainImpl.class)
+        .to(StockLocationServiceSupplychainSpecifiqueImpl.class);
   }
 }
