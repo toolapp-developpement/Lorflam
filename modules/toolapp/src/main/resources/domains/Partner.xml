@@ -9,7 +9,7 @@
     <date name="dateClientBois" title="Date client bois"/>
     <date name="dateClientGaz" title="Date client gaz"/>
     <date name="miseEnSommeil" title="Mise en sommeil"/>
-    <boolean name="customerSleeping" title="Mise en sommeil"/>    
+    <boolean name="customerSleeping" title="Mise en sommeil"/>
   </entity>
 
 </domain-models>

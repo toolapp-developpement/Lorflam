@@ -37,12 +37,12 @@ public class StockLocationServiceSupplychainSpecifiqueImpl
                     + "FROM StockLocationLine AS self "
                     + "LEFT JOIN StockLocation AS location "
                     + "ON location.id= self.stockLocation "
-                    //+ "WHERE self.stockLocation.id =:id "
+                    // + "WHERE self.stockLocation.id =:id "
                     // MA1-I50 - Karl - begin
                     + "WHERE self.stockLocation.id IN (:ids)"
                 // MA1-I50 - Karl - end
                 );
-   // query.setParameter("id", stockLocation.getId()); 
+    // query.setParameter("id", stockLocation.getId());
     // MA1-I50 - Karl - begin
     query.setParameter("ids", getContentStockLocationIds(stockLocation));
     // MA1-I50 - Karl - end
