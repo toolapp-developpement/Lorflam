@@ -26,22 +26,24 @@
     model="com.axelor.apps.stock.db.InventoryLine" editable="true" orderBy="product.code"
     edit-icon="true" extension="true">
     <extend target="//field[@name='product']">
-      <insert position="after"> 
-        <field name="product.refSupProd"/> 
+      <insert position="after">
+        <field name="product.refSupProd"/>
       </insert>
     </extend>
   </grid>
 
-  <action-record model="com.axelor.apps.stock.db.Inventory" name="inventory.custom.init.onload">
+  <action-record model="com.axelor.apps.stock.db.Inventory"
+    name="inventory.custom.init.onload">
     <field name="company" expr="eval:__user__.activeCompany"
-    if="__user__.activeCompany != null"/>
+      if="__user__.activeCompany != null"/>
     <field name="company" expr="eval:__repo__(Company).all().fetchOne()"
       if="__user__.activeCompany == null &amp;&amp; __repo__(Company).all().fetch().size == 1"/>
     <field name="plannedStartDateT"
-      expr="eval: __config__.app.getTodayDateTime().toLocalDateTime()"/> 
+      expr="eval: __config__.app.getTodayDateTime().toLocalDateTime()"/>
     <field name="plannedEndDateT"
-      expr="eval: __config__.app.getTodayDateTime().toLocalDateTime().plusDays(1)"/> 
-    <field name="typeSelect" expr="1" />
-    <field name="stockLocation" expr="eval: __repo__(StockLocation).all().filter('self.name =?','LORFLAM').fetchOne()" />
+      expr="eval: __config__.app.getTodayDateTime().toLocalDateTime().plusDays(1)"/>
+    <field name="typeSelect" expr="1"/>
+    <field name="stockLocation"
+      expr="eval: __repo__(StockLocation).all().filter('self.name =?','LORFLAM').fetchOne()"/>
   </action-record>
 </object-views>

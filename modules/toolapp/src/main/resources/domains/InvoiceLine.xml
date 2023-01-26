@@ -11,7 +11,7 @@
             return qty.negate();
         return qty;
         ]]>
-    </decimal> 
+    </decimal>
     <decimal name="exTaxTotalCalculated" title="Montant H.T. calculé">
         <![CDATA[
         if(invoice.getOperationTypeSelect() == 2 || invoice.getOperationTypeSelect() == 4)

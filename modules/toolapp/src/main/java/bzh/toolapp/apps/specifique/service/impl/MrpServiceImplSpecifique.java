@@ -16,7 +16,6 @@ import com.axelor.apps.stock.service.StockLocationService;
 import com.axelor.apps.stock.service.StockRulesService;
 import com.axelor.apps.supplychain.db.MrpForecast;
 import com.axelor.apps.supplychain.db.MrpLine;
-import com.axelor.apps.supplychain.db.MrpLineOrigin;
 import com.axelor.apps.supplychain.db.repo.MrpForecastRepository;
 import com.axelor.apps.supplychain.db.repo.MrpLineRepository;
 import com.axelor.apps.supplychain.db.repo.MrpLineTypeRepository;
@@ -97,20 +96,21 @@ public class MrpServiceImplSpecifique extends MrpServiceProductionImpl {
 
       // If the mrp line is a proposal and the cumulative qty is superior to the min qty, we delete
       // the mrp line
-      //on supprime que si l'origine est une ligne de stock disponible
-        // le pb que l'on cherche à résoudre est le suivant :
-        // On a du stock disponible inférieur à la quantité minimum mais on a aussi une ou plusieurs commande ferme fournisseur en retard
-        // dans ce cas, on ne veut pas de proposition
-        // dans tous les autres cas, on doit garder la proposition générée par le CBN
+      // on supprime que si l'origine est une ligne de stock disponible
+      // le pb que l'on cherche à résoudre est le suivant :
+      // On a du stock disponible inférieur à la quantité minimum mais on a aussi une ou plusieurs
+      // commande ferme fournisseur en retard
+      // dans ce cas, on ne veut pas de proposition
+      // dans tous les autres cas, on doit garder la proposition générée par le CBN
       // MA1-I63 - Karl - begin
       if (this.isProposalElement(mrpLine.getMrpLineType())
           && mrpLine.getCumulativeQty().compareTo(mrpLine.getMinQty()) >= 0
           && mrpLine.getMrpLineType().getTypeSelect() != MrpLineTypeRepository.TYPE_OUT
-          && (mrpLine.getRelatedToSelectName() == null || mrpLine.getRelatedToSelectName().isEmpty())) {
-        
-          mrpLineRepository.remove(mrpLine); 
-          continue;
-        
+          && (mrpLine.getRelatedToSelectName() == null
+              || mrpLine.getRelatedToSelectName().isEmpty())) {
+
+        mrpLineRepository.remove(mrpLine);
+        continue;
       }
       // MA1-I63 - Karl - end
 
