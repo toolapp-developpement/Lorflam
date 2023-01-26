@@ -116,7 +116,7 @@ public class PurchaseOrderStockSpecifiqueServiceImpl extends PurchaseOrderCreate
       purchaseOrderLine.setReceiptState(PurchaseOrderLineRepository.RECEIPT_STATE_NOT_RECEIVED);
     }
 
-    return stockMoveLineSpecifiqueCreationService.createStockMoveLine(
+    StockMoveLine stockMoveLine = stockMoveLineSpecifiqueCreationService.createStockMoveLine(
         product,
         purchaseOrderLine.getProductName(),
         purchaseOrderLine.getDescription(),
@@ -132,6 +132,12 @@ public class PurchaseOrderStockSpecifiqueServiceImpl extends PurchaseOrderCreate
         taxRate,
         null,
         purchaseOrderLine);
+
+        // MA1-I48 - Karl - begin
+      stockMoveLine.setRealQty(BigDecimal.ZERO);
+      // MA1-I48 - Karl - end
+      return stockMoveLine;
+
   }
 
   @Override
