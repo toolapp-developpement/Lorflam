@@ -6,11 +6,12 @@ apply {
 
 axelor {
 	title "Personalisation Lorflam"
-	description "Champs spécifique"
+	description "Champs spï¿½cifique"
 }
 
 dependencies {
 	api project(":modules:axelor-production")
 	api project(":modules:axelor-business-production")
 	api project(":modules:avr-helpdesk")
+	api project(":modules:axelor-marketing")
 }

@@ -10,11 +10,19 @@
         <field name="supplier" domain="self.isSupplier = true"></field>
       </insert>
     </extend>
- 
+
     <extend target="//panel[@name='fillInventoryPanel']/field[@name='includeObsolete']">
       <insert position="after">
-        <spacer colspan="6"/> 
+        <spacer colspan="6"/>
       </insert>
     </extend>
   </form>
+
+  <grid id="inventory-line-grid-custome" name="inventory-line-grid" title="Inventory lines" model="com.axelor.apps.stock.db.InventoryLine" editable="true" orderBy="product.code" edit-icon="true" extension="true">
+    <extend target="//field[@name='product']">
+      <insert position="after">
+        <field name="product.refSupProd"/>
+      </insert>
+    </extend>
+  </grid>
 </object-views>

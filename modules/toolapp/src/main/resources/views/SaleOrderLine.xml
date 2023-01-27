@@ -23,4 +23,20 @@
     <call class="bzh.toolapp.apps.specifique.web.PlanificationController"
       method="selectOrCreateYard(__this__.yard2)"/>
   </action-method>
+
+  <grid name="sale-order-line-menu-grid" id="sale-order-line-menu-custo-grid" title="SO lines"
+    model="com.axelor.apps.sale.db.SaleOrderLine" extension="true">
+    <extend target="//field[@name='product.code']">
+      <insert position="after">
+        <field name="product.productCategory.code" title="Catégorie produit"/>
+      </insert>
+    </extend>
+
+    <extend target="//field[@name='deliveredQty']">
+      <insert position="after">
+        <field name="qtyToDeliver" title="Quantité restante à livrer"/>
+      </insert>
+    </extend>
+  </grid>
+
 </object-views>

@@ -7,6 +7,10 @@
 
   <entity name="PurchaseOrderLine" lang="java">
     <string name="yard" title="Référence chantier"/>
+    <decimal name="qtyToReceive" title="Quantité restante à réceptionner">
+      <![CDATA[
+      return qty.subtract(receivedQty);
+      ]]></decimal>
   </entity>
 
 </domain-models>

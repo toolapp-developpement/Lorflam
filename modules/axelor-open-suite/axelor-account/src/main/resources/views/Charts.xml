@@ -66,11 +66,12 @@
 
       SELECT
       to_char(_invoice.invoice_date,'yyyy-MM') AS _month_no,
-      coalesce(_product._product_type,'other') AS product,
+      coalesce(_product._product_type,'other') || ' | ' || _invoice._invoice_user AS product,
       coalesce(SUM(CASE _operation_type
       WHEN 3
       THEN _invoice._turn_over
-      WHEN 4 THEN -_invoice._turn_over
+      WHEN 4 THEN
+      -_invoice._turn_over
       END), 00) AS _turn_over
       FROM
       (SELECT
@@ -79,42 +80,61 @@
       _invoice.invoice_date as invoice_date,
       date_part('mon', _invoice.invoice_date) AS _month,
       _line.ex_tax_total AS _turn_over,
-      _line.product AS _line_product
+      _line.product AS _line_product,
+      _invoice_user.name AS _invoice_user
       FROM
-      account_invoice AS _invoice
+      account_invoice AS
+      _invoice
       JOIN
       account_invoice_line AS _line
       ON _line.invoice=_invoice.id
       JOIN
       auth_user as _user
-      ON _user.id
+      ON
+      _user.id
       = :__user__
       AND _invoice.company = _user.active_company
+
+      JOIN base_partner AS _partner
+      ON
+      _partner.id = _invoice.partner
+      JOIN
+      auth_user AS _invoice_user
+      ON _invoice_user.id =
+      _partner.user_id
+
       WHERE
       _invoice.status_select = 3
       AND
-      _invoice.invoice_date BETWEEN DATE(:fromDate) AND DATE(:toDate)
+      _invoice.invoice_date BETWEEN
+      DATE(:fromDate) AND DATE(:toDate)
       AND
-      (_invoice.operation_type_select=3 OR _invoice.operation_type_select=4)
+      (_invoice.operation_type_select=3 OR
+      _invoice.operation_type_select=4)
 
       GROUP BY
       _invoice_id,
-      _line_product, _turn_over, _month) AS _invoice
+      _line_product, _turn_over, _month,
+      _invoice_user
+      ) AS _invoice
 
       JOIN
 
       (SELECT
-      _category.name AS _product_type,
-      _product.id AS _product_id
+      _category.code AS _product_type,
+      _product.id AS
+      _product_id
       FROM
       base_product AS _product
       JOIN
       base_product_category AS _category
-      ON _product.product_category=_category.id AND _category.name IS NOT NULL) AS _product
+      ON
+      _product.product_category=_category.id AND _category.name IS NOT NULL) AS _product
 
       ON
       _invoice._line_product=_product._product_id
-      GROUP BY _month_no, _product._product_type
+      GROUP BY _month_no, _product._product_type,
+      _invoice._invoice_user
       ORDER BY
       _month_no, _turn_over DESC
 

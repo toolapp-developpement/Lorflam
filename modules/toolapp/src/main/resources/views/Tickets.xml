@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
+
+  <grid name="stock-move-line-all-custo-ticket-grid" title="Stock move lines"
+    model="com.axelor.apps.stock.db.StockMoveLine"
+    orderBy="stockMove.statusSelect,-stockMove.estimatedDate" canNew="false" canDelete="false"
+    edit-icon="true">
+
+    <field name="saleOrderLine.saleOrder.ticket.ticketSeq"/>
+    <button name="viewTicket" onClick="stoctkMoveViewTicket" icon="fa-edit"/>
+    <field name="stockMove.partner.partnerSeq" title="Client"/>
+    <field name="stockMove.partner"/>
+    <field name="yard"/>
+    <field name="trackingNumber" readonlyIf="$get('stockMove.statusSelect') > 1"
+      domain="self.product = :product" form-view="tracking-number-form"
+      grid-view="tracking-number-grid"/>
+    <field name="product" readonlyIf="$get('stockMove.statusSelect') > 1"
+      domain="self.dtype = 'Product'" form-view="product-form" grid-view="product-grid"/>
+    <field name="product.code"/>
+    <field name="productName"/>
+    <field name="saleOrderLine.saleOrder.ticket.technicalVisit"/>
+    <field name="custSaleOrderSeq"/>
+    <field name="saleOrderLine.saleOrder.statusSelect" title="Statut commande"/>
+    <field name="stockMove.typeSelect"/>
+    <field name="name" width="120"/>
+    <field name="stockMove.statusSelect" title="Statut mouvement"/>
+    <field name="saleOrderLine.saleOrder.ticket.ticketProblemSource"/>
+    <field name="stockMove.realDate"/>
+    <field name="stockMove.estimatedDate"/>
+    <field
+      if="(__config__.app.isApp('supplychain') &amp;&amp; __config__.app.getApp('supplychain')?.getManageStockReservation())"
+      if-module="axelor-supplychain" name="reservationDateTime"/>
+    <field name="stockMove.fromStockLocation" hidden="true"/>
+    <field name="stockMove.toStockLocation" hidden="true"/>
+    <field name="stockMove.partner.user" hidden="true"/>
+    <field name="stockMove.toAddress.zip" hidden="true"/>
+    <field name="product.avgPrice" hidden="true"/>
+    <field name="realQty" onChange="action-stock-move-line-group-real-qty-onchange"
+      aggregate="sum" x-scale="2"/>
+    <field name="qtyInvoiced" readonly="true" x-scale="2"/>
+    <field name="unitPriceUntaxed" x-scale="2"/>
+    <field name="unitPriceTaxed" hidden="true" x-scale="2"/>
+    <field name="unit" form-view="unit-form" grid-view="unit-grid"/>
+    <field name="stockMove.origin" width="120"/>
+    <field name="availableStatus" width="150">
+      <hilite color="success" strong="true" if="availableStatusSelect == 1"/>
+      <hilite color="info" strong="true" if="availableStatusSelect == 2"/>
+      <hilite color="danger" strong="true" if="availableStatusSelect == 3"/>
+      <hilite color="warning" strong="true" if="availableStatusSelect == 4"/>
+    </field>
+  </grid>
+
+
+  <action-view id="stoctkMoveTicket" name="stoctkMoveTicket"
+    model="com.axelor.apps.stock.db.StockMoveLine" title="Suivi des tickets">
+    <view name="stock-move-line-all-custo-ticket-grid" type="grid"/>
+    <view name="ticket-form" type="form"/>
+    <domain>self.saleOrderLine.saleOrder.ticket.ticketSeq != null AND
+      self.saleOrderLine.saleOrder.ticket.statusSelect = 1
+    </domain>
+  </action-view>
+
+  <action-method name="stoctkMoveViewTicket">
+    <call class="bzh.toolapp.apps.specifique.web.StockMoveTicketController"
+      method="viewTicketfromStockMove"/>
+  </action-method>
+
+</object-views>

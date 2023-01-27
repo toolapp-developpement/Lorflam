@@ -18,6 +18,20 @@
     </extend>
   </form>
 
+  <grid name="purchase-order-line-grid" id="purchase-order-line-custo-grid" title="PO lines"
+    model="com.axelor.apps.purchase.db.PurchaseOrderLine" extension="true">
+    <extend target="//field[@name='product.code']">
+      <insert position="after">
+        <field name="product.productCategory.code" title="Catégorie produit"/>
+      </insert>
+    </extend>
+    <extend target="//field[@name='qty']">
+      <insert position="after">
+        <field name="qtyToReceive"/>
+      </insert>
+    </extend>
+  </grid>
+
   <form id="custome-purchase-order-line-project-form" name="purchase-order-line-project-form"
     title="PO line" model="com.axelor.apps.purchase.db.PurchaseOrderLine"
     onLoad="action-group-purchase-purchase-orderline-onload" readonlyIf="true" canEdit="false"
