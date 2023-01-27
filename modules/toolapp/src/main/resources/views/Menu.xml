@@ -9,29 +9,4 @@
   <action-view name="tdb.planning.view" title="Planning">
     <view type="dashboard" name="tdb.planning.dashboard"/>
   </action-view>
-
-
-  <menuitem name="menu-toolapp-supplier-catalog" title="Catalogue Fournisseur" action="supplier.catalog.view" parent="sc-root-purchase" order="11" icon="fa-reorder"/>
-
-  <action-view name="supplier.catalog.view" title="Catalogue Fournisseur" model="com.axelor.apps.purchase.db.SupplierCatalog">
-    <view type="grid" name="supplier-catalog-partner-grid" />
-    <view type="form" name="supplier-catalog-partner-form" />    
-  </action-view>
-
-  <menuitem name="menu-toolapp-purchase-order-line" title="Ligne de commande d'achat" action="purchase.order.line.view" parent="sc-root-purchase" 
-      order="26" icon="fa-reorder"/>
-
-  <action-view name="purchase.order.line.view" title="Ligne de commande d'achat" model="com.axelor.apps.purchase.db.PurchaseOrderLine">
-    <view type="grid" name="purchase-order-line-menu-grid" />
-    <view type="form" name="purchase-order-line-all-form" />    
-  </action-view>
-
-  <menuitem name="menu-toolapp-sale-order-line" title="Ligne de commande de vente" action="sale.order.line.view" parent="sc-root-sale" 
-      order="26" icon="fa-reorder"/>
-
-  <action-view name="sale.order.line.view" title="Ligne de commande de vente" model="com.axelor.apps.sale.db.SaleOrderLine">
-    <view type="grid" name="sale-order-line-menu-grid" />
-    <view type="form" name="sale-order-line-all-form" />    
-  </action-view>
-
 </object-views>
