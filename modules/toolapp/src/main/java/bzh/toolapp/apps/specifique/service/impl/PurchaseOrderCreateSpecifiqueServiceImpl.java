@@ -7,6 +7,7 @@ import com.axelor.apps.account.service.config.AccountConfigService;
 import com.axelor.apps.base.db.*;
 import com.axelor.apps.base.service.app.AppBaseService;
 import com.axelor.apps.purchase.db.PurchaseOrder;
+import com.axelor.apps.purchase.db.repo.PurchaseConfigRepository;
 import com.axelor.apps.purchase.db.repo.PurchaseOrderLineRepository;
 import com.axelor.apps.purchase.service.PurchaseOrderLineService;
 import com.axelor.apps.stock.db.StockLocation;
@@ -15,6 +16,7 @@ import com.axelor.apps.supplychain.service.PurchaseOrderStockService;
 import com.axelor.apps.supplychain.service.app.AppSupplychainService;
 import com.axelor.auth.db.User;
 import com.axelor.exception.AxelorException;
+import com.axelor.inject.Beans;
 import com.google.inject.Inject;
 import java.time.LocalDate;
 
@@ -73,6 +75,18 @@ public class PurchaseOrderCreateSpecifiqueServiceImpl
             tradingName,
             yard);
     po.setOrderBeingEdited(true);
+
+    // begin MA1-I53 karl
+    PurchaseConfigRepository purchaseConfigRepo = Beans.get(PurchaseConfigRepository.class);
+    Boolean displayPriceOnQuotationRequest =
+        purchaseConfigRepo
+            .all()
+            .filter("self.company = ?", po.getCompany())
+            .fetchOne()
+            .getDisplayPriceOnQuotationRequest();
+    po.setDisplayPriceOnQuotationRequest(displayPriceOnQuotationRequest);
+    po.setDeliveryDate(null);
+    // end MA1-I53
     return po;
   }
 

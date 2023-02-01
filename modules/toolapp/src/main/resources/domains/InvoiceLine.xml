@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.4.xsd">
+
+  <module name="account" package="com.axelor.apps.account.db"/>
+  <entity name="InvoiceLine" lang="java">
+    <decimal name="qtyCalculated" title="Quantité calculée">
+        <![CDATA[
+        if(invoice.getOperationTypeSelect() == 2 || invoice.getOperationTypeSelect() == 4)
+            return qty.negate();
+        return qty;
+        ]]>
+    </decimal>
+    <decimal name="exTaxTotalCalculated" title="Montant H.T. calculé">
+        <![CDATA[
+        if(invoice.getOperationTypeSelect() == 2 || invoice.getOperationTypeSelect() == 4)
+            return exTaxTotal.negate();
+        return exTaxTotal;
+        ]]>
+    </decimal>
+    <decimal name="inTaxTotalCalculated" title="Montant T.T.C. calculé">
+        <![CDATA[
+        if(invoice.getOperationTypeSelect() == 2 || invoice.getOperationTypeSelect() == 4)
+            return inTaxTotal.negate();
+        return inTaxTotal;
+        ]]>
+    </decimal>
+  </entity>
+
+</domain-models>
