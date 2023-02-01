@@ -11,6 +11,7 @@
   </action-view>
 
 
+
   <menuitem name="menu-toolapp-supplier-catalog" title="Catalogue Fournisseur"
     action="supplier.catalog.view" parent="sc-root-purchase" order="11" icon="fa-reorder"/>
 
