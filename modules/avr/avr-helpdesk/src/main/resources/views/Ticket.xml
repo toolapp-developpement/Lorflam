@@ -7,7 +7,7 @@
     model="com.axelor.apps.helpdesk.db.Ticket">
     <field name="trackingNumber"/>
     <field name="customer"/>
-    <field name="yard"/>
+    <field name="yard" target-name="yardReference"/>
     <field name="technicalVisit"/>
     <field name="product"/>
     <field name="saleOrderSeq"/>
