@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ProductController {
+public class ProductController { 
 
   public void openProductTree(ActionRequest request, ActionResponse response) {
     try {
