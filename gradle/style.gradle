@@ -13,7 +13,7 @@ spotless {
       include '**/*.java'
       exclude '**/build/**'
     }
-    googleJavaFormat()
+    //googleJavaFormat()
   }
   xml {
     target fileTree(projectDir) {

@@ -39,4 +39,24 @@
     <view type="form" name="sale-order-line-all-form"/>
   </action-view>
 
+
+  <menuitem name="menu-toolapp-stock" title="Menu Stock"/>
+  <menuitem name="menu-toolapp-stock-detail" title="Détail des stocks par produit"
+    action="custome.detail.stock" parent="menu-toolapp-stock" />
+    <action-view id="Detail stock" name="custome.detail.stock" model="com.axelor.apps.base.db.Product" title="Detail Stock">
+      <view name="supplychain-stock-details-by-product-custo-form" type="form"/>
+      <domain>self.dtype = 'Product'</domain>
+      <context name="_isFromMenu" expr="eval: true"/>
+    </action-view>
+
+  <menuitem name="menu-toolapp-stock-product" title="Arborescence des produits et stock"
+    action="custome.detail.stock.bom.vga" parent="menu-toolapp-stock" />
+  <action-view id="Arbre" name="custome.detail.stock.bom.vga" model="com.axelor.apps.production.db.TempBomTree" title="Arborescence produit et stock">
+    <view name="bom-custo-form" type="form"/>
+    <context name="_isFromMenu" expr="eval: true"/>
+  </action-view>
+
+  <menuitem name="menu-toolapp-stock-projection" title="Projection des stocks"
+    action="custome.detail.stock.mrp" parent="menu-toolapp-stock" />
+
 </object-views>

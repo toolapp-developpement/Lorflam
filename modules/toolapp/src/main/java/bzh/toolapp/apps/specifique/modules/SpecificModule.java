@@ -5,6 +5,8 @@ import bzh.toolapp.apps.specifique.repository.StockMoveLineSpecificRepository;
 import bzh.toolapp.apps.specifique.repository.StockMoveSpecificRepository;
 import bzh.toolapp.apps.specifique.service.SpecifiqueService;
 import bzh.toolapp.apps.specifique.service.StockMoveLineSpecifiqueCreationService;
+import bzh.toolapp.apps.specifique.service.etatstock.BillOfMaterialServiceSpecifique;
+import bzh.toolapp.apps.specifique.service.etatstock.BillOfMaterialServiceSpecifiqueImpl;
 import bzh.toolapp.apps.specifique.service.impl.*;
 import bzh.toolapp.apps.specifique.service.impl.ProductionOrderSaleOrderSpecifiqueServiceImpl;
 import bzh.toolapp.apps.specifique.service.impl.PurchaseOrderStockSpecifiqueServiceImpl;
@@ -64,5 +66,6 @@ public class SpecificModule extends AxelorModule {
         .to(StockLocationServiceSupplychainSpecifiqueImpl.class);
     bind(ManufOrderBusinessProductionManagementRepository.class)
         .to(ManufOrderManagementSpecificRepository.class);
+    bind(BillOfMaterialServiceSpecifique.class).to(BillOfMaterialServiceSpecifiqueImpl.class);
   }
 }
