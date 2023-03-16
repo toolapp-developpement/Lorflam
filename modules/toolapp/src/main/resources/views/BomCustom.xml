@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
+
+
+  <form name="bom-custo-form" title="Cas d'emploi" model="com.axelor.apps.production.db.TempBomTree" width="large" onNew="action-stock-details-record-set-user-s-company" canNew="false" canEdit="false" canSave="false" canCopy="false">
+    <panel name="MainFilters" colSpan="12" itemSpan="4">
+      <field name="product" title="Product" type="many-to-one" canEdit="false" domain="self.procurementMethodSelect='produce'"/>
+      <field name="company" title="Company" showIf="product"/>
+      <field name="stockLocation" title="Stock location" showIf="product &amp;&amp; $company" canEdit="false" />
+      <button name="bomTree" title="Arborescence" css="btn-custom" onClick="action-method-production-open-product-tree-custom" colspan="3"/>
+    </panel>
+  </form>
+  
+
+  <action-method name="action-method-production-open-product-tree-custom">
+    <call method="openProductTree" class="bzh.toolapp.apps.specifique.web.ProductController"/>
+  </action-method>
+
+  <action-record name="action-stock-details-record-set-user-s-company" model="com.axelor.apps.base.db.Product">
+    <field if="eval: _isFromMenu" name="$company" expr="eval: __user__.getActiveCompany()"/>
+  </action-record>
+
+  
+
+</object-views>
