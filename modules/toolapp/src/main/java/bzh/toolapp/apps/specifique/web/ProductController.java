@@ -19,9 +19,7 @@ import com.axelor.meta.schema.actions.ActionView;
 import com.axelor.rpc.ActionRequest;
 import com.axelor.rpc.ActionResponse;
 import com.axelor.rpc.Context;
-
 import bzh.toolapp.apps.specifique.service.etatstock.BillOfMaterialServiceSpecifique;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,7 +50,6 @@ public class ProductController {
             .context("_tempBomTreeId", tempBomTree.getId())
             .map());
   }
-
 
   public void showProjectedStock(ActionRequest request, ActionResponse response) {
 

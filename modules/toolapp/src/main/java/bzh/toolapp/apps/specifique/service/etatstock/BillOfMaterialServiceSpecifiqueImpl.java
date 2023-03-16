@@ -66,7 +66,7 @@ public class BillOfMaterialServiceSpecifiqueImpl implements BillOfMaterialServic
     bomTree.setUnit(bom.getUnit());
     bomTree.setParentBom(parentBom);
     bomTree.setParent(parent);
-    bomTree.setBom(bom); 
+    bomTree.setBom(bom);
 
     bomTree.setRealQty(
         getRealQty(
