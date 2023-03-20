@@ -189,7 +189,8 @@ public class MrpServiceImplSpecifique extends MrpServiceProductionImpl {
     // filtre fournisseur
 
     if (mrp.getSuppliersSet() != null && !mrp.getSuppliersSet().isEmpty()) {
-      productSet.addAll(
+      Set<Product> productSupplierSet = Sets.newHashSet();
+      productSupplierSet.addAll(
           productRepository
               .all()
               .filter(
@@ -204,6 +205,13 @@ public class MrpServiceImplSpecifique extends MrpServiceProductionImpl {
                   mrp.getMrpTypeSelect() == MrpRepository.MRP_TYPE_MRP,
                   ProductRepository.PRODUCT_SUB_TYPE_FINISHED_PRODUCT)
               .fetch());
+        //intersection des 2 listes
+        if (productSet.isEmpty()) {
+            productSet.addAll(productSupplierSet);
+        } else
+        {
+            productSet.retainAll(productSupplierSet);
+        }
     }
 
     // MA1-I64 - Karl - end
