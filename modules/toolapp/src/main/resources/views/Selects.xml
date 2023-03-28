@@ -11,6 +11,11 @@
     <option value="5">Prepared</option>
     <option value="3">Realized</option>
     <option value="4">Canceled</option>
+  </selection> 
+
+
+  <selection name="base.blocking.select" id="sale.blocking.select">
+    <option value="99">Blockage livraison</option>
   </selection>
 
 </object-views>
