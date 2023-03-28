@@ -11,7 +11,7 @@
     <option value="5">Prepared</option>
     <option value="3">Realized</option>
     <option value="4">Canceled</option>
-  </selection> 
+  </selection>
 
 
   <selection name="base.blocking.select" id="sale.blocking.select">
