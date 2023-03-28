@@ -171,7 +171,8 @@ public class MrpLineServiceProductionSpecifiqueImpl extends MrpLineServiceProduc
     // MA1-I55 - Karl - begin
     poLine.setDesiredDelivDate(maturityDate);
     if (poLine.getDesiredDelivDate() != null
-        && poLine.getDesiredDelivDate().isEqual(LocalDate.now())) {
+        && (poLine.getDesiredDelivDate().isEqual(LocalDate.now()) 
+          || poLine.getDesiredDelivDate().isBefore(LocalDate.now()))) { 
       poLine.setDesiredDelivDate(null);
     }
     // MA1-I55 - Karl - end
