@@ -139,6 +139,8 @@ public class BillOfMaterialServiceSpecifiqueImpl implements BillOfMaterialServic
 */
     // MA1-I69 - Karl - nouvelle méthode qui reprend ProductStockLocationServiceImpl.computeIndicators
     this.setQty(bom.getProduct().getId(), stockLocationId, companyId, bomTree);
+    //50 premier caractères
+    bomTree.setReference(bomTree.getProduct().getFullName().substring(0, Math.min(bomTree.getProduct().getFullName().length(), 50)));
     // MA1-I69 - Karl - End
 
     bomTree.setBuildingQty(
@@ -162,6 +164,21 @@ public class BillOfMaterialServiceSpecifiqueImpl implements BillOfMaterialServic
             companyId,
             StockMoveRepository.STATUS_PLANNED));
 
+
+    //setQtyStr avec une precision de 2 chiffres après la virgule
+    //padding avec des espaces non sécables, minimum 15 caractères
+    bomTree.setQtyStr(String.format("%15s", bomTree.getQty().setScale(2, RoundingMode.HALF_UP).toString()).replace(' ', '\u00A0'));
+    bomTree.setRealQtyStr(String.format("%15s", bomTree.getRealQty().setScale(2, RoundingMode.HALF_UP).toString()).replace(' ', '\u00A0'));
+    bomTree.setFutureQtyStr(String.format("%15s", bomTree.getFutureQty().setScale(2, RoundingMode.HALF_UP).toString()).replace(' ', '\u00A0'));
+    bomTree.setReservedQtyStr(String.format("%15s", bomTree.getReservedQty().setScale(2, RoundingMode.HALF_UP).toString()).replace(' ', '\u00A0'));
+    bomTree.setRequestedReservedQtyStr(String.format("%15s", bomTree.getRequestedReservedQty().setScale(2, RoundingMode.HALF_UP).toString()).replace(' ', '\u00A0'));
+    bomTree.setPurchaseOrderQtyStr(String.format("%15s", bomTree.getPurchaseOrderQty().setScale(2, RoundingMode.HALF_UP).toString()).replace(' ', '\u00A0'));
+    bomTree.setSaleOrderQtyStr(String.format("%15s", bomTree.getSaleOrderQty().setScale(2, RoundingMode.HALF_UP).toString()).replace(' ', '\u00A0'));
+    bomTree.setAvailableQtyStr(String.format("%15s", bomTree.getAvailableQty().setScale(2, RoundingMode.HALF_UP).toString()).replace(' ', '\u00A0'));
+    bomTree.setBuildingQtyStr(String.format("%15s", bomTree.getBuildingQty().setScale(2, RoundingMode.HALF_UP).toString()).replace(' ', '\u00A0'));
+    bomTree.setConsumeManufOrderQtyStr(String.format("%15s", bomTree.getConsumeManufOrderQty().setScale(2, RoundingMode.HALF_UP).toString()).replace(' ', '\u00A0'));
+    bomTree.setMissingManufOrderQtyStr(String.format("%15s", bomTree.getMissingManufOrderQty().setScale(2, RoundingMode.HALF_UP).toString()).replace(' ', '\u00A0'));
+    
     bomTree = tempBomTreeRepo.save(bomTree);
 
     processedBom.add(bom.getId());

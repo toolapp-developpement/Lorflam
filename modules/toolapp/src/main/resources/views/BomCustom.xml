@@ -103,52 +103,53 @@
 
   <tree name="bom-tree-detail" title="Bills of material">
     <column name="product" type="reference"/>
-    <column name="qty" type="decimal" x-scale="2"/>
+    <column name="qty" type="string" x-scale="2"/>
     <column name="unit" type="reference"/>
     <column name="prodProcess" type="reference"/>
-    <column name="realQty" type="decimal" x-scale="2"/>
-    <column name="futureQty" type="decimal" x-scale="2"/>
-    <column name="reservedQty" type="decimal" x-scale="2" title="Qté réservé"/>
-    <column name="requestedReservedQty" type="decimal" x-scale="2" title="Qté demandée de réservation" />
-    <column name="purchaseOrderQty" type="decimal" x-scale="2" title="Qté cde fournisseur"/>
-    <column name="saleOrderQty" type="decimal" x-scale="2" title="Qté cde client"/>
-    <column name="availableQty" type="decimal" x-scale="2" title="Stock disponible"/>
-    <column name="buildingQty" type="decimal" x-scale="2" title="Qté en fabrication"/>
-    <column name="consumeManufOrderQty" type="decimal" x-scale="2" title="Qté conso OF"/>
-    <column name="missingManufOrderQty" type="decimal" x-scale="2" title="Qté manquante OF"/>
+    <column name="realQty" type="string" x-scale="2"/>
+    <column name="futureQty" type="string" x-scale="2"/>
+    <column name="reservedQty" type="string" x-scale="2" title="Qté réservé"/>
+    <column name="requestedReservedQty" type="string" x-scale="2"
+      title="Qté demandée de réservation"/>
+    <column name="purchaseOrderQty" type="string" x-scale="2" title="Qté cde fournisseur"/>
+    <column name="saleOrderQty" type="string" x-scale="2" title="Qté cde client"/>
+    <column name="availableQty" type="string" x-scale="2" title="Stock disponible"/>
+    <column name="buildingQty" type="string" x-scale="2" title="Qté en fabrication"/>
+    <column name="consumeManufOrderQty" type="string" x-scale="2" title="Qté conso OF"/>
+    <column name="missingManufOrderQty" type="string" x-scale="2" title="Qté manquante OF"/>
     <node model="com.axelor.apps.production.db.TempBomTree"
       onClick="action-bill-of-material-line-view" domain="self.id = :_tempBomTreeId">
       <field name="product" as="product"/>
-      <field name="qty" as="qty"/>
+      <field name="qtyStr" as="qty"/>
       <field name="unit" as="unit"/>
       <field name="prodProcess" as="prodProcess"/>
-      <field name="realQty" as="realQty"/>
-      <field name="futureQty" as="futureQty"/>
-      <field name="reservedQty" as="reservedQty"/>
-      <field name="requestedReservedQty" as="requestedReservedQty"/>
-      <field name="purchaseOrderQty" as="requestedReservedQty"/>
-      <field name="saleOrderQty" as="saleOrderQty"/>
-      <field name="availableQty" as="availableQty"/>
-      <field name="buildingQty" as="buildingQty"/>
-      <field name="consumeManufOrderQty" as="consumeManufOrderQty"/>
-      <field name="missingManufOrderQty" as="missingManufOrderQty"/>
+      <field name="realQtyStr" as="realQty"/>
+      <field name="futureQtyStr" as="futureQty"/>
+      <field name="reservedQtyStr" as="reservedQty"/>
+      <field name="requestedReservedQtyStr" as="requestedReservedQty"/>
+      <field name="purchaseOrderQtyStr" as="purchaseOrderQty"/>
+      <field name="saleOrderQtyStr" as="saleOrderQty"/>
+      <field name="availableQtyStr" as="availableQty"/>
+      <field name="buildingQtyStr" as="buildingQty"/>
+      <field name="consumeManufOrderQtyStr" as="consumeManufOrderQty"/>
+      <field name="missingManufOrderQtyStr" as="missingManufOrderQty"/>
     </node>
     <node model="com.axelor.apps.production.db.TempBomTree" parent="parent"
       onClick="action-bill-of-material-line-view" draggable="true">
-      <field name="product" as="product"/>
-      <field name="qty" as="qty"/>
+      <field name="reference" as="product"/>
+      <field name="qtyStr" as="qty"/>
       <field name="unit" as="unit"/>
       <field name="prodProcess" as="prodProcess"/>
-      <field name="realQty" as="realQty"/>
-      <field name="futureQty" as="futureQty"/>
-      <field name="reservedQty" as="reservedQty"/>
-      <field name="requestedReservedQty" as="requestedReservedQty"/>
-      <field name="purchaseOrderQty" as="requestedReservedQty"/>
-      <field name="saleOrderQty" as="saleOrderQty"/>
-      <field name="availableQty" as="availableQty"/>
-      <field name="buildingQty" as="buildingQty"/>
-      <field name="consumeManufOrderQty" as="consumeManufOrderQty"/>
-      <field name="missingManufOrderQty" as="missingManufOrderQty"/>
+      <field name="realQtyStr" as="realQty"/>
+      <field name="futureQtyStr" as="futureQty"/>
+      <field name="reservedQtyStr" as="reservedQty"/>
+      <field name="requestedReservedQtyStr" as="requestedReservedQty"/>
+      <field name="purchaseOrderQtyStr" as="purchaseOrderQty"/>
+      <field name="saleOrderQtyStr" as="saleOrderQty"/>
+      <field name="availableQtyStr" as="availableQty"/>
+      <field name="buildingQtyStr" as="buildingQty"/>
+      <field name="consumeManufOrderQtyStr" as="consumeManufOrderQty"/>
+      <field name="missingManufOrderQtyStr" as="missingManufOrderQty"/>
     </node>
   </tree>
 
