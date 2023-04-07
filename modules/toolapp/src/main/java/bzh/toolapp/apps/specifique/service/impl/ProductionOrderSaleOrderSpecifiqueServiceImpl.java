@@ -155,6 +155,12 @@ public class ProductionOrderSaleOrderSpecifiqueServiceImpl
 
       BigDecimal manufOrderQty = BigDecimal.ZERO;
 
+      //MA1-I54 - Karl - begin cas Pack = ligne de commande sans article associé
+      if (saleOrderLine.getProduct() == null) {
+        continue;
+      } 
+      //MA1-I54 - Karl - end
+      
       // si on a plus rien à produire, on ignore la ligne
       if (qtyPerProductMap.get(saleOrderLine.getProduct().getId()).compareTo(BigDecimal.ZERO)
           == 0) {

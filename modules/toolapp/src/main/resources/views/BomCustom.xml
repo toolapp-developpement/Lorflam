@@ -136,7 +136,7 @@
     </node>
     <node model="com.axelor.apps.production.db.TempBomTree" parent="parent"
       onClick="action-bill-of-material-line-view" draggable="true">
-      <field name="reference" as="product"/>
+      <field name="product" as="product"/>
       <field name="qtyStr" as="qty"/>
       <field name="unit" as="unit"/>
       <field name="prodProcess" as="prodProcess"/>

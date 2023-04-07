@@ -29,26 +29,6 @@ public class PlanificationController {
 
     StockMove sm = request.getContext().asType(StockMove.class);
 
-    // MA1-I46 - Karl - Begin
-    // Blocage du client en livraison
-    if ((sm.getOriginTypeSelect() == null
-            || sm.getOriginTypeSelect().isEmpty()
-            || StockMoveRepository.ORIGIN_SALE_ORDER.equals(sm.getOriginTypeSelect()))
-        && sm.getPartner() != null) {
-      Blocking blocking =
-          Beans.get(BlockingService.class)
-              .getBlocking(sm.getPartner(), sm.getCompany(), BlockingRepository.DELIVERY_BLOCKING);
-      if (blocking != null) {
-
-        String reason =
-            blocking.getBlockingReason() != null ? blocking.getBlockingReason().getName() : "";
-        throw new AxelorException(
-            sm.getPartner(),
-            TraceBackRepository.CATEGORY_CONFIGURATION_ERROR,
-            I18n.get("Le Client est bloqué pour la livraison :") + " " + reason);
-      }
-    }
-    // MA1-I46 - Karl - End
 
     Boolean statusUpdated = false;
 
@@ -84,12 +64,10 @@ public class PlanificationController {
                     BlockingRepository.DELIVERY_BLOCKING);
         if (blocking != null) {
 
-          String reason =
-              blocking.getBlockingReason() != null ? blocking.getBlockingReason().getName() : "";
           throw new AxelorException(
               stockMove.getPartner(),
               TraceBackRepository.CATEGORY_CONFIGURATION_ERROR,
-              I18n.get("Le Client est bloqué pour la livraison :") + " " + reason);
+              I18n.get("Le Client est bloqué pour la livraison") );
         }
       }
       // MA1-I46 - Karl - End
