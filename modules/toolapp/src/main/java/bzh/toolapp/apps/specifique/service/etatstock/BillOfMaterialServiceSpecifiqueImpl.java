@@ -480,10 +480,8 @@ public class BillOfMaterialServiceSpecifiqueImpl implements BillOfMaterialServic
     StockLocationServiceSupplychain stockLocationServiceSupplychain = Beans.get(StockLocationServiceSupplychain.class);
     ProductRepository productRepository = Beans.get(ProductRepository.class);
     CompanyRepository companyRepository = Beans.get(CompanyRepository.class);
-    StockLocationRepository stockLocationRepository = Beans.get(StockLocationRepository.class);
     Product product = productRepository.find(productId);
     Company company = companyRepository.find(companyId);
-    StockLocation stockLocation = stockLocationRepository.find(stockLocationId);
     
     BigDecimal reservedQty =
         stockLocationServiceSupplychain
