@@ -164,9 +164,10 @@ public class BillOfMaterialServiceSpecifiqueImpl implements BillOfMaterialServic
             companyId,
             StockMoveRepository.STATUS_PLANNED));
 
-
+    // MA1-I69 - Karl
     //setQtyStr avec une precision de 2 chiffres après la virgule
     //padding avec des espaces non sécables, minimum 15 caractères
+    //pour que les colonnes soient plus large sur le treeview
     bomTree.setQtyStr(String.format("%15s", bomTree.getQty().setScale(2, RoundingMode.HALF_UP).toString()).replace(' ', '\u00A0'));
     bomTree.setRealQtyStr(String.format("%15s", bomTree.getRealQty().setScale(2, RoundingMode.HALF_UP).toString()).replace(' ', '\u00A0'));
     bomTree.setFutureQtyStr(String.format("%15s", bomTree.getFutureQty().setScale(2, RoundingMode.HALF_UP).toString()).replace(' ', '\u00A0'));
@@ -178,7 +179,8 @@ public class BillOfMaterialServiceSpecifiqueImpl implements BillOfMaterialServic
     bomTree.setBuildingQtyStr(String.format("%15s", bomTree.getBuildingQty().setScale(2, RoundingMode.HALF_UP).toString()).replace(' ', '\u00A0'));
     bomTree.setConsumeManufOrderQtyStr(String.format("%15s", bomTree.getConsumeManufOrderQty().setScale(2, RoundingMode.HALF_UP).toString()).replace(' ', '\u00A0'));
     bomTree.setMissingManufOrderQtyStr(String.format("%15s", bomTree.getMissingManufOrderQty().setScale(2, RoundingMode.HALF_UP).toString()).replace(' ', '\u00A0'));
-    
+    // MA1-I69 - Karl - End
+
     bomTree = tempBomTreeRepo.save(bomTree);
 
     processedBom.add(bom.getId());
