@@ -2,6 +2,7 @@ package bzh.toolapp.apps.specifique.service.etatstock;
 
 import com.axelor.apps.production.db.BillOfMaterial;
 import com.axelor.apps.production.db.TempBomTree;
+import com.axelor.exception.AxelorException;
 import com.google.inject.persist.Transactional;
 
 public interface BillOfMaterialServiceSpecifique {
@@ -10,5 +11,5 @@ public interface BillOfMaterialServiceSpecifique {
       BillOfMaterial billOfMaterial,
       boolean useProductDefaultBom,
       Long stockLocationId,
-      Long companyId);
+      Long companyId) throws AxelorException;
 }

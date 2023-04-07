@@ -1,5 +1,12 @@
 package bzh.toolapp.apps.specifique.service.etatstock;
 
+import com.axelor.apps.base.db.Company;
+import com.axelor.apps.base.db.Product;
+import com.axelor.apps.base.db.Unit;
+import com.axelor.apps.base.db.repo.CompanyRepository;
+import com.axelor.apps.base.db.repo.ProductRepository;
+import com.axelor.apps.base.service.UnitConversionService;
+import com.axelor.apps.base.service.app.AppBaseService;
 import com.axelor.apps.production.db.BillOfMaterial;
 import com.axelor.apps.production.db.TempBomTree;
 import com.axelor.apps.production.db.repo.ManufOrderRepository;
@@ -10,16 +17,26 @@ import com.axelor.apps.purchase.db.repo.PurchaseOrderRepository;
 import com.axelor.apps.sale.db.SaleOrderLine;
 import com.axelor.apps.sale.db.repo.SaleOrderLineRepository;
 import com.axelor.apps.sale.db.repo.SaleOrderRepository;
+import com.axelor.apps.stock.db.StockLocation;
 import com.axelor.apps.stock.db.StockLocationLine;
 import com.axelor.apps.stock.db.StockMoveLine;
 import com.axelor.apps.stock.db.repo.StockLocationLineRepository;
 import com.axelor.apps.stock.db.repo.StockLocationRepository;
 import com.axelor.apps.stock.db.repo.StockMoveLineRepository;
 import com.axelor.apps.stock.db.repo.StockMoveRepository;
+import com.axelor.apps.stock.service.StockLocationLineService;
+import com.axelor.apps.stock.service.StockLocationService;
+import com.axelor.apps.supplychain.service.PurchaseOrderStockService;
+import com.axelor.apps.supplychain.service.SaleOrderLineServiceSupplyChain;
+import com.axelor.apps.supplychain.service.StockLocationServiceSupplychain;
+import com.axelor.apps.supplychain.service.app.AppSupplychainService;
+import com.axelor.exception.AxelorException;
+import com.axelor.inject.Beans;
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
 import java.lang.invoke.MethodHandles;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
@@ -35,6 +52,21 @@ public class BillOfMaterialServiceSpecifiqueImpl implements BillOfMaterialServic
   @Inject private StockLocationLineRepository stockLocationLineRepository;
   private List<Long> processedBom;
 
+  // MA1-I69 - Karl - Begin
+    private UnitConversionService unitConversionService;
+    private StockLocationLineService stockLocationLineService;
+
+  
+  @Inject
+  public BillOfMaterialServiceSpecifiqueImpl(
+    UnitConversionService unitConversionService,
+    StockLocationLineService stockLocationLineService
+  ) {
+    this.unitConversionService = unitConversionService;
+    this.stockLocationLineService = stockLocationLineService;
+  }
+  // MA1-I69 - Karl - End
+
   @Transactional
   public TempBomTree getBomTree(
       BillOfMaterial bom,
@@ -42,7 +74,7 @@ public class BillOfMaterialServiceSpecifiqueImpl implements BillOfMaterialServic
       TempBomTree parent,
       boolean useProductDefaultBom,
       Long stockLocationId,
-      Long companyId) {
+      Long companyId) throws AxelorException {
 
     TempBomTree bomTree;
     if (parentBom == null) {
@@ -68,6 +100,7 @@ public class BillOfMaterialServiceSpecifiqueImpl implements BillOfMaterialServic
     bomTree.setParent(parent);
     bomTree.setBom(bom);
 
+    /* // MA1-I69 - Karl - Commented
     bomTree.setRealQty(
         getRealQty(
             bom.getProduct().getId(),
@@ -103,6 +136,12 @@ public class BillOfMaterialServiceSpecifiqueImpl implements BillOfMaterialServic
 
     bomTree.setAvailableQty(
         getAvailableStock(bom.getProduct().getId(), stockLocationId, companyId));
+*/
+    // MA1-I69 - Karl - nouvelle méthode qui reprend ProductStockLocationServiceImpl.computeIndicators
+    this.setQty(bom.getProduct().getId(), stockLocationId, companyId, bomTree);
+    //50 premier caractères
+    bomTree.setReference(bomTree.getProduct().getFullName().substring(0, Math.min(bomTree.getProduct().getFullName().length(), 50)));
+    // MA1-I69 - Karl - End
 
     bomTree.setBuildingQty(
         getBuildingQty(
@@ -124,6 +163,23 @@ public class BillOfMaterialServiceSpecifiqueImpl implements BillOfMaterialServic
             stockLocationId,
             companyId,
             StockMoveRepository.STATUS_PLANNED));
+
+    // MA1-I69 - Karl
+    //setQtyStr avec une precision de 2 chiffres après la virgule
+    //padding avec des espaces non sécables, minimum 15 caractères
+    //pour que les colonnes soient plus large sur le treeview
+    bomTree.setQtyStr(String.format("%15s", bomTree.getQty().setScale(2, RoundingMode.HALF_UP).toString()).replace(' ', '\u00A0'));
+    bomTree.setRealQtyStr(String.format("%15s", bomTree.getRealQty().setScale(2, RoundingMode.HALF_UP).toString()).replace(' ', '\u00A0'));
+    bomTree.setFutureQtyStr(String.format("%15s", bomTree.getFutureQty().setScale(2, RoundingMode.HALF_UP).toString()).replace(' ', '\u00A0'));
+    bomTree.setReservedQtyStr(String.format("%15s", bomTree.getReservedQty().setScale(2, RoundingMode.HALF_UP).toString()).replace(' ', '\u00A0'));
+    bomTree.setRequestedReservedQtyStr(String.format("%15s", bomTree.getRequestedReservedQty().setScale(2, RoundingMode.HALF_UP).toString()).replace(' ', '\u00A0'));
+    bomTree.setPurchaseOrderQtyStr(String.format("%15s", bomTree.getPurchaseOrderQty().setScale(2, RoundingMode.HALF_UP).toString()).replace(' ', '\u00A0'));
+    bomTree.setSaleOrderQtyStr(String.format("%15s", bomTree.getSaleOrderQty().setScale(2, RoundingMode.HALF_UP).toString()).replace(' ', '\u00A0'));
+    bomTree.setAvailableQtyStr(String.format("%15s", bomTree.getAvailableQty().setScale(2, RoundingMode.HALF_UP).toString()).replace(' ', '\u00A0'));
+    bomTree.setBuildingQtyStr(String.format("%15s", bomTree.getBuildingQty().setScale(2, RoundingMode.HALF_UP).toString()).replace(' ', '\u00A0'));
+    bomTree.setConsumeManufOrderQtyStr(String.format("%15s", bomTree.getConsumeManufOrderQty().setScale(2, RoundingMode.HALF_UP).toString()).replace(' ', '\u00A0'));
+    bomTree.setMissingManufOrderQtyStr(String.format("%15s", bomTree.getMissingManufOrderQty().setScale(2, RoundingMode.HALF_UP).toString()).replace(' ', '\u00A0'));
+    // MA1-I69 - Karl - End
 
     bomTree = tempBomTreeRepo.save(bomTree);
 
@@ -372,7 +428,7 @@ public class BillOfMaterialServiceSpecifiqueImpl implements BillOfMaterialServic
       TempBomTree bomTree,
       boolean useProductDefaultBom,
       Long stockLocationId,
-      Long companyId) {
+      Long companyId) throws AxelorException {
 
     List<Long> validBomIds = new ArrayList<Long>();
 
@@ -401,7 +457,7 @@ public class BillOfMaterialServiceSpecifiqueImpl implements BillOfMaterialServic
       BillOfMaterial billOfMaterial,
       boolean useProductDefaultBom,
       Long stockLocationId,
-      Long companyId) {
+      Long companyId) throws AxelorException {
     processedBom = new ArrayList<>();
 
     return getBomTree(billOfMaterial, null, null, useProductDefaultBom, stockLocationId, companyId);
@@ -432,4 +488,212 @@ public class BillOfMaterialServiceSpecifiqueImpl implements BillOfMaterialServic
       tempBomTreeRepo.remove(invalidBomTree);
     }
   }
+
+
+  // MA1-I69 - Karl - Begin
+  private void setQty(Long productId, Long stockLocationId, Long companyId, TempBomTree bomTree) throws AxelorException
+  {
+    AppBaseService appBaseService = Beans.get(AppBaseService.class);
+    int scale = appBaseService.getNbDecimalDigitForQty();
+    StockLocationService stockLocationService = Beans.get(StockLocationService.class);
+    StockLocationServiceSupplychain stockLocationServiceSupplychain = Beans.get(StockLocationServiceSupplychain.class);
+    ProductRepository productRepository = Beans.get(ProductRepository.class);
+    CompanyRepository companyRepository = Beans.get(CompanyRepository.class);
+    Product product = productRepository.find(productId);
+    Company company = companyRepository.find(companyId);
+    
+    BigDecimal reservedQty =
+        stockLocationServiceSupplychain
+            .getReservedQty(productId, stockLocationId, companyId)
+            .setScale(scale, RoundingMode.HALF_UP);
+    bomTree.setRealQty(
+        stockLocationService
+            .getRealQty(productId, stockLocationId, companyId)
+            .setScale(scale, RoundingMode.HALF_UP));
+    bomTree.setFutureQty(
+        stockLocationService
+            .getFutureQty(productId, stockLocationId, companyId)
+            .setScale(scale, RoundingMode.HALF_UP));
+    bomTree.setReservedQty( reservedQty);
+    bomTree.setRequestedReservedQty(
+        this.getRequestedReservedQty(product, company, null).setScale(scale, RoundingMode.HALF_UP));
+    bomTree.setSaleOrderQty(        
+        this.getSaleOrderQty(product, company, null).setScale(scale, RoundingMode.HALF_UP));
+    bomTree.setPurchaseOrderQty(
+        this.getPurchaseOrderQty(product, company, null).setScale(scale, RoundingMode.HALF_UP));
+    bomTree.setAvailableQty(
+        this.getAvailableQty(product, company, null)
+            .subtract(reservedQty)
+            .setScale(scale, RoundingMode.HALF_UP));
+  }
+
+  protected BigDecimal getRequestedReservedQty(
+      Product product, Company company, StockLocation stockLocation) throws AxelorException {
+    if (product == null || product.getUnit() == null) {
+      return BigDecimal.ZERO;
+    }
+    Long companyId = 0L;
+    Long stockLocationId = 0L;
+    if (company != null) {
+      companyId = company.getId();
+    }
+    if (stockLocation != null) {
+      stockLocationId = stockLocation.getId();
+    }
+    String query =
+        stockLocationLineService.getStockLocationLineListForAProduct(
+            product.getId(), companyId, stockLocationId);
+
+    List<StockLocationLine> stockLocationLineList =
+        stockLocationLineRepository.all().filter(query).fetch();
+
+    // Compute
+    BigDecimal sumRequestedReservedQty = BigDecimal.ZERO;
+    if (!stockLocationLineList.isEmpty()) {
+      Unit unitConversion = product.getUnit();
+
+      for (StockLocationLine stockLocationLine : stockLocationLineList) {
+        BigDecimal requestedReservedQty = stockLocationLine.getRequestedReservedQty();
+        requestedReservedQty =
+            unitConversionService.convert(
+                stockLocationLine.getUnit(),
+                unitConversion,
+                requestedReservedQty,
+                requestedReservedQty.scale(),
+                product);
+        sumRequestedReservedQty = sumRequestedReservedQty.add(requestedReservedQty);
+      }
+    }
+
+    return sumRequestedReservedQty;
+  }
+
+  protected BigDecimal getSaleOrderQty(
+      Product product, Company company, StockLocation stockLocation) throws AxelorException {
+    if (product == null || product.getUnit() == null) {
+      return BigDecimal.ZERO;
+    }
+    Long companyId = 0L;
+    Long stockLocationId = 0L;
+    if (company != null) {
+      companyId = company.getId();
+    }
+    if (stockLocation != null) {
+      stockLocationId = stockLocation.getId();
+    }
+    String query =
+        Beans.get(SaleOrderLineServiceSupplyChain.class)
+            .getSaleOrderLineListForAProduct(product.getId(), companyId, stockLocationId);
+    List<SaleOrderLine> saleOrderLineList =
+        Beans.get(SaleOrderLineRepository.class).all().filter(query).fetch();
+
+    // Compute
+    BigDecimal sumSaleOrderQty = BigDecimal.ZERO;
+    if (!saleOrderLineList.isEmpty()) {
+      Unit unitConversion = product.getUnit();
+
+      for (SaleOrderLine saleOrderLine : saleOrderLineList) {
+        BigDecimal productSaleOrderQty = saleOrderLine.getQty();
+        if (saleOrderLine.getDeliveryState()
+            == SaleOrderLineRepository.DELIVERY_STATE_PARTIALLY_DELIVERED) {
+          productSaleOrderQty = productSaleOrderQty.subtract(saleOrderLine.getDeliveredQty());
+        }
+        productSaleOrderQty =
+            unitConversionService.convert(
+                saleOrderLine.getUnit(),
+                unitConversion,
+                productSaleOrderQty,
+                productSaleOrderQty.scale(),
+                product);
+        sumSaleOrderQty = sumSaleOrderQty.add(productSaleOrderQty);
+      }
+    }
+
+    return sumSaleOrderQty;
+  }
+
+  protected BigDecimal getPurchaseOrderQty(
+      Product product, Company company, StockLocation stockLocation) throws AxelorException {
+    if (product == null || product.getUnit() == null) {
+      return BigDecimal.ZERO;
+    }
+
+    Long companyId = 0L;
+    Long stockLocationId = 0L;
+    if (company != null) {
+      companyId = company.getId();
+    }
+    if (stockLocation != null) {
+      stockLocationId = stockLocation.getId();
+    }
+    String query =
+        Beans.get(PurchaseOrderStockService.class)
+            .getPurchaseOrderLineListForAProduct(product.getId(), companyId, stockLocationId);
+
+    List<PurchaseOrderLine> purchaseOrderLineList =
+        Beans.get(PurchaseOrderLineRepository.class).all().filter(query).fetch();
+
+    // Compute
+    BigDecimal sumPurchaseOrderQty = BigDecimal.ZERO;
+    if (!purchaseOrderLineList.isEmpty()) {
+      Unit unitConversion = product.getUnit();
+
+      for (PurchaseOrderLine purchaseOrderLine : purchaseOrderLineList) {
+        BigDecimal productPurchaseOrderQty = purchaseOrderLine.getQty();
+        if (purchaseOrderLine.getReceiptState()
+            == PurchaseOrderLineRepository.RECEIPT_STATE_PARTIALLY_RECEIVED) {
+          productPurchaseOrderQty =
+              productPurchaseOrderQty.subtract(purchaseOrderLine.getReceivedQty());
+        }
+        productPurchaseOrderQty =
+            unitConversionService.convert(
+                purchaseOrderLine.getUnit(),
+                unitConversion,
+                productPurchaseOrderQty,
+                productPurchaseOrderQty.scale(),
+                product);
+        sumPurchaseOrderQty = sumPurchaseOrderQty.add(productPurchaseOrderQty);
+      }
+    }
+    return sumPurchaseOrderQty;
+  }
+
+  protected BigDecimal getAvailableQty(
+      Product product, Company company, StockLocation stockLocation) throws AxelorException {
+    if (product == null || product.getUnit() == null) {
+      return BigDecimal.ZERO;
+    }
+    Long companyId = 0L;
+    Long stockLocationId = 0L;
+    if (company != null) {
+      companyId = company.getId();
+    }
+    if (stockLocation != null) {
+      stockLocationId = stockLocation.getId();
+    }
+    String query =
+        stockLocationLineService.getAvailableStockForAProduct(
+            product.getId(), companyId, stockLocationId);
+    List<StockLocationLine> stockLocationLineList =
+        stockLocationLineRepository.all().filter(query).fetch();
+
+    // Compute
+    BigDecimal sumAvailableQty = BigDecimal.ZERO;
+    if (!stockLocationLineList.isEmpty()) {
+
+      Unit unitConversion = product.getUnit();
+      for (StockLocationLine stockLocationLine : stockLocationLineList) {
+        BigDecimal productAvailableQty = stockLocationLine.getCurrentQty();
+        unitConversionService.convert(
+            stockLocationLine.getUnit(),
+            unitConversion,
+            productAvailableQty,
+            productAvailableQty.scale(),
+            product);
+        sumAvailableQty = sumAvailableQty.add(productAvailableQty);
+      }
+    }
+    return sumAvailableQty;
+  }
+    // MA1-I69 - Karl - End
 }
