@@ -45,5 +45,6 @@
     <field name="typeSelect" expr="1"/>
     <field name="stockLocation"
       expr="eval: __repo__(StockLocation).all().filter('self.name =?','LORFLAM').fetchOne()"/>
+    <field name="statusSelect" expr="1"/> 
   </action-record>
 </object-views>
