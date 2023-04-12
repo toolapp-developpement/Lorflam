@@ -9,6 +9,7 @@
     edit-icon="true">
 
     <field name="saleOrderLine.saleOrder.ticket.ticketSeq"/>
+    <field name="saleOrderLine.saleOrder.ticket.statusSelect"/>
     <button name="viewTicket" onClick="stoctkMoveViewTicket" icon="fa-edit"/>
     <field name="stockMove.partner.partnerSeq" title="Client"/>
     <field name="stockMove.partner"/>
