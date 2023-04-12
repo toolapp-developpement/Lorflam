@@ -16,7 +16,6 @@
         <field name="rateToApply" colSpan="6" grid-view="rate-to-apply-grid"/>
       </insert>
     </extend>
-
   </form>
 
   <action-method name="action.specifique.method.select.or.create.yard">

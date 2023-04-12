@@ -12,7 +12,7 @@
     </extend>
     <extend target="//field[@name='enableFreezeFields']">
       <replace>
-        <field name="yard" onChange="action.specifique.method.select.or.create.yard"
+        <field name="yard" onChange="action.specifique.purch.method.select.or.create.yard"
           colSpan="2"/>
       </replace>
     </extend>
@@ -42,7 +42,7 @@
     </extend>
   </form>
 
-  <action-method name="action.specifique.method.select.or.create.yard">
+  <action-method name="action.specifique.purch.method.select.or.create.yard">
     <call class="bzh.toolapp.apps.specifique.web.PlanificationController"
       method="selectOrCreateYard(__this__.yard)"/>
   </action-method>

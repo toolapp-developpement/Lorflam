@@ -9,7 +9,7 @@
     <extend target="//field[@name='product']">
       <insert position="after">
         <field name="yard" title="Référence Chantier"
-          onChange="action.specifique.method.select.or.create.yard" colSpan="2"/>
+          onChange="action.specifique.stock.move.method.select.or.create.yard" colSpan="2"/>
       </insert>
     </extend>
     <extend target="//field[@name='unitPriceUntaxed']">
@@ -130,8 +130,8 @@
       class="bzh.toolapp.apps.specifique.web.StockMoveLineControllerSpecifique"/>
   </action-method>
 
-  <action-method name="action.specifique.method.select.or.create.yard">
-    <call method="selectOrCreateYard(yard)"
-      class="bzh.toolapp.apps.specifique.web.PlanificationController"/>
+  <action-method name="action.specifique.stock.move.method.select.or.create.yard">
+    <call class="bzh.toolapp.apps.specifique.web.PlanificationController"
+      method="selectOrCreateYard(__this__.yard)"/>
   </action-method>
 </object-views>
