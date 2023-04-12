@@ -7,7 +7,6 @@
     model="com.axelor.apps.stock.db.StockMoveLine"
     orderBy="stockMove.statusSelect,-stockMove.estimatedDate" canNew="false" canDelete="false"
     edit-icon="true">
-
     <field name="saleOrderLine.saleOrder.ticket.ticketSeq"/>
     <field name="saleOrderLine.saleOrder.ticket.statusSelect"/>
     <button name="viewTicket" onClick="stoctkMoveViewTicket" icon="fa-edit"/>
