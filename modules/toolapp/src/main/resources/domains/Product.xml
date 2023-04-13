@@ -11,5 +11,8 @@
       title="Class"/>
 
     <string name="refSupProd" title="Supplier reference"/>
+
+    <many-to-one name="ecoTax" ref="com.axelor.apps.toolapp.db.EcoTax" title="Eco tax"
+      massUpdate="true"/>
   </entity>
 </domain-models>

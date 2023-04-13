@@ -3,6 +3,7 @@ package bzh.toolapp.apps.specifique.modules;
 import bzh.toolapp.apps.specifique.repository.ManufOrderManagementSpecificRepository;
 import bzh.toolapp.apps.specifique.repository.StockMoveLineSpecificRepository;
 import bzh.toolapp.apps.specifique.repository.StockMoveSpecificRepository;
+import bzh.toolapp.apps.specifique.service.SaleOrderWorkflowSpecifiqueService;
 import bzh.toolapp.apps.specifique.service.SpecifiqueService;
 import bzh.toolapp.apps.specifique.service.StockMoveLineSpecifiqueCreationService;
 import bzh.toolapp.apps.specifique.service.etatstock.BillOfMaterialServiceSpecifique;
@@ -21,6 +22,7 @@ import com.axelor.app.AxelorModule;
 import com.axelor.apps.businessproduction.db.repo.ManufOrderBusinessProductionManagementRepository;
 import com.axelor.apps.businessproduction.service.CostSheetServiceBusinessImpl;
 import com.axelor.apps.businessproduction.service.ProductionOrderSaleOrderServiceBusinessImpl;
+import com.axelor.apps.businessproduction.service.SaleOrderWorkflowServiceBusinessProductionImpl;
 import com.axelor.apps.businessproject.service.ProjectStockMoveInvoiceServiceImpl;
 import com.axelor.apps.businessproject.service.PurchaseOrderLineServiceProjectImpl;
 import com.axelor.apps.marketing.service.TemplateMessageServiceMarketingImpl;
@@ -67,5 +69,7 @@ public class SpecificModule extends AxelorModule {
     bind(ManufOrderBusinessProductionManagementRepository.class)
         .to(ManufOrderManagementSpecificRepository.class);
     bind(BillOfMaterialServiceSpecifique.class).to(BillOfMaterialServiceSpecifiqueImpl.class);
+    bind(SaleOrderWorkflowServiceBusinessProductionImpl.class)
+        .to(SaleOrderWorkflowSpecifiqueService.class);
   }
 }

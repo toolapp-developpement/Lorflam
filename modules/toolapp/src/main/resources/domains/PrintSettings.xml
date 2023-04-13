@@ -6,7 +6,7 @@
   <module name="base" package="com.axelor.apps.base.db"/>
 
   <entity name="PrintingSettings" lang="java">
-    
+    <many-to-one ref="com.axelor.apps.message.db.Template" name="ecoTaxTemplate"></many-to-one>
   </entity>
 
 </domain-models>

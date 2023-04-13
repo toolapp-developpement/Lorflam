@@ -61,4 +61,15 @@
   <menuitem name="menu-toolapp-stock-projection" title="Projection des stocks"
     action="custome.detail.stock.mrp" parent="menu-toolapp-stock"/>
 
+
+  <menuitem name="sale-conf-ecotax" parent="sc-root-sale-conf" title="Eco tax"
+    action="sale.conf.ecotax" order="2"/>
+
+  <action-view name="sale.conf.ecotax" title="Eco tax"
+    model="com.axelor.apps.toolapp.db.EcoTax">
+    <view type="grid" name="eco-tax-grid"/>
+    <view type="form" name="eco-tax-form"/>
+
+  </action-view>
+
 </object-views>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/domain-models http://axelor.com/xml/ns/domain-models/domain-models_5.4.xsd">
+
+  <module name="toolapp" package="com.axelor.apps.toolapp.db"/>
+
+  <entity name="EcoTax" lang="java">
+    <many-to-one name="invoice" ref="com.axelor.apps.account.db.Invoice" title="Invoice"/>
+
+    <string name="code" title="Code"/>
+    <string name="description" title="Description" namecolumn="true"/>
+
+    <one-to-many name="invoiceLineList" ref="com.axelor.apps.account.db.InvoiceLine"
+      title="Invoice line list" mappedBy="ecoTax"/>
+    <one-to-many name="productList" ref="com.axelor.apps.base.db.Product"
+      title="Product list" mappedBy="ecoTax"/>
+  </entity>
+
+</domain-models>
