@@ -63,7 +63,9 @@ public class SaleOrderWorkflowSpecifiqueService
                     // si elle n'existe pas, on la crée
                     if (invoiceEcoTaxDetailRepository
                         .all()
-                        .filter("self.saleOrder = ?1 AND self.ecoTax = ?2", saleOrder, saleOrderLine.getProduct().getEcoTax()).fetchOne() == null) {
+                        .filter("self.saleOrder = ?1 AND self.ecoTax = ?2"
+                        , saleOrder
+                        , saleOrderLine.getProduct().getEcoTax()).fetchOne() == null) {
                         //on crée la ligne dans la table invoice_eco_tax_detail
                         InvoiceEcoTaxDetail invoiceEcoTaxDetail = new InvoiceEcoTaxDetail();
 
@@ -78,10 +80,17 @@ public class SaleOrderWorkflowSpecifiqueService
             }
         });
 
-        // verifier si la ligne existe dans la table invoice_eco_tax_detail
-        // si elle n'existe pas, on la crée
-        
-        invoiceEcoTaxDetailRepository.all().filter("self.saleOrder = ?1", saleOrder).fetchOne();
+        // on parcours la table invoice_eco_tax_detail
+        saleOrder.getInvoiceEcoTaxDetailList().forEach(invoiceEcoTaxDetail -> {
+            // on vérifie si la ligne n'est pas dans la commande
+            if (saleOrder.getSaleOrderLineList().stream().filter(saleOrderLine -> saleOrderLine.getProduct() != null)
+                    .filter(saleOrderLine -> saleOrderLine.getProduct().getEcoTax() != null)
+                    .filter(saleOrderLine -> saleOrderLine.getProduct().getEcoTax().equals(invoiceEcoTaxDetail.getEcoTax()))
+                    .count() == 0) {
+                // on supprime la ligne de la table invoice_eco_tax_detail
+                invoiceEcoTaxDetailRepository.remove(invoiceEcoTaxDetail);
+            }
+        });
 
     }
     
