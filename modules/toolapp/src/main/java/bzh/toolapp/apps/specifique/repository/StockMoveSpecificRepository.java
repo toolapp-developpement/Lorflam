@@ -24,6 +24,10 @@ public class StockMoveSpecificRepository extends StockMoveProductionRepository {
       }
     }
 
+    
+
+    entity = super.save(entity);
+
     // MA1-I75 - Karl - begin
     TicketService ticketService = Beans.get(TicketService.class);
     if(entity.getTicket() != null && entity.getStockMoveSeq() != null) {
@@ -33,6 +37,6 @@ public class StockMoveSpecificRepository extends StockMoveProductionRepository {
     }
     // MA1-I75 - Karl - end
 
-    return super.save(entity);
+    return entity;
   }
 }
