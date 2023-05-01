@@ -1,15 +1,23 @@
 package bzh.toolapp.apps.specifique.service;
 
+import java.io.IOException;
+
 import org.checkerframework.checker.units.qual.s;
 
 import com.axelor.apps.account.db.repo.AnalyticMoveLineRepository;
 import com.axelor.apps.base.db.repo.PartnerRepository;
+import com.axelor.apps.base.db.repo.PrintingSettingsRepository;
 import com.axelor.apps.base.service.administration.SequenceService;
 import com.axelor.apps.base.service.user.UserService;
 import com.axelor.apps.businessproduction.service.SaleOrderWorkflowServiceBusinessProductionImpl;
+import com.axelor.apps.message.db.Message;
+import com.axelor.apps.message.db.Template;
+import com.axelor.apps.message.service.TemplateMessageService;
+import com.axelor.apps.message.service.TemplateService;
 import com.axelor.apps.production.service.app.AppProductionService;
 import com.axelor.apps.production.service.productionorder.ProductionOrderSaleOrderService;
 import com.axelor.apps.sale.db.SaleOrder;
+import com.axelor.apps.sale.db.SaleOrderLine;
 import com.axelor.apps.sale.db.repo.SaleOrderRepository;
 import com.axelor.apps.sale.service.app.AppSaleService;
 import com.axelor.apps.sale.service.saleorder.SaleOrderLineService;
@@ -20,6 +28,7 @@ import com.axelor.apps.supplychain.service.app.AppSupplychainService;
 import com.axelor.apps.toolapp.db.InvoiceEcoTaxDetail;
 import com.axelor.apps.toolapp.db.repo.InvoiceEcoTaxDetailRepository;
 import com.axelor.exception.AxelorException;
+import com.axelor.inject.Beans;
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
 
@@ -50,47 +59,57 @@ public class SaleOrderWorkflowSpecifiqueService
     @Override
     @Transactional
     public void finalizeQuotation(SaleOrder saleOrder) throws AxelorException {
-        super.finalizeQuotation(saleOrder);
+        
 
         //on parcours les lignes de la commandes
-        saleOrder.getSaleOrderLineList().forEach(saleOrderLine -> {
+        for (SaleOrderLine saleOrderLine : saleOrder.getSaleOrderLineList()) {
             //on vérifie si la ligne est une ligne de produit
             if (saleOrderLine.getProduct() != null) {
                 //on vérifie si le produit est un produit éco taxé
                 if (saleOrderLine.getProduct().getEcoTax() != null) {
-                    //on vérifie si la ligne n'a pas déjà été traitée
-                    // verifier si la ligne existe dans la table invoice_eco_tax_detail
-                    // si elle n'existe pas, on la crée
-                    if (invoiceEcoTaxDetailRepository
+                    InvoiceEcoTaxDetail invoiceEcoTaxDetail = invoiceEcoTaxDetailRepository
                         .all()
                         .filter("self.saleOrder = ?1 AND self.ecoTax = ?2"
                         , saleOrder
-                        , saleOrderLine.getProduct().getEcoTax()).fetchOne() == null) {
+                        , saleOrderLine.getProduct().getEcoTax()).fetchOne();
+                    if (invoiceEcoTaxDetail == null) {
                         //on crée la ligne dans la table invoice_eco_tax_detail
-                        InvoiceEcoTaxDetail invoiceEcoTaxDetail = new InvoiceEcoTaxDetail();
-
-                        invoiceEcoTaxDetail.setSaleOrder(saleOrder);
-                        invoiceEcoTaxDetail.setEcoTax(saleOrderLine.getProduct().getEcoTax());
-                        //TODO gestion du calcul du montant de l'éco taxe
-                        invoiceEcoTaxDetail.setAmount(saleOrderLine.getEcoTaxAmount());
-
-                        invoiceEcoTaxDetailRepository.save(invoiceEcoTaxDetail);
+                         invoiceEcoTaxDetail = new InvoiceEcoTaxDetail();
                     }
+                    invoiceEcoTaxDetail.setSaleOrder(saleOrder);
+                    invoiceEcoTaxDetail.setEcoTax(saleOrderLine.getProduct().getEcoTax());
+                    //TODO gestion du calcul du montant de l'éco taxe
+                    invoiceEcoTaxDetail.setAmount(saleOrderLine.getEcoTaxAmount());
+
+                    invoiceEcoTaxDetailRepository.save(invoiceEcoTaxDetail);
+                    
                 }
             }
-        });
+        };
 
-        // on parcours la table invoice_eco_tax_detail
-        saleOrder.getInvoiceEcoTaxDetailList().forEach(invoiceEcoTaxDetail -> {
-            // on vérifie si la ligne n'est pas dans la commande
-            if (saleOrder.getSaleOrderLineList().stream().filter(saleOrderLine -> saleOrderLine.getProduct() != null)
-                    .filter(saleOrderLine -> saleOrderLine.getProduct().getEcoTax() != null)
-                    .filter(saleOrderLine -> saleOrderLine.getProduct().getEcoTax().equals(invoiceEcoTaxDetail.getEcoTax()))
-                    .count() == 0) {
-                // on supprime la ligne de la table invoice_eco_tax_detail
-                invoiceEcoTaxDetailRepository.remove(invoiceEcoTaxDetail);
+
+        PrintingSettingsRepository printingSettingsRepo = Beans.get(PrintingSettingsRepository.class);
+        if (printingSettingsRepo.all().fetchOne().getEcoTaxTemplate() != null) {
+            Template template = printingSettingsRepo.all().fetchOne().getEcoTaxTemplate();
+
+            TemplateMessageService templateMessageService = Beans.get(TemplateMessageService.class);
+            Message message = new Message();
+            try {
+                message = templateMessageService.generateMessage(saleOrder.getId(), "com.axelor.apps.sale.db.SaleOrder", "SaleOrder", template, true);
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IOException e) {
+                
+                e.printStackTrace();
             }
-        });
+            String ecoTaxeText = message.getContent();
+            saleOrder.setEcoTaxDetails(ecoTaxeText);
+            
+            saleOrder.setDescription(ecoTaxeText);
+
+        }
+
+        saleOrderRepo.save(saleOrder);
+
+        super.finalizeQuotation(saleOrder);
 
     }
     
