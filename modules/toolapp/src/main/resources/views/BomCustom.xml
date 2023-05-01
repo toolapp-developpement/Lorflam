@@ -153,4 +153,58 @@
     </node>
   </tree>
 
+  <action-group name="action-group-stock-details-by-product-on-new-custom">
+    <action name="action-record-stock-details-by-product-init-product-custom"/>
+    <action name="action-method-find-all-sublocation"/>
+    <action name="action-method-update-indicators"/>
+    <action name="action-attrs-reload-panel-dashlet"/>
+    <action name="action-stock-details-record-set-user-s-company"/>
+  </action-group>
+
+
+  <form name="projected-stock-form-custome" title="Projected stock" model="com.axelor.apps.supplychain.db.MrpLine" width="large" onNew="action-record-supplychain-projected-stock-on-new" canNew="false" canEdit="false" canSave="false" canDelete="false">
+    <panel name="projected-stock-form-custom-panel" colSpan="12">
+      <panel-dashlet showTitle="false" colSpan="12" action="action.projected.stock.dashlet.custom"/>
+      <field name="$mrpLineList" readonly="true" colSpan="12" height="150" type="one-to-many" target="com.axelor.apps.supplychain.db.MrpLine" grid-view="projected-stock-grid-custome"/>
+    </panel>
+  </form>
+
+  <action-view name="action.projected.stock.dashlet.custom" title="Projected Stock">
+    <view name="chart.projected.stock.custom" type="chart"/>
+    <context name="_mrpLineListToProject" expr="eval: _mrpLineList"/>
+  </action-view>
+
+  <chart name="chart.projected.stock.custom" title="Projected stock">
+    <dataset type="rpc"><![CDATA[bzh.toolapp.apps.specifique.web.ProductController:showCustomeChartProjectedStock]]></dataset>
+    <category key="name" type="date" title="Date"/>
+    <series key="cumulativeQty" type="line" title="Qty"/>
+  </chart>
+ 
+
+  <grid name="projected-stock-grid-custome" title="Projected stock" model="com.axelor.apps.supplychain.db.MrpLine" orderBy="product.code,maturityDate,mrpLineType.typeSelect,mrpLineType.sequence,id" edit-icon="false">
+    <hilite color="info" strong="true" if="[5,8,9].indexOf($get('mrpLineType.elementSelect')) != -1"/>
+    <hilite color="success" strong="true" if="mrpLineType.elementSelect == 1"/>
+    <field name="product" hidden="true"/>
+    <field name="maturityDate" width="110"/>
+    <field name="mrpLineType" width="210"/>
+    <field name="qty" width="100" x-scale="2"/>
+    <field name="cumulativeQty" css="bold" width="130" x-scale="2"/>
+    <field name="unit" width="80"/> 
+    <field name="company"/>
+    <field name="stockLocation"/>
+    <field name="relatedToSelectName" width="150"/>
+    <field name="partner"/>
+    <field name="mrpLineType.elementSelect" hidden="true"/>
+  </grid>
+  
+
+
+  <action-record name="action-record-stock-details-by-product-init-product-custom" model="com.axelor.apps.base.db.Product">
+    <field name="$product" expr="eval: _product"/>
+    <field name="$company" expr="eval: _company"/>
+    <field name="$stockLocation" expr="eval:_stockLocation"/>
+    <field name="$product" expr="eval:_productMrp"/>
+    <field name="$stockLocation" expr="eval:_stockLocationMrp"/>
+  </action-record>
+
 </object-views>
