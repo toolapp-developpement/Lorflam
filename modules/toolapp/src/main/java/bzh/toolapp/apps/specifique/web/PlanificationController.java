@@ -2,6 +2,9 @@ package bzh.toolapp.apps.specifique.web;
 
 import bzh.toolapp.apps.specifique.repository.StockMoveLineSpecificRepository;
 import bzh.toolapp.apps.specifique.service.SpecifiqueService;
+import com.axelor.apps.base.db.Blocking;
+import com.axelor.apps.base.db.repo.BlockingRepository;
+import com.axelor.apps.base.service.BlockingService;
 import com.axelor.apps.stock.db.StockMove;
 import com.axelor.apps.stock.db.repo.StockMoveRepository;
 import com.axelor.apps.stock.exception.IExceptionMessage;
@@ -26,6 +29,7 @@ public class PlanificationController {
 
     StockMove sm = request.getContext().asType(StockMove.class);
 
+
     Boolean statusUpdated = false;
 
     this.logger.debug("Num StockMove est {}", sm.getId());
@@ -46,6 +50,28 @@ public class PlanificationController {
       StockMove stockMoveFromRequest = request.getContext().asType(StockMove.class);
 
       StockMove stockMove = Beans.get(StockMoveRepository.class).find(stockMoveFromRequest.getId());
+
+      // MA1-I46 - Karl - Begin
+      if ((stockMove.getOriginTypeSelect() == null
+              || stockMove.getOriginTypeSelect().isEmpty()
+              || StockMoveRepository.ORIGIN_SALE_ORDER.equals(stockMove.getOriginTypeSelect()))
+          && stockMove.getPartner() != null) {
+        Blocking blocking =
+            Beans.get(BlockingService.class)
+                .getBlocking(
+                    stockMove.getPartner(),
+                    stockMove.getCompany(),
+                    BlockingRepository.DELIVERY_BLOCKING);
+        if (blocking != null) {
+
+          throw new AxelorException(
+              stockMove.getPartner(),
+              TraceBackRepository.CATEGORY_CONFIGURATION_ERROR,
+              I18n.get("Le Client est bloqué pour la livraison") );
+        }
+      }
+      // MA1-I46 - Karl - End
+
       // we have to inject TraceBackService to use non static methods
       TraceBackService traceBackService = Beans.get(TraceBackService.class);
       long tracebackCount = traceBackService.countMessageTraceBack(stockMove);

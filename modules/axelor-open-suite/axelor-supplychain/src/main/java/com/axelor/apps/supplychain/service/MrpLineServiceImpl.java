@@ -219,6 +219,7 @@ public class MrpLineServiceImpl implements MrpLineService {
           Beans.get(UnitConversionService.class)
               .convert(product.getUnit(), unit, qty, qty.scale(), product);
     }
+
     PurchaseOrderLine poLine =
         purchaseOrderLineService.createPurchaseOrderLine(
             purchaseOrder, product, null, null, qty, unit);

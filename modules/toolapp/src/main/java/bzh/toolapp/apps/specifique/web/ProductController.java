@@ -1,12 +1,26 @@
 package bzh.toolapp.apps.specifique.web;
 
+import com.axelor.apps.base.db.Company;
+import com.axelor.apps.base.db.Product;
+import com.axelor.apps.production.db.TempBomTree;
+import com.axelor.apps.stock.db.StockLocation;
+
 // import bzh.toolapp.apps.specifique.service.etatstock.BillOfMaterialServiceSpecifique;
 
 import com.axelor.apps.supplychain.db.MrpLine;
+import com.axelor.apps.supplychain.service.ProjectedStockService;
+import com.axelor.apps.toolapp.db.MrpLineCustom;
 import com.axelor.db.mapper.Mapper;
+import com.axelor.exception.service.TraceBackService;
+import com.axelor.i18n.I18n;
+import com.axelor.inject.Beans;
+import com.axelor.meta.schema.actions.ActionView;
 import com.axelor.rpc.ActionRequest;
 import com.axelor.rpc.ActionResponse;
 import com.axelor.rpc.Context;
+
+import bzh.toolapp.apps.specifique.service.etatstock.BillOfMaterialServiceSpecifique;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,65 +29,66 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ProductController {
-  //   public void openProductTree(ActionRequest request, ActionResponse response)
-  //       throws AxelorException {
+public class ProductController { 
 
-  //     TempBomTree bomTree = request.getContext().asType(TempBomTree.class);
-  //     Product product = bomTree.getProduct();
-  //     Company company = bomTree.getCompany();
-  //     StockLocation stockLocation = bomTree.getStockLocation();
+  public void openProductTree(ActionRequest request, ActionResponse response) {
+    try {
+      TempBomTree bomTree = request.getContext().asType(TempBomTree.class);
+      Product product = bomTree.getProduct();
+      Company company = bomTree.getCompany();
+      StockLocation stockLocation = bomTree.getStockLocation();
 
-  //     TempBomTree tempBomTree =
-  //         Beans.get(BillOfMaterialServiceSpecifique.class)
-  //             .generateTree(
-  //                 product.getDefaultBillOfMaterial(), true, stockLocation.getId(),
-  // company.getId());
+      TempBomTree tempBomTree =
+          Beans.get(BillOfMaterialServiceSpecifique.class) 
+              .generateTree(
+                  product.getDefaultBillOfMaterial(), true, stockLocation.getId(), company.getId());
 
-  //     response.setView(
-  //         ActionView.define(I18n.get("Bill of materials"))
-  //             .model(TempBomTree.class.getName())
-  //             .add("tree", "bom-tree-detail")
-  //             .context("_tempBomTreeId", tempBomTree.getId())
-  //             .map());
-  //   }
+      response.setView(
+          ActionView.define(I18n.get("Bill of materials"))
+              .model(TempBomTree.class.getName())
+              .add("tree", "bom-tree-detail")
+              .context("_tempBomTreeId", tempBomTree.getId())
+              .map());
+    } catch (Exception e) {
+      TraceBackService.trace(response, e);
+    }
+  }
 
   public void showProjectedStock(ActionRequest request, ActionResponse response) {
 
-    //    try {
-    //      ProjectedStockService projectedStockService = Beans.get(ProjectedStockService.class);
+    try {
+      ProjectedStockService projectedStockService = Beans.get(ProjectedStockService.class);
 
-    //      MrpLineCustom mrpLine = request.getContext().asType(MrpLineCustom.class);
-    //
-    //      Map<String, Long> mapId = new HashMap<>();
-    //
-    //      mapId.put("productId", mrpLine.getProduct().getId());
-    //      mapId.put("companyId", mrpLine.getStockLocation().getCompany().getId());
-    //      mapId.put("stockLocationId", mrpLine.getStockLocation().getId());
-    //
-    //      final List<MrpLine> mrpLineList = new ArrayList<>();
-    //      try {
-    //        mrpLineList.addAll(
-    //            projectedStockService.createProjectedStock(
-    //                mapId.get("productId"), mapId.get("companyId"),
-    // mapId.get("stockLocationId")));
-    //        response.setView(
-    //            ActionView.define(I18n.get("Projected stock"))
-    //                .model(MrpLine.class.getName())
-    //                .add("form", "projected-stock-form-custome")
-    //                .param("popup", "true")
-    //                .param("popup-save", "false")
-    //                .param("popup.maximized", "true")
-    //                .context("_mrpLineList", mrpLineList)
-    //                .map());
-    //      } catch (Exception e) {
-    //        TraceBackService.trace(response, e);
-    //      } finally {
-    //        projectedStockService.removeMrpAndMrpLine(mrpLineList);
-    //      }
-    //    } catch (Exception e) {
-    ////      TraceBackService.trace(response, e);
-    //    }
+      MrpLineCustom mrpLine = request.getContext().asType(MrpLineCustom.class);
+
+      Map<String, Long> mapId = new HashMap<>();
+
+      mapId.put("productId", mrpLine.getProduct().getId());
+      mapId.put("companyId", mrpLine.getStockLocation().getCompany().getId());
+      mapId.put("stockLocationId", mrpLine.getStockLocation().getId());
+
+      final List<MrpLine> mrpLineList = new ArrayList<>();
+      try {
+        mrpLineList.addAll(
+            projectedStockService.createProjectedStock(
+                mapId.get("productId"), mapId.get("companyId"), mapId.get("stockLocationId")));
+        response.setView(
+            ActionView.define(I18n.get("Projected stock"))
+                .model(MrpLine.class.getName())
+                .add("form", "projected-stock-form-custome")
+                .param("popup", "true")
+                .param("popup-save", "false")
+                .param("popup.maximized", "true")
+                .context("_mrpLineList", mrpLineList)
+                .map());
+      } catch (Exception e) {
+        TraceBackService.trace(response, e);
+      } finally {
+        projectedStockService.removeMrpAndMrpLine(mrpLineList);
+      }
+    } catch (Exception e) {
+      TraceBackService.trace(response, e);
+    }
   }
 
   public void showCustomeChartProjectedStock(ActionRequest request, ActionResponse response) {
