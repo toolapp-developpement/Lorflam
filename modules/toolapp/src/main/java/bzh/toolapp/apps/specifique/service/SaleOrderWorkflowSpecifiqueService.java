@@ -103,7 +103,13 @@ public class SaleOrderWorkflowSpecifiqueService
             String ecoTaxeText = message.getContent();
             saleOrder.setEcoTaxDetails(ecoTaxeText);
             
-            saleOrder.setDescription(ecoTaxeText);
+            
+            if(saleOrder.getDescription() == null || saleOrder.getDescription().isEmpty())
+                saleOrder.setDescription(ecoTaxeText);
+            else 
+                saleOrder.setDescription(saleOrder.getDescription() + "\n"+ ecoTaxeText);
+
+            
 
         }
 
