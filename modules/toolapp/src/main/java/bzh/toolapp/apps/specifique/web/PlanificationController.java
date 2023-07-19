@@ -29,7 +29,6 @@ public class PlanificationController {
 
     StockMove sm = request.getContext().asType(StockMove.class);
 
-
     Boolean statusUpdated = false;
 
     this.logger.debug("Num StockMove est {}", sm.getId());
@@ -67,7 +66,7 @@ public class PlanificationController {
           throw new AxelorException(
               stockMove.getPartner(),
               TraceBackRepository.CATEGORY_CONFIGURATION_ERROR,
-              I18n.get("Le Client est bloqué pour la livraison") );
+              I18n.get("Le Client est bloqué pour la livraison"));
         }
       }
       // MA1-I46 - Karl - End

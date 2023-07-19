@@ -5,14 +5,8 @@
 
   <module name="base" package="com.axelor.apps.base.db"/>
 
-  <entity name="Product" lang="java">
-
-    <many-to-one name="abcAnalysisClass" ref="com.axelor.apps.base.db.ABCAnalysisClass"
-      title="Class"/>
-
-    <string name="refSupProd" title="Supplier reference"/>
-
-    <many-to-one name="ecoTax" ref="com.axelor.apps.toolapp.db.EcoTax" title="Eco tax"
-      massUpdate="true"/>
+  <entity name="PrintingSettings" lang="java">
+    <many-to-one ref="com.axelor.apps.message.db.Template" name="ecoTaxTemplate"></many-to-one>
   </entity>
+
 </domain-models>
