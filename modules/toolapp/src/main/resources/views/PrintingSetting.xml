@@ -6,13 +6,14 @@
   <form id="printing-setting-form-custom" name="printing-setting-form" title="Printing Setting"
     model="com.axelor.apps.base.db.PrintingSettings" width="large" extension="true">
     <extend target="//panel[@name='companyFooterPanel']">
-        <insert position="after">
-            <panel name="ecoTaxTemplate" title="Modèle Eco Participation" colSpan="12">
-                <field name="ecoTaxTemplate" title="Modèle Eco Participation"/>
-            </panel>
-        </insert>
-    </extend>   
-    
+      <insert position="after">
+        <panel name="ecoTaxDetails" title="Modèle Eco Participation" colSpan="12">
+          <field name="ecoTaxTemplate" title="Modèle Eco Participation Commande"/>
+          <field name="ecoTaxInvoiceTemplate" title="Modèle Eco Participation Facture"/>
+        </panel>
+      </insert>
+    </extend>
+
   </form>
 
 

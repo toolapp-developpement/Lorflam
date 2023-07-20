@@ -60,7 +60,7 @@ public class SaleOrderWorkflowSpecifiqueService
     @Transactional
     public void finalizeQuotation(SaleOrder saleOrder) throws AxelorException {
         
-
+        Boolean hasLine = false;
         //on parcours les lignes de la commandes
         for (SaleOrderLine saleOrderLine : saleOrder.getSaleOrderLineList()) {
             //on vérifie si la ligne est une ligne de produit
@@ -82,11 +82,16 @@ public class SaleOrderWorkflowSpecifiqueService
                     invoiceEcoTaxDetail.setAmount(saleOrderLine.getEcoTaxAmount());
 
                     invoiceEcoTaxDetailRepository.save(invoiceEcoTaxDetail);
+                    hasLine = true;
                     
                 }
             }
         };
-
+        if (!hasLine) {
+            saleOrder.setEcoTaxDetails(null);
+            super.finalizeQuotation(saleOrder);
+            return;
+        }
 
         PrintingSettingsRepository printingSettingsRepo = Beans.get(PrintingSettingsRepository.class);
         if (printingSettingsRepo.all().fetchOne().getEcoTaxTemplate() != null) {
@@ -102,14 +107,6 @@ public class SaleOrderWorkflowSpecifiqueService
             }
             String ecoTaxeText = message.getContent();
             saleOrder.setEcoTaxDetails(ecoTaxeText);
-            
-            
-            if(saleOrder.getDescription() == null || saleOrder.getDescription().isEmpty())
-                saleOrder.setDescription(ecoTaxeText);
-            else 
-                saleOrder.setDescription(saleOrder.getDescription() + "\n"+ ecoTaxeText);
-
-            
 
         }
 

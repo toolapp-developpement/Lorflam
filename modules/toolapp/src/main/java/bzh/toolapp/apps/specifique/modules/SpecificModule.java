@@ -4,17 +4,13 @@ import bzh.toolapp.apps.specifique.repository.ManufOrderManagementSpecificReposi
 import bzh.toolapp.apps.specifique.repository.SaleOrderSpecificeRepository;
 import bzh.toolapp.apps.specifique.repository.StockMoveLineSpecificRepository;
 import bzh.toolapp.apps.specifique.repository.StockMoveSpecificRepository;
+import bzh.toolapp.apps.specifique.service.InvoiceServiceSpecifiqueImpl;
 import bzh.toolapp.apps.specifique.service.SaleOrderWorkflowSpecifiqueService;
 import bzh.toolapp.apps.specifique.service.SpecifiqueService;
 import bzh.toolapp.apps.specifique.service.StockMoveLineSpecifiqueCreationService;
 import bzh.toolapp.apps.specifique.service.etatstock.BillOfMaterialServiceSpecifique;
 import bzh.toolapp.apps.specifique.service.etatstock.BillOfMaterialServiceSpecifiqueImpl;
 import bzh.toolapp.apps.specifique.service.impl.*;
-import bzh.toolapp.apps.specifique.service.impl.ProductionOrderSaleOrderSpecifiqueServiceImpl;
-import bzh.toolapp.apps.specifique.service.impl.PurchaseOrderStockSpecifiqueServiceImpl;
-import bzh.toolapp.apps.specifique.service.impl.SaleOrderStockSpecifiqueServiceImpl;
-import bzh.toolapp.apps.specifique.service.impl.SpecifiqueServiceImpl;
-import bzh.toolapp.apps.specifique.service.impl.StockMoveLineSpecifiqueCreationServiceImpl;
 import bzh.toolapp.apps.specifique.web.StockMoveLineControllerSpecifique;
 import com.avr.apps.helpdesk.service.impl.PurchaseOrderCreateStockServiceImpl;
 import com.avr.apps.helpdesk.service.impl.PurchaseOrderCreateSupplychainServiceImpl;
@@ -25,8 +21,10 @@ import com.axelor.apps.businessproduction.service.CostSheetServiceBusinessImpl;
 import com.axelor.apps.businessproduction.service.ProductionOrderSaleOrderServiceBusinessImpl;
 import com.axelor.apps.businessproduction.service.SaleOrderWorkflowServiceBusinessProductionImpl;
 import com.axelor.apps.businessproject.db.repo.SaleOrderProjectRepository;
+import com.axelor.apps.businessproject.service.InvoiceServiceProjectImpl;
 import com.axelor.apps.businessproject.service.ProjectStockMoveInvoiceServiceImpl;
 import com.axelor.apps.businessproject.service.PurchaseOrderLineServiceProjectImpl;
+import com.axelor.apps.cash.management.service.InvoiceServiceManagementImpl;
 import com.axelor.apps.marketing.service.TemplateMessageServiceMarketingImpl;
 import com.axelor.apps.production.db.repo.StockMoveLineProductionRepository;
 import com.axelor.apps.production.db.repo.StockMoveProductionRepository;
@@ -74,5 +72,6 @@ public class SpecificModule extends AxelorModule {
     bind(SaleOrderWorkflowServiceBusinessProductionImpl.class)
         .to(SaleOrderWorkflowSpecifiqueService.class);
     bind(SaleOrderProjectRepository.class).to(SaleOrderSpecificeRepository.class);
+    bind(InvoiceServiceManagementImpl.class).to(InvoiceServiceSpecifiqueImpl.class);
   }
 }
