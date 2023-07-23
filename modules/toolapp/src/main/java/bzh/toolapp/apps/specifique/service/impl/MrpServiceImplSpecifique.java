@@ -223,7 +223,8 @@ public class MrpServiceImplSpecifique extends MrpServiceProductionImpl {
     }
 
     return productSet;
-  }
+  } 
+  
 
   /*
   private Set<Product> filterInventoryFromDefaultSupplier(Mrp mrp) {
