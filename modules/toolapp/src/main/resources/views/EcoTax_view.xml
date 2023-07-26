@@ -28,10 +28,19 @@
       <field name="code"/>
       <field name="description"/>
     </panel>
-    <panel-related field="productList" canSelect="true" canNew="false" canEdit="false"
+    <panel-related field="productList" canSelect="true" canNew="false" canEdit="false" 
       title="Produits associés"></panel-related>
     <panel-related field="invoiceLineList" canSelect="false" canEdit="false"
       canNew="false" title="Lignes de factures associées"></panel-related>
+    <panel-dashlet name="invoiceLineListPanel" colSpan="12" action="action-view-invoice-line-list-eco-tax"/>
   </form>
+
+  <action-view name="action-view-invoice-line-list-eco-tax"
+    title="Lignes de factures associées" model="com.axelor.apps.account.db.InvoiceLine">
+    <view type="grid" name="invoice-line-menu-grid"/>
+    <view type="form" name="invoice-line-menu-form"/>
+    <domain>self.ecoTax.id = :id</domain>
+  </action-view>
+
 
 </object-views>

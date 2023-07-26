@@ -32,6 +32,9 @@ import com.google.inject.Inject;
 import com.axelor.apps.cash.management.service.InvoiceEstimatedPaymentService;
 import com.axelor.apps.cash.management.service.InvoiceServiceManagementImpl;
 
+// MA1-I65 : Ajout de la classe InvoiceServiceSpecifiqueImpl
+// calcul de l'éco taxe
+// Karl 
 public class InvoiceServiceSpecifiqueImpl extends InvoiceServiceManagementImpl{ 
     
     @Inject private InvoiceEcoTaxDetailRepository invoiceEcoTaxDetailRepository;
@@ -70,6 +73,11 @@ public class InvoiceServiceSpecifiqueImpl extends InvoiceServiceManagementImpl{
                     }
                     invoiceEcoTaxDetail.setInvoice(invoice);
                     invoiceEcoTaxDetail.setEcoTax(invoiceLine.getProduct().getEcoTax());
+
+                    invoiceLine.setEcoTax(invoiceLine.getProduct().getEcoTax());
+
+                    InvoiceLineRepository invoiceLineRepo = Beans.get(InvoiceLineRepository.class);
+                    invoiceLineRepo.save(invoiceLine);
                     //TODO gestion du calcul du montant de l'éco taxe
                     invoiceEcoTaxDetail.setAmount(invoiceLine.getEcoTaxAmount());
 
