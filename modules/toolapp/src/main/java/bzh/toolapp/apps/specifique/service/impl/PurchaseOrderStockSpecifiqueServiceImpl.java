@@ -135,7 +135,7 @@ public class PurchaseOrderStockSpecifiqueServiceImpl extends PurchaseOrderCreate
             purchaseOrderLine);
 
     // MA1-I48 - Karl - begin
-    stockMoveLine.setRealQty(BigDecimal.ZERO);
+    //stockMoveLine.setRealQty(BigDecimal.ZERO);
     // MA1-I48 - Karl - end
     return stockMoveLine;
   }
