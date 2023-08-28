@@ -136,7 +136,7 @@ public class PurchaseOrderStockSpecifiqueServiceImpl extends PurchaseOrderCreate
                         purchaseOrderLine);
 
         // MA1-I48 - Karl - begin
-        stockMoveLine.setRealQty(BigDecimal.ZERO);
+//        stockMoveLine.setRealQty(BigDecimal.ZERO);
         // MA1-I48 - Karl - end
         return stockMoveLine;
     }
@@ -144,15 +144,12 @@ public class PurchaseOrderStockSpecifiqueServiceImpl extends PurchaseOrderCreate
     @Override
     protected StockMoveLine createTitleStockMoveLine(
             PurchaseOrderLine purchaseOrderLine, StockMove stockMove) throws AxelorException {
-//  Fixe #MA1-I48 - Debut VGA
-        BigDecimal qty =
-                unitConversionService.convert(
-                        purchaseOrderLine.getUnit(), unit, purchaseOrderLine.getRealQty(), purchaseOrderLine.getRealQty().scale(), product);
-//  Fixe #MA1-I48 - Debut VGA
+
         return stockMoveLineSpecifiqueCreationService.createStockMoveLine(
                 purchaseOrderLine.getProduct(),
                 purchaseOrderLine.getProductName(),
-                qty,
+                purchaseOrderLine.getDescription(),
+                BigDecimal.ZERO,
                 BigDecimal.ZERO,
                 BigDecimal.ZERO,
                 BigDecimal.ZERO,
