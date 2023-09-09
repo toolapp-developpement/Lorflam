@@ -19,6 +19,7 @@ import com.axelor.app.AxelorModule;
 import com.axelor.apps.businessproduction.db.repo.ManufOrderBusinessProductionManagementRepository;
 import com.axelor.apps.businessproduction.service.CostSheetServiceBusinessImpl;
 import com.axelor.apps.businessproduction.service.ProductionOrderSaleOrderServiceBusinessImpl;
+import com.axelor.apps.businessproduction.service.ProductionOrderServiceBusinessImpl;
 import com.axelor.apps.businessproduction.service.SaleOrderWorkflowServiceBusinessProductionImpl;
 import com.axelor.apps.businessproject.db.repo.SaleOrderProjectRepository;
 import com.axelor.apps.businessproject.service.InvoiceServiceProjectImpl;
@@ -73,5 +74,7 @@ public class SpecificModule extends AxelorModule {
         .to(SaleOrderWorkflowSpecifiqueService.class);
     bind(SaleOrderProjectRepository.class).to(SaleOrderSpecificeRepository.class);
     bind(InvoiceServiceManagementImpl.class).to(InvoiceServiceSpecifiqueImpl.class);
+    bind(ProductionOrderServiceBusinessImpl.class)
+        .to(ProductionOrderServiceBusinessCustomImpl.class);
   }
 }
