@@ -63,7 +63,7 @@
 
 
   <menuitem name="sale-conf-ecotax" parent="sc-root-sale-conf" title="Eco tax"
-    action="sale.conf.ecotax" order="2"/>
+    action="sale.conf.ecotax" order="97"/>
 
   <action-view name="sale.conf.ecotax" title="Eco tax"
     model="com.axelor.apps.toolapp.db.EcoTax">
@@ -71,5 +71,21 @@
     <view type="form" name="eco-tax-form"/>
 
   </action-view>
+
+  <menuitem name="sale-recalculate-ecotax" parent="sc-root-sale-conf"
+    title="Recalcul Eco tax" action="sale.recalculate.ecotax" order="98"/>
+
+  <action-method name="sale.recalculate.ecotax">
+    <call class="bzh.toolapp.apps.specifique.web.SaleOrderRecalculateSpecificController"
+      method="recalculateEcoTax"/>
+  </action-method>
+
+  <menuitem name="sale-recalculate-planning" parent="sc-root-sale-conf"
+    title="Recalcul Planning" action="sale.recalculate.planning" order="99"/>
+
+  <action-method name="sale.recalculate.planning">
+    <call class="bzh.toolapp.apps.specifique.web.SaleOrderRecalculateSpecificController"
+      method="recalcultateStockMoveLineRef"/>
+  </action-method>
 
 </object-views>
