@@ -96,6 +96,7 @@ public class MrpServiceImplSpecifique extends MrpServiceProductionImpl {
              mrp.getId(), product.getId(), MrpLineTypeRepository.ELEMENT_PURCHASE_ORDER).fetchOne() != null;
     // MA1-I63 - Karl - end
 
+    
 
     BigDecimal previousCumulativeQty = BigDecimal.ZERO;
 
