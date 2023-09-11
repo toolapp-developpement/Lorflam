@@ -28,9 +28,10 @@
       <field name="code"/>
       <field name="description"/>
     </panel>
-    <panel-related field="productList" canSelect="true" canNew="false" canEdit="false" 
-      title="Produits associés"></panel-related>    
-    <panel-dashlet name="invoiceLineListPanel" colSpan="12" action="action-view-invoice-line-list-eco-tax"/>
+    <panel-related field="productList" canSelect="true" canNew="false" canEdit="false"
+      title="Produits associés"></panel-related>
+    <panel-dashlet name="invoiceLineListPanel" colSpan="12"
+      action="action-view-invoice-line-list-eco-tax"/>
   </form>
 
   <action-view name="action-view-invoice-line-list-eco-tax"
