@@ -24,7 +24,7 @@ public class ManufOrderManagementSpecificRepository
     BigDecimal qtyToProduce = BigDecimal.ZERO;
     if (manufOrder.getProducedStockMoveLineList() != null) {
       for (StockMoveLine stockMoveLine : manufOrder.getProducedStockMoveLineList()) {
-        if (stockMoveLine.getStockMove().getStatusSelect() != StockMoveRepository.STATUS_REALIZED && stockMoveLine.getRealQty()!=null) {
+        if (stockMoveLine.getStockMove()!=null && stockMoveLine.getStockMove().getStatusSelect() != StockMoveRepository.STATUS_REALIZED && stockMoveLine.getRealQty()!=null) {
           qtyToProduce = qtyToProduce.add(stockMoveLine.getRealQty());
         }
       }
@@ -37,7 +37,7 @@ public class ManufOrderManagementSpecificRepository
     BigDecimal qtyProduced = BigDecimal.ZERO;
     if (manufOrder.getProducedStockMoveLineList() != null) {
       for (StockMoveLine stockMoveLine : manufOrder.getProducedStockMoveLineList()) {
-        if (stockMoveLine.getStockMove().getStatusSelect() == StockMoveRepository.STATUS_REALIZED && stockMoveLine.getRealQty()!=null) {
+        if (stockMoveLine.getStockMove()!=null && stockMoveLine.getStockMove().getStatusSelect() == StockMoveRepository.STATUS_REALIZED && stockMoveLine.getRealQty()!=null) {
           qtyProduced = qtyProduced.add(stockMoveLine.getRealQty());
         }
       }
