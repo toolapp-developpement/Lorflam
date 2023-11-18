@@ -10,6 +10,12 @@
           selection="specifique.stock.move.status.select" widget="NavSelect"/>
       </replace>
     </extend>
+
+    <extend target="//field[@name='partner']">
+      <replace>
+        <field name="partner" readonlyIf="statusSelect != 1" canEdit="false" onChange="action-stock-move-group-partner-onchange,action-stock-move-record-partner-delivery-informations-toolapp" domain="self.isContact = false AND :company member of self.companySet" form-view="partner-form" grid-view="partner-grid"/>
+      </replace>
+    </extend>
     <extend target="//button[@name='planBtn']">
       <insert position="after">
         <button name="prepareBtn" title="Prepare"
@@ -108,5 +114,12 @@
   <action-attrs name="onload-BR">
     <attribute name="selection-in" for="statusSelect" if="typeSelect!=2" expr="[1,2,3,4]"/>
   </action-attrs>
+
+
+  <action-record name="action-stock-move-record-partner-delivery-informations-toolapp"
+    model="com.axelor.apps.stock.db.StockMove">
+    <field name="note" expr="eval: partner?.deliveryComments"/>
+    <field name="pickingOrderComments" expr="eval: partner?.pickingOrderComments"/>
+  </action-record>
 
 </object-views>
