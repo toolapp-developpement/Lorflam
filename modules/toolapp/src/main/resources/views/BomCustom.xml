@@ -17,7 +17,8 @@
       <button name="bomTree" title="Arborescence" css="btn-custom"
         onClick="action-method-production-open-product-tree-custom" colspan="3"/>
     </panel>
-  </form>
+  </form> 
+  
 
 
   <action-method name="action-method-production-open-product-tree-custom">
