@@ -3,6 +3,8 @@ package bzh.toolapp.apps.specifique.repository;
 import com.avr.apps.helpdesk.service.TicketService;
 import com.axelor.apps.helpdesk.db.Ticket;
 import com.axelor.apps.helpdesk.db.repo.TicketRepository;
+import com.axelor.apps.production.db.ManufOrder;
+import com.axelor.apps.production.db.repo.ManufOrderRepository;
 import com.axelor.apps.production.db.repo.StockMoveProductionRepository;
 import com.axelor.apps.sale.db.SaleOrder;
 import com.axelor.apps.sale.db.repo.SaleOrderRepository;
@@ -23,6 +25,17 @@ public class StockMoveSpecificRepository extends StockMoveProductionRepository {
         entity.setTicket(saleOrder.getTicket());
       }
     }
+
+
+    entity.getStockMoveLineList().forEach(
+        stockMoveLine -> {
+          String saleOrderSeq = new String();
+          if (stockMoveLine.getSaleOrderLine() != null && stockMoveLine.getSaleOrderLine().getSaleOrder() != null) {
+            saleOrderSeq = stockMoveLine.getSaleOrderLine().getSaleOrder().getSaleOrderSeq();
+          } 
+          stockMoveLine.setCustSaleOrderSeq(saleOrderSeq);
+        }
+    );
 
     
 

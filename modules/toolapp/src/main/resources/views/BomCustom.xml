@@ -17,7 +17,8 @@
       <button name="bomTree" title="Arborescence" css="btn-custom"
         onClick="action-method-production-open-product-tree-custom" colspan="3"/>
     </panel>
-  </form>
+  </form> 
+  
 
 
   <action-method name="action-method-production-open-product-tree-custom">
@@ -162,10 +163,15 @@
   </action-group>
 
 
-  <form name="projected-stock-form-custome" title="Projected stock" model="com.axelor.apps.supplychain.db.MrpLine" width="large" onNew="action-record-supplychain-projected-stock-on-new" canNew="false" canEdit="false" canSave="false" canDelete="false">
+  <form name="projected-stock-form-custome" title="Projected stock"
+    model="com.axelor.apps.supplychain.db.MrpLine" width="large"
+    onNew="action-record-supplychain-projected-stock-on-new" canNew="false" canEdit="false"
+    canSave="false" canDelete="false">
     <panel name="projected-stock-form-custom-panel" colSpan="12">
-      <panel-dashlet showTitle="false" colSpan="12" action="action.projected.stock.dashlet.custom"/>
-      <field name="$mrpLineList" readonly="true" colSpan="12" height="150" type="one-to-many" target="com.axelor.apps.supplychain.db.MrpLine" grid-view="projected-stock-grid-custome"/>
+      <panel-dashlet showTitle="false" colSpan="12"
+        action="action.projected.stock.dashlet.custom"/>
+      <field name="$mrpLineList" readonly="true" colSpan="12" height="150" type="one-to-many"
+        target="com.axelor.apps.supplychain.db.MrpLine" grid-view="projected-stock-grid-custome"/>
     </panel>
   </form>
 
@@ -179,27 +185,32 @@
     <category key="name" type="date" title="Date"/>
     <series key="cumulativeQty" type="line" title="Qty"/>
   </chart>
- 
 
-  <grid name="projected-stock-grid-custome" title="Projected stock" model="com.axelor.apps.supplychain.db.MrpLine" orderBy="product.code,maturityDate,mrpLineType.typeSelect,mrpLineType.sequence,id" edit-icon="false">
-    <hilite color="info" strong="true" if="[5,8,9].indexOf($get('mrpLineType.elementSelect')) != -1"/>
+
+  <grid name="projected-stock-grid-custome" title="Projected stock"
+    model="com.axelor.apps.supplychain.db.MrpLine"
+    orderBy="product.code,maturityDate,mrpLineType.typeSelect,mrpLineType.sequence,id"
+    edit-icon="false">
+    <hilite color="info" strong="true"
+      if="[5,8,9].indexOf($get('mrpLineType.elementSelect')) != -1"/>
     <hilite color="success" strong="true" if="mrpLineType.elementSelect == 1"/>
     <field name="product" hidden="true"/>
     <field name="maturityDate" width="110"/>
     <field name="mrpLineType" width="210"/>
     <field name="qty" width="100" x-scale="2"/>
     <field name="cumulativeQty" css="bold" width="130" x-scale="2"/>
-    <field name="unit" width="80"/> 
+    <field name="unit" width="80"/>
     <field name="company"/>
     <field name="stockLocation"/>
     <field name="relatedToSelectName" width="150"/>
     <field name="partner"/>
     <field name="mrpLineType.elementSelect" hidden="true"/>
   </grid>
-  
 
 
-  <action-record name="action-record-stock-details-by-product-init-product-custom" model="com.axelor.apps.base.db.Product">
+
+  <action-record name="action-record-stock-details-by-product-init-product-custom"
+    model="com.axelor.apps.base.db.Product">
     <field name="$product" expr="eval: _product"/>
     <field name="$company" expr="eval: _company"/>
     <field name="$stockLocation" expr="eval:_stockLocation"/>

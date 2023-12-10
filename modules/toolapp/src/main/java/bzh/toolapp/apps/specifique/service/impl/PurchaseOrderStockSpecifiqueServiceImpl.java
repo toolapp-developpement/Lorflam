@@ -162,30 +162,74 @@ public class PurchaseOrderStockSpecifiqueServiceImpl extends PurchaseOrderCreate
                 null,
                 purchaseOrderLine);
     }
+    StockMoveLine stockMoveLine =
+        stockMoveLineSpecifiqueCreationService.createStockMoveLine(
+            product,
+            purchaseOrderLine.getProductName(),
+            purchaseOrderLine.getDescription(),
+            qty,
+            BigDecimal.ZERO,
+            priceDiscounted,
+            companyUnitPriceUntaxed,
+            companyPurchasePrice,
+            unit,
+            stockMove,
+            StockMoveLineService.TYPE_PURCHASES,
+            purchaseOrder.getInAti(),
+            taxRate,
+            null,
+            purchaseOrderLine);
 
-    @Override
-    public void cancelReceipt(PurchaseOrder purchaseOrder) throws AxelorException {
-        //  Recuperation de la liste des bons de reception
-        List<StockMove> stockMoveList =
-                Beans.get(StockMoveRepository.class)
-                        .all()
-                        .filter(
-                                "self.originTypeSelect = ? AND self.originId = ? AND self.statusSelect = 2",
-                                StockMoveRepository.ORIGIN_PURCHASE_ORDER,
-                                purchaseOrder.getId())
-                        .fetch();
-        if (!stockMoveList.isEmpty()) {
-            // Boucle sur les bons pour les annuler et les archiver
-            for (StockMove stockMove : stockMoveList) {
+    // MA1-I48 - Karl - begin
+    //stockMoveLine.setRealQty(BigDecimal.ZERO);
+    // MA1-I48 - Karl - end
+    return stockMoveLine;
+  }
 
-                stockMoveService.cancel(stockMove);
-                stockMove.setArchived(true);
+  @Override
+  protected StockMoveLine createTitleStockMoveLine(
+      PurchaseOrderLine purchaseOrderLine, StockMove stockMove) throws AxelorException {
 
-                for (StockMoveLine sml : stockMove.getStockMoveLineList()) {
-                    sml.setPurchaseOrderLine(null);
-                    sml.setArchived(true);
-                }
-            }
+    return stockMoveLineSpecifiqueCreationService.createStockMoveLine(
+        purchaseOrderLine.getProduct(),
+        purchaseOrderLine.getProductName(),
+        purchaseOrderLine.getDescription(),
+        BigDecimal.ZERO,
+        BigDecimal.ZERO,
+        BigDecimal.ZERO,
+        BigDecimal.ZERO,
+        BigDecimal.ZERO,
+        null,
+        stockMove,
+        2,
+        purchaseOrderLine.getPurchaseOrder().getInAti(),
+        null,
+        null,
+        purchaseOrderLine);
+  }
+
+  @Override
+  public void cancelReceipt(PurchaseOrder purchaseOrder) throws AxelorException {
+    //  Recuperation de la liste des bons de reception
+    List<StockMove> stockMoveList =
+        Beans.get(StockMoveRepository.class)
+            .all()
+            .filter(
+                "self.originTypeSelect = ? AND self.originId = ? AND self.statusSelect = 2",
+                StockMoveRepository.ORIGIN_PURCHASE_ORDER,
+                purchaseOrder.getId())
+            .fetch();
+    if (!stockMoveList.isEmpty()) {
+      // Boucle sur les bons pour les annuler et les archiver
+      for (StockMove stockMove : stockMoveList) {
+
+        stockMoveService.cancel(stockMove);
+        stockMove.setArchived(true);
+
+        for (StockMoveLine sml : stockMove.getStockMoveLineList()) {
+          sml.setPurchaseOrderLine(null);
+          sml.setArchived(true);
+
         }
     }
 }

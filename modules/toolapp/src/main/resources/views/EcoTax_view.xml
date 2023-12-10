@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.4.xsd">
+
+  <grid name="invoice-eco-tax-detail-grid" title="Invoice eco tax detail"
+    model="com.axelor.apps.toolapp.db.InvoiceEcoTaxDetail">
+    <field name="ecoTax" title="Eco tax"/>
+    <field name="amount" title="Amount"/>
+  </grid>
+
+  <form name="invoice-eco-tax-detail-form" title="Invoice eco tax detail"
+    model="com.axelor.apps.toolapp.db.InvoiceEcoTaxDetail">
+    <panel name="mainPanel" title="Main">
+      <field name="ecoTax" title="Eco tax"/>
+      <field name="amount" title="Amount"/>
+    </panel>
+  </form>
+
+  <grid name="eco-tax-grid" title="Eco tax" model="com.axelor.apps.toolapp.db.EcoTax">
+    <field name="code" title="Name"/>
+    <field name="description" title="Value"/>
+  </grid>
+
+  <form name="eco-tax-form" title="Eco tax" model="com.axelor.apps.toolapp.db.EcoTax"
+    width="large">
+    <panel name="mainPanel" title="Main">
+      <field name="code"/>
+      <field name="description"/>
+    </panel>
+    <panel-related field="productList" canSelect="true" canNew="false" canEdit="false"
+      title="Produits associés"></panel-related>
+    <panel-dashlet name="invoiceLineListPanel" colSpan="12"
+      action="action-view-invoice-line-list-eco-tax"/>
+  </form>
+
+  <action-view name="action-view-invoice-line-list-eco-tax"
+    title="Lignes de factures associées" model="com.axelor.apps.account.db.InvoiceLine">
+    <view type="grid" name="invoice-line-menu-grid"/>
+    <view type="form" name="invoice-line-menu-form"/>
+    <domain>self.ecoTax.id = :id</domain>
+  </action-view>
+
+
+</object-views>

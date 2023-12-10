@@ -53,7 +53,7 @@ public class StockMoveInvoiceServiceImplSpecifique extends ProjectStockMoveInvoi
       throws AxelorException {
     InvoiceLine invoiceLine = super.createInvoiceLine(invoice, stockMoveLine, qty);
 
-    if (stockMoveLine.getStockMove().getOriginId() != 0) return invoiceLine;
+    if (stockMoveLine ==null || stockMoveLine.getStockMove() ==null|| stockMoveLine.getStockMove().getOriginId() != 0 || invoiceLine==null) return invoiceLine;
 
     if (stockMoveLine.getDiscountAmount() != null)
       invoiceLine.setDiscountAmount(stockMoveLine.getDiscountAmount());

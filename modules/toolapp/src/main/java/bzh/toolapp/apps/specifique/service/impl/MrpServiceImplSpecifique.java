@@ -88,6 +88,15 @@ public class MrpServiceImplSpecifique extends MrpServiceProductionImpl {
             .order("mrpLineType.sequence")
             .order("id")
             .fetch();
+    // MA1-I63 - Karl - begin
+    //vérifier si une ligne d'achat existe
+    boolean purchExist = mrpLineRepository
+            .all()
+            .filter("self.mrp.id = ?1 AND self.product.id = ?2 AND self.mrpLineType.elementSelect = ?3",
+             mrp.getId(), product.getId(), MrpLineTypeRepository.ELEMENT_PURCHASE_ORDER).fetchOne() != null;
+    // MA1-I63 - Karl - end
+
+    
 
     BigDecimal previousCumulativeQty = BigDecimal.ZERO;
 
@@ -103,7 +112,8 @@ public class MrpServiceImplSpecifique extends MrpServiceProductionImpl {
       // dans ce cas, on ne veut pas de proposition
       // dans tous les autres cas, on doit garder la proposition générée par le CBN
       // MA1-I63 - Karl - begin
-      if (this.isProposalElement(mrpLine.getMrpLineType())
+      if (purchExist
+          && this.isProposalElement(mrpLine.getMrpLineType())
           && mrpLine.getCumulativeQty().compareTo(mrpLine.getMinQty()) >= 0
           && mrpLine.getMrpLineType().getTypeSelect() != MrpLineTypeRepository.TYPE_OUT
           && (mrpLine.getRelatedToSelectName() == null
@@ -223,7 +233,8 @@ public class MrpServiceImplSpecifique extends MrpServiceProductionImpl {
     }
 
     return productSet;
-  }
+  } 
+  
 
   /*
   private Set<Product> filterInventoryFromDefaultSupplier(Mrp mrp) {
